@@ -50,12 +50,12 @@
     .app-container {
       max-width: 1200px;
       margin: 0 auto;
-      padding: 2vh 2vw;
+      padding: 1svh 2vw;
       width: 100%;
       display: flex;
       flex-direction: column;
       align-items: center;
-      min-height: 100vh;
+      min-height: 100svh;
     }
 
     .title {
@@ -198,8 +198,8 @@
     #screen-game {
       display: flex;
       flex-direction: column;
-      justify-content: space-evenly;
-      height: 95vh;
+      justify-content: space-between;
+      height: 98svh;
       width: 100%;
     }
 
@@ -207,7 +207,7 @@
       display: flex;
       justify-content: space-between;
       width: 100%;
-      margin-bottom: 1vh;
+      margin-bottom: 1svh;
       align-items: center;
     }
 
@@ -215,7 +215,7 @@
       display: flex;
       gap: 1.5rem;
       justify-content: center;
-      margin-bottom: 2vh;
+      margin-bottom: 1svh;
       perspective: 1000px;
       flex-wrap: wrap;
     }
@@ -228,8 +228,8 @@
     }
 
     .playing-card {
-      width: min(18vw, 18vh);
-      max-width: 165px;
+      width: min(16vw, 15svh);
+      max-width: 140px;
       aspect-ratio: 55 / 91;
       position: relative;
       transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
@@ -576,31 +576,31 @@
     </div>
 
     <!-- Challenge Status Bar -->
-    <div id="challenge-status-bar" class="hidden" style="display: flex; justify-content: space-between; align-items: center; background: rgba(255,255,255,0.8); padding: 0.5rem 1.5rem; border-radius: 12px; margin-bottom: 1vh; border: 2px solid var(--gold); box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
+    <div id="challenge-status-bar" class="hidden" style="display: flex; justify-content: space-between; align-items: center; background: rgba(255,255,255,0.8); padding: 0.5rem 1.5rem; border-radius: 12px; margin-bottom: 1svh; border: 2px solid var(--gold); box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
       <div style="font-weight: bold; font-size: 1.2rem; color: var(--red-500);">❤️ たいりょく: <span id="challenge-hp">3</span> / 3</div>
       <div style="font-weight: bold; font-size: 1.2rem; color: var(--gold);">😊 ニコニコイン: <span id="challenge-coins">0</span> / 5</div>
     </div>
 
     <!-- Dealer Area -->
-    <div id="dealer-area-label" style="text-align: center; color: var(--gold); font-weight: bold; margin-bottom: 0.5vh; font-size: 1.2rem; display: flex; align-items: center; justify-content: center; gap: 0.5rem;">
+    <div id="dealer-area-label" style="text-align: center; color: var(--gold); font-weight: bold; margin-bottom: 0.5svh; font-size: 1.2rem; display: flex; align-items: center; justify-content: center; gap: 0.5rem;">
       <span style="font-size:1.5rem">👨‍💼</span> あいてのカード
     </div>
-    <div id="opponent-speech" class="hidden" style="text-align: center; background: white; color: var(--text-main); padding: 0.5rem 1rem; border-radius: 20px; font-size: 0.95rem; font-weight:bold; margin: 0 auto 1vh auto; width: fit-content; border: 2px solid var(--gold); box-shadow: 0 4px 6px rgba(0,0,0,0.05); position: relative;"></div>
-    <div class="cards-container" id="dealer-cards-container" style="transform: scale(0.85); margin-bottom: 1vh;"></div>
+    <div id="opponent-speech" class="hidden" style="text-align: center; background: white; color: var(--text-main); padding: 0.5rem 1rem; border-radius: 20px; font-size: 0.95rem; font-weight:bold; margin: 0 auto 1svh auto; width: fit-content; border: 2px solid var(--gold); box-shadow: 0 4px 6px rgba(0,0,0,0.05); position: relative;"></div>
+    <div class="cards-container" id="dealer-cards-container" style="transform: scale(0.85); margin-bottom: 1svh;"></div>
 
     <!-- Player Area -->
-    <div id="player-area-label" style="text-align: center; color: var(--green-500); font-weight: bold; margin-bottom: 0.5vh; font-size: 1.2rem; display: flex; align-items: center; justify-content: center; gap: 0.5rem;">
+    <div id="player-area-label" style="text-align: center; color: var(--green-500); font-weight: bold; margin-bottom: 0.5svh; font-size: 1.2rem; display: flex; align-items: center; justify-content: center; gap: 0.5rem;">
       <span style="font-size:1.5rem">👤</span> あなたのカード
     </div>
-    <div class="cards-container" id="cards-container" style="margin-bottom: 2vh;"></div>
+    <div class="cards-container" id="cards-container" style="margin-bottom: 1svh;"></div>
 
-    <div class="game-controls" id="game-controls" style="justify-content: center; margin-bottom: 2vh;">
+    <div class="game-controls" id="game-controls" style="justify-content: center; margin-bottom: 1svh;">
       <button class="btn-action" id="btn-change" onclick="drawAgain()">🔄 <ruby>交換<rt>こうかん</rt></ruby>する</button>
       <button class="btn-action" id="btn-battle" onclick="battleWithoutChange()" style="background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%); color: white; box-shadow: 0 6px 0 #991b1b, 0 10px 20px rgba(0,0,0,0.3);">✊ そのまま勝負</button>
       <button class="btn-action hidden" id="btn-replay" onclick="handleReplayClick()">🃏 もう<ruby>一度<rt>いちど</rt></ruby><ruby>遊<rt>あそ</rt></ruby>ぶ</button>
     </div>
 
-    <div class="result-area hidden" id="result-area" style="margin-bottom: 1vh; padding: 1rem;">
+    <div class="result-area hidden" id="result-area" style="margin-bottom: 1svh; padding: 1rem;">
       <div class="subtitle" id="winner-announcement" style="margin-bottom: 0.5rem; font-size: 2rem; font-weight: bold;"></div>
       
       <div style="display: flex; justify-content: center; gap: 4rem; margin-top: 1rem;">
