@@ -1,0 +1,1749 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>こころポーカー</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;900&family=M+PLUS+Rounded+1c:wght@400;700;900&display=swap');
+
+    :root {
+      --gold: #f59e0b;
+      --bg-color: #fefce8;
+      --panel-bg: rgba(255, 255, 255, 0.95);
+      --text-main: #334155;
+      --text-muted: #64748b;
+      --light-btn: #65a34e;
+      --basic-btn: #52a2d4;
+      --standard-btn: #eb6d6d;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Inter', 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', 'M PLUS Rounded 1c', Meiryo, sans-serif;
+      background-color: #fdfdf5;
+      background-image: 
+        radial-gradient(circle at 10% 20%, rgba(190, 240, 200, 0.4) 0%, transparent 40%),
+        radial-gradient(circle at 90% 10%, rgba(255, 230, 180, 0.4) 0%, transparent 40%),
+        radial-gradient(circle at 50% 90%, rgba(200, 220, 255, 0.4) 0%, transparent 40%),
+        radial-gradient(circle at 80% 80%, rgba(255, 200, 200, 0.4) 0%, transparent 40%);
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
+      -webkit-user-select: none;
+      user-select: none;
+    }
+
+    button {
+      cursor: pointer;
+      border: none;
+      font-family: inherit;
+      outline: none;
+    }
+
+    .app-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2vh 2vw;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    .title {
+      font-size: 4.5rem;
+      font-weight: 900;
+      margin-bottom: 0.5rem;
+      text-align: center;
+      letter-spacing: 2px;
+    }
+
+    .title span {
+      display: inline-block;
+      text-shadow: 0px 4px 0px rgba(0,0,0,0.1);
+    }
+
+    .subtitle {
+      font-size: 1.25rem;
+      color: var(--text-main);
+      font-weight: bold;
+      margin-bottom: 3rem;
+      text-align: center;
+    }
+
+    /* Menu */
+    .mode-selection {
+      display: flex;
+      gap: 2rem;
+      justify-content: center;
+      margin-top: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .mode-card {
+      padding: 2.5rem 2rem;
+      border-radius: 24px;
+      background: white;
+      width: 300px;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+    }
+
+    .mode-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+    }
+
+    .mode-icon {
+      font-size: 3.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .mode-title {
+      font-size: 1.5rem;
+      font-weight: 900;
+      margin-bottom: 1rem;
+      color: var(--text-main);
+    }
+
+    .mode-desc {
+      color: var(--text-muted);
+      margin-bottom: 2rem;
+      font-weight: 600;
+      font-size: 0.95rem;
+      line-height: 1.6;
+      flex-grow: 1;
+    }
+
+    .btn-primary {
+      padding: 1rem 2rem;
+      border-radius: 9999px;
+      color: white;
+      font-weight: 900;
+      font-size: 1.1rem;
+      transition: all 0.2s;
+      width: 100%;
+      background: var(--light-btn);
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+    .btn-light-mode { background: var(--light-btn); }
+    .btn-basic-mode { background: var(--basic-btn); }
+    .btn-standard-mode { background: var(--standard-btn); }
+
+    .btn-primary:hover {
+      transform: scale(1.05);
+      box-shadow: 0 6px 15px rgba(0,0,0,0.15);
+    }
+
+    .btn-secondary {
+      padding: 0.75rem 1.5rem;
+      border-radius: 9999px;
+      background: white;
+      color: var(--text-main);
+      font-weight: 900;
+      transition: all 0.2s;
+      border: none;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    }
+
+    .btn-secondary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+    }
+    
+    .bottom-menu {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      margin-top: 3rem;
+      flex-wrap: wrap;
+    }
+    .bottom-btn {
+      background: white;
+      border-radius: 16px;
+      padding: 0.8rem 1.2rem;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      gap: 0.5rem;
+      color: var(--text-main);
+      font-weight: bold;
+      font-size: 0.9rem;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+      transition: all 0.2s;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+    .bottom-btn:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+    }
+    .bottom-btn span {
+      font-size: 1.2rem;
+    }
+
+    /* Game Area */
+    #screen-game {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-evenly;
+      height: 95vh;
+      width: 100%;
+    }
+
+    .game-header {
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
+      margin-bottom: 1vh;
+      align-items: center;
+    }
+
+    .cards-container {
+      display: flex;
+      gap: 1.5rem;
+      justify-content: center;
+      margin-bottom: 2vh;
+      perspective: 1000px;
+      flex-wrap: wrap;
+    }
+
+    .card-wrapper {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .playing-card {
+      width: min(18vw, 18vh);
+      max-width: 165px;
+      aspect-ratio: 55 / 91;
+      position: relative;
+      transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+      transform-style: preserve-3d;
+      cursor: pointer;
+    }
+
+    .playing-card.exchange {
+      transform: translateY(20px);
+      opacity: 0.8;
+    }
+
+    .playing-card.is-flipped {
+      transform: rotateY(180deg);
+      animation: dealCardFlipped 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) backwards;
+    }
+
+    .playing-card.exchange.is-flipped {
+      transform: translateY(20px) rotateY(180deg);
+    }
+
+    @keyframes dealCardFlipped {
+      0% { transform: translateY(-50vh) rotateY(0) scale(0.5); opacity: 0; }
+      100% { transform: translateY(0) rotateY(180deg) scale(1); opacity: 1; }
+    }
+
+    .card-face {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      backface-visibility: hidden;
+      border-radius: 16px;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+      overflow: hidden;
+      border: 2px solid rgba(255,255,255,0.1);
+    }
+
+    .card-front {
+      background-color: white;
+      transform: rotateY(180deg);
+    }
+
+    .card-front img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .card-back {
+      background-color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .card-back::after {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background-image: url('cards_output_print/card_back.png');
+      background-size: cover;
+      background-position: center;
+      border-radius: 14px;
+    }
+
+    .hold-indicator {
+      font-size: 1rem;
+      font-weight: bold;
+      color: #f87171;
+      background: rgba(248, 113, 113, 0.2);
+      padding: 0.25rem 1rem;
+      border-radius: 9999px;
+      border: 1px solid #f87171;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    .hold-indicator.visible {
+      opacity: 1;
+    }
+
+    /* Controls */
+    .game-controls {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+
+    .btn-action {
+      padding: 1.25rem 3rem;
+      font-size: 1.5rem;
+      font-weight: 900;
+      border-radius: 16px;
+      background: linear-gradient(135deg, #facc15 0%, #f59e0b 100%);
+      color: #78350f;
+      box-shadow: 0 6px 0 #b45309, 0 10px 20px rgba(0,0,0,0.3);
+      transition: all 0.1s;
+    }
+
+    .btn-action:active {
+      transform: translateY(6px);
+      box-shadow: 0 0px 0 #b45309, 0 4px 10px rgba(0,0,0,0.3);
+    }
+
+    /* Result Area */
+    .result-area {
+      text-align: center;
+      animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+    }
+
+    .hand-name {
+      font-size: 3rem;
+      font-weight: 900;
+      color: var(--gold);
+      text-shadow: 0 0 20px rgba(251, 191, 36, 0.5);
+      margin-bottom: 1rem;
+    }
+
+    /* Yaku Modal */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0,0,0,0.7);
+      backdrop-filter: blur(5px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s;
+    }
+
+    .modal-overlay.open {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    .modal-content {
+      background: var(--panel-bg);
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 24px;
+      padding: 2rem;
+      width: 90%;
+      max-width: 600px;
+      max-height: 80vh;
+      overflow-y: auto;
+      box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5);
+      transform: scale(0.9);
+      transition: transform 0.3s;
+    }
+
+    .modal-overlay.open .modal-content {
+      transform: scale(1);
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2rem;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+      padding-bottom: 1rem;
+    }
+
+    .modal-title {
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: var(--text-main);
+    }
+
+    .close-btn {
+      background: none;
+      color: var(--text-main);
+      font-size: 1.5rem;
+    }
+
+    .yaku-list {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .yaku-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem;
+      background: rgba(0,0,0,0.05);
+      border-radius: 12px;
+    }
+
+    .yaku-name {
+      font-weight: bold;
+      font-size: 1.2rem;
+      color: var(--text-main);
+    }
+
+    .yaku-desc {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+    }
+
+    .yaku-rank {
+      font-weight: 900;
+      font-size: 1.5rem;
+      color: var(--gold);
+    }
+
+    @keyframes popIn {
+      0% { transform: scale(0.8); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+
+    @media (max-width: 768px) {
+      .cards-container {
+        gap: 0.5rem;
+      }
+      .title {
+        font-size: 2.5rem;
+      }
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    #portrait-warning {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(253, 253, 245, 0.95);
+      backdrop-filter: blur(10px);
+      z-index: 9999;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      flex-direction: column;
+    }
+    
+    .portrait-warning-content {
+      background: white;
+      padding: 3rem;
+      border-radius: 24px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+      border: 3px solid var(--gold);
+    }
+    
+    @media screen and (orientation: portrait) and (max-width: 1024px) {
+      #portrait-warning {
+        display: flex;
+      }
+    }
+
+    /* Toast Notification */
+    .toast-container {
+      position: fixed;
+      top: 6rem;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 2000;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      pointer-events: none;
+    }
+    .toast {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(5px);
+      border-radius: 9999px;
+      padding: 0.8rem 2rem;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      font-weight: bold;
+      color: var(--text-main);
+      border: 2px solid var(--gold);
+      animation: toastSlideUp 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards, toastFadeOut 0.5s ease 3.5s forwards;
+    }
+    @keyframes toastSlideUp {
+      0% { transform: translateY(50px) scale(0.9); opacity: 0; }
+      100% { transform: translateY(0) scale(1); opacity: 1; }
+    }
+    @keyframes toastFadeOut {
+      0% { opacity: 1; transform: translateY(0) scale(1); }
+      100% { opacity: 0; transform: translateY(-20px) scale(0.9); }
+    }
+  </style>
+</head>
+<body>
+
+<div class="app-container">
+  
+  <!-- Screen 1: Mode Selection -->
+  <div id="screen-menu">
+    <h1 class="title">
+      <span style="color:#65a34e">こ</span><span style="color:#52a2d4">こ</span><span style="color:#facc15">ろ</span><span style="color:#facc15">ポ</span><span style="color:#f59e0b">ー</span><span style="color:#f59e0b">カ</span><span style="color:#f87171">ー</span>
+    </h1>
+    <p class="subtitle"><ruby>自分<rt>じぶん</rt></ruby>の<ruby>感情<rt>かんじょう</rt></ruby>カードを<ruby>使<rt>つか</rt></ruby>ってポーカーで<ruby>遊<rt>あそ</rt></ruby>ぼう！</p>
+    
+    <div class="mode-selection">
+      <div class="mode-card">
+        <div class="mode-icon">☁️</div>
+        <div class="mode-title">ライト (3枚)</div>
+        <p class="mode-desc">3<ruby>枚<rt>まい</rt></ruby>のカードで<ruby>遊<rt>あそ</rt></ruby>ぶ<ruby>入門<rt>にゅうもん</rt></ruby>モード。<br>まずはここで<ruby>役<rt>やく</rt></ruby>の<ruby>揃<rt>そろ</rt></ruby>え<ruby>方<rt>かた</rt></ruby>を<br><ruby>覚<rt>おぼ</rt></ruby>えよう！</p>
+        <button class="btn-primary btn-light-mode" onclick="startRound('light')">ライトで<ruby>遊<rt>あそ</rt></ruby>ぶ</button>
+      </div>
+      <div class="mode-card">
+        <div class="mode-icon">🌱</div>
+        <div class="mode-title">ベーシック</div>
+        <p class="mode-desc">ベーシックセット(36<ruby>枚<rt>まい</rt></ruby>)を<ruby>使<rt>つか</rt></ruby>っ<br>たシンプルなモード。<ruby>感情<rt>かんじょう</rt></ruby>ポー<br>カーの<ruby>基本<rt>きほん</rt></ruby>を<ruby>学<rt>まな</rt></ruby>ぼう！</p>
+        <button class="btn-primary btn-basic-mode" onclick="startRound('basic')">ベーシックで<ruby>遊<rt>あそ</rt></ruby>ぶ</button>
+      </div>
+      <div class="mode-card">
+        <div class="mode-title" style="margin-top:-2rem"><span style="font-size:3rem">☀️</span><br>スタンダード</div>
+        <p class="mode-desc">スタンダードセット(70<ruby>枚以上<rt>まいいじょう</rt></ruby>)<br>を<ruby>使<rt>つか</rt></ruby>う<ruby>本格的<rt>ほんかくてき</rt></ruby>なモード。<ruby>様々<rt>さまざま</rt></ruby>な<br><ruby>複雑<rt>ふくざつ</rt></ruby>な<ruby>感情<rt>かんじょう</rt></ruby>を<ruby>狙<rt>ねら</rt></ruby>おう！</p>
+        <button class="btn-primary btn-standard-mode" onclick="startRound('standard')">スタンダードで<ruby>遊<rt>あそ</rt></ruby>ぶ</button>
+      </div>
+      <div class="mode-card">
+        <div class="mode-title" style="margin-top:-2rem"><span style="font-size:3rem">👑</span><br>チャレンジ</div>
+        <p class="mode-desc">CPUと<ruby>連戦<rt>れんせん</rt></ruby>！<ruby>負<rt>ま</rt></ruby>けずに<br>ニコニコインを5<ruby>枚<rt>まい</rt></ruby><ruby>集<rt>あつ</rt></ruby>めて<br>クリアを<ruby>目指<rt>めざ</rt></ruby>そう！</p>
+        <button class="btn-primary" onclick="startRound('challenge')" style="background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);">チャレンジに<ruby>挑<rt>いど</rt></ruby>む</button>
+      </div>
+    </div>
+
+    <div class="bottom-menu">
+      <div class="bottom-btn" onclick="openTutorialModal()"><span>📗</span><ruby>遊<rt>あそ</rt></ruby>び<ruby>方<rt>かた</rt></ruby></div>
+      <div class="bottom-btn" onclick="openCardListModal()"><span>🙂</span><ruby>感情<rt>かんじょう</rt></ruby>カード<ruby>一覧<rt>いちらん</rt></ruby></div>
+      <div class="bottom-btn" onclick="openYakuModal()"><span>🏆</span><ruby>役<rt>やく</rt></ruby><ruby>一覧<rt>いちらん</rt></ruby></div>
+      <div class="bottom-btn" onclick="openRecordsModal()"><span>📊</span><ruby>成績<rt>せいせき</rt></ruby>・<ruby>記録<rt>きろく</rt></ruby></div>
+      <div class="bottom-btn" onclick="openSettingsModal()"><span>⚙️</span><ruby>設定<rt>せってい</rt></ruby></div>
+    </div>
+  </div>
+
+  <!-- Screen 2: Game Area -->
+  <div id="screen-game" class="hidden">
+    <div class="game-header">
+      <button class="btn-secondary" onclick="showMenu()">&larr; モード<ruby>選択<rt>せんたく</rt></ruby>に<ruby>戻<rt>もど</rt></ruby>る</button>
+      <button class="btn-secondary" onclick="openYakuModal()">📖 <ruby>役<rt>やく</rt></ruby>を<ruby>確認<rt>かくにん</rt></ruby>する</button>
+    </div>
+
+    <!-- Challenge Status Bar -->
+    <div id="challenge-status-bar" class="hidden" style="display: flex; justify-content: space-between; align-items: center; background: rgba(255,255,255,0.8); padding: 0.5rem 1.5rem; border-radius: 12px; margin-bottom: 1vh; border: 2px solid var(--gold); box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
+      <div style="font-weight: bold; font-size: 1.2rem; color: var(--red-500);">❤️ たいりょく: <span id="challenge-hp">3</span> / 3</div>
+      <div style="font-weight: bold; font-size: 1.2rem; color: var(--gold);">😊 ニコニコイン: <span id="challenge-coins">0</span> / 5</div>
+    </div>
+
+    <!-- Dealer Area -->
+    <div id="dealer-area-label" style="text-align: center; color: var(--gold); font-weight: bold; margin-bottom: 0.5vh; font-size: 1.2rem; display: flex; align-items: center; justify-content: center; gap: 0.5rem;">
+      <span style="font-size:1.5rem">👨‍💼</span> あいてのカード
+    </div>
+    <div id="opponent-speech" class="hidden" style="text-align: center; background: white; color: var(--text-main); padding: 0.5rem 1rem; border-radius: 20px; font-size: 0.95rem; font-weight:bold; margin: 0 auto 1vh auto; width: fit-content; border: 2px solid var(--gold); box-shadow: 0 4px 6px rgba(0,0,0,0.05); position: relative;"></div>
+    <div class="cards-container" id="dealer-cards-container" style="transform: scale(0.85); margin-bottom: 1vh;"></div>
+
+    <!-- Player Area -->
+    <div id="player-area-label" style="text-align: center; color: var(--green-500); font-weight: bold; margin-bottom: 0.5vh; font-size: 1.2rem; display: flex; align-items: center; justify-content: center; gap: 0.5rem;">
+      <span style="font-size:1.5rem">👤</span> あなたのカード
+    </div>
+    <div class="cards-container" id="cards-container" style="margin-bottom: 2vh;"></div>
+
+    <div class="game-controls" id="game-controls" style="justify-content: center; margin-bottom: 2vh;">
+      <button class="btn-action" id="btn-change" onclick="drawAgain()">🔄 <ruby>交換<rt>こうかん</rt></ruby>する</button>
+      <button class="btn-action" id="btn-battle" onclick="battleWithoutChange()" style="background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%); color: white; box-shadow: 0 6px 0 #991b1b, 0 10px 20px rgba(0,0,0,0.3);">✊ そのまま勝負</button>
+      <button class="btn-action hidden" id="btn-replay" onclick="handleReplayClick()">🃏 もう<ruby>一度<rt>いちど</rt></ruby><ruby>遊<rt>あそ</rt></ruby>ぶ</button>
+    </div>
+
+    <div class="result-area hidden" id="result-area" style="margin-bottom: 1vh; padding: 1rem;">
+      <div class="subtitle" id="winner-announcement" style="margin-bottom: 0.5rem; font-size: 2rem; font-weight: bold;"></div>
+      
+      <div style="display: flex; justify-content: center; gap: 4rem; margin-top: 1rem;">
+        <div>
+          <div style="color: var(--text-muted); margin-bottom: 0.5rem;">あなた</div>
+          <div class="hand-name" id="result-name" style="font-size: 2rem;"></div>
+          <div style="color: var(--text-main); font-size: 0.9rem;" id="result-desc"></div>
+        </div>
+        <div>
+          <div style="color: var(--text-muted); margin-bottom: 0.5rem;">あいて</div>
+          <div class="hand-name" id="dealer-result-name" style="font-size: 2rem; color: #f87171;"></div>
+          <div style="color: var(--text-main); font-size: 0.9rem;" id="dealer-result-desc"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- Yaku Modal -->
+<div class="modal-overlay" id="yaku-modal" onclick="closeYakuModal()">
+  <div class="modal-content" onclick="event.stopPropagation()">
+    <div class="modal-header">
+      <div class="modal-title" id="yaku-title">🏆 役一覧</div>
+      <button class="close-btn" onclick="closeYakuModal()">✕</button>
+    </div>
+    <div class="yaku-list" id="yaku-list"></div>
+  </div>
+</div>
+
+<!-- Tutorial Modal -->
+<div class="modal-overlay" id="tutorial-modal" onclick="closeTutorialModal()">
+  <div class="modal-content" onclick="event.stopPropagation()" style="max-width: 800px; padding: 2rem;">
+    <div class="modal-header" style="margin-bottom: 1.5rem; border-bottom: 2px solid var(--gold); padding-bottom: 1rem;">
+      <div class="modal-title" style="font-size: 1.8rem;">🔰 こころポーカーの <ruby>遊<rt>あそ</rt></ruby>び<ruby>方<rt>かた</rt></ruby></div>
+      <button class="close-btn" onclick="closeTutorialModal()">✕</button>
+    </div>
+    
+    <div style="color: var(--text-main); line-height: 1.8; text-align: left;">
+      
+      <!-- 目的 -->
+      <div style="background: rgba(245, 158, 11, 0.1); border-radius: 16px; padding: 1.5rem; margin-bottom: 2rem; border: 2px solid var(--gold);">
+        <h3 style="color: var(--gold); font-size: 1.4rem; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
+          <span>🎯</span> このゲームの<ruby>目的<rt>もくてき</rt></ruby>
+        </h3>
+        <p style="font-size: 1.1rem; font-weight: bold;">
+          ５<ruby>枚<rt>まい</rt></ruby>のカードの『<ruby>色<rt>いろ</rt></ruby>』を<ruby>集<rt>あつ</rt></ruby>めて、より<ruby>強<rt>つよ</rt></ruby>い「<ruby>役<rt>やく</rt></ruby>（やく）」をつくるゲームです！<br>
+          <span style="font-size: 0.95rem; color: var(--text-muted);">※ライトモードは３<ruby>枚<rt>まい</rt></ruby>で<ruby>遊<rt>あそ</rt></ruby>びます。</span>
+        </p>
+      </div>
+
+      <!-- カードの見方 -->
+      <div style="margin-bottom: 2rem;">
+        <h3 style="color: var(--green-500); font-size: 1.4rem; margin-bottom: 1rem; border-bottom: 2px dashed rgba(0,0,0,0.1); padding-bottom: 0.5rem;">
+          🎨 ４つの「<ruby>感情<rt>かんじょう</rt></ruby>カラー」
+        </h3>
+        <p style="margin-bottom: 1rem; font-weight: bold; font-size: 1.1rem;">
+          カードの<ruby>数字<rt>すうじ</rt></ruby>は<ruby>関係<rt>かんけい</rt></ruby>ありません！カードの「<ruby>色<rt>いろ</rt></ruby>」だけを<ruby>見<rt>み</rt></ruby>ます。
+        </p>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 1rem; text-align: center;">
+          <div style="background: rgba(34,197,94,0.1); padding: 1rem; border-radius: 12px; border: 2px solid var(--green-500);">
+            <div style="font-size: 2rem; margin-bottom: 0.5rem;">🟩</div>
+            <div style="font-weight: bold; color: var(--green-500);">うれしい<br>たのしい</div>
+          </div>
+          <div style="background: rgba(239,68,68,0.1); padding: 1rem; border-radius: 12px; border: 2px solid var(--red-500);">
+            <div style="font-size: 2rem; margin-bottom: 0.5rem;">🟥</div>
+            <div style="font-weight: bold; color: var(--red-500);">いかり<br>イライラ</div>
+          </div>
+          <div style="background: rgba(59,130,246,0.1); padding: 1rem; border-radius: 12px; border: 2px solid var(--blue-500);">
+            <div style="font-size: 2rem; margin-bottom: 0.5rem;">🟦</div>
+            <div style="font-weight: bold; color: var(--blue-500);">かなしい<br>さみしい</div>
+          </div>
+          <div style="background: rgba(234,179,8,0.1); padding: 1rem; border-radius: 12px; border: 2px solid var(--gold);">
+            <div style="font-size: 2rem; margin-bottom: 0.5rem;">🟨</div>
+            <div style="font-weight: bold; color: var(--gold);">あせり<br>パニック</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 複合感情カード -->
+      <div style="margin-bottom: 2rem; background: #f8fafc; padding: 1.5rem; border-radius: 16px; border: 2px solid #cbd5e1;">
+        <h3 style="color: var(--text-main); font-size: 1.3rem; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
+          🌈 <ruby>強力<rt>きょうりょく</rt></ruby>な「ツートンカード」
+        </h3>
+        <p style="font-size: 1.1rem; margin-bottom: 0.5rem;">
+          カードの<ruby>枠<rt>わく</rt></ruby>が２つの<ruby>色<rt>いろ</rt></ruby>に分かれているカードは、<br><strong>どちらかの<ruby>色<rt>いろ</rt></ruby>の<ruby>代<rt>か</rt></ruby>わりになる</strong>ラッキーなカードです！
+        </p>
+        <div style="font-size: 2rem; text-align: center; letter-spacing: 0.5rem;">🟩/🟨 🟥/🟦</div>
+      </div>
+
+      <!-- ゲームの進め方 -->
+      <div style="margin-bottom: 2rem;">
+        <h3 style="color: var(--green-500); font-size: 1.4rem; margin-bottom: 1.5rem; border-bottom: 2px dashed rgba(0,0,0,0.1); padding-bottom: 0.5rem;">
+          ⚔️ ゲームの<ruby>進<rt>すす</rt></ruby>め<ruby>方<rt>かた</rt></ruby>
+        </h3>
+        
+        <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+          <div style="display: flex; gap: 1rem; align-items: flex-start;">
+            <div style="background: var(--gold); color: white; width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 1.2rem; flex-shrink: 0;">1</div>
+            <div>
+              <div style="font-weight: bold; font-size: 1.2rem; margin-bottom: 0.3rem;">カードを<ruby>配<rt>くば</rt></ruby>る</div>
+              <p style="font-size: 1.1rem;">おたがいにカードが５<ruby>枚<rt>まい</rt></ruby>ずつ<ruby>配<rt>くば</rt></ruby>られます。（ライトモードは３<ruby>枚<rt>まい</rt></ruby>）</p>
+            </div>
+          </div>
+          
+          <div style="display: flex; gap: 1rem; align-items: flex-start;">
+            <div style="background: var(--gold); color: white; width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 1.2rem; flex-shrink: 0;">2</div>
+            <div>
+              <div style="font-weight: bold; font-size: 1.2rem; margin-bottom: 0.3rem;">１<ruby>回<rt>かい</rt></ruby>だけ「<ruby>交換<rt>こうかん</rt></ruby>」</div>
+              <p style="font-size: 1.1rem;">いらないカードをえらんで、<ruby>山札<rt>やまふだ</rt></ruby>から<ruby>新<rt>あたら</rt></ruby>しいカードと<ruby>引<rt>ひ</rt></ruby>き<ruby>直<rt>なお</rt></ruby>すことができます。<br>（そのまま「<ruby>交換<rt>こうかん</rt></ruby>なし」で勝負してもOK！）</p>
+            </div>
+          </div>
+          
+          <div style="display: flex; gap: 1rem; align-items: flex-start;">
+            <div style="background: var(--gold); color: white; width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 1.2rem; flex-shrink: 0;">3</div>
+            <div>
+              <div style="font-weight: bold; font-size: 1.2rem; margin-bottom: 0.3rem;">カードオープン！</div>
+              <p style="font-size: 1.1rem;">おたがいのカードを<ruby>見<rt>み</rt></ruby>せあって、<ruby>同<rt>おな</rt></ruby>じ<ruby>色<rt>いろ</rt></ruby>がたくさん<ruby>揃<rt>そろ</rt></ruby>っている<ruby>方<rt>ほう</rt></ruby>の<ruby>勝<rt>か</rt></ruby>ちです！</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div style="text-align: center; margin-top: 3rem;">
+        <button class="btn-primary" onclick="closeTutorialModal()" style="font-size: 1.3rem; padding: 1rem 3rem;">わかった！</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Opponent Speech Modal (Intro & Result) -->
+<div class="modal-overlay" id="opponent-speech-modal">
+  <div class="modal-content" onclick="event.stopPropagation()" style="text-align: center;">
+    <h2 style="color: var(--gold); margin-bottom: 1rem; font-size: 2rem;" id="opponent-speech-title">ROUND 1</h2>
+    <img id="opponent-speech-img" src="" style="width: 150px; height: 150px; border-radius: 16px; object-fit: contain; object-position: top; background: rgba(0,0,0,0.05); border: 3px solid var(--gold); margin-bottom: 1rem;">
+    <h3 id="opponent-speech-name" style="font-size: 1.5rem; font-weight: bold; margin-bottom: 1.5rem; color: var(--text-main);"></h3>
+    <div id="opponent-speech-msg" style="background: white; padding: 1.5rem; border-radius: 20px; border: 3px solid var(--gold); display: inline-block; font-size: 1.2rem; font-weight: bold; line-height: 1.6; color: var(--text-main); position: relative; box-shadow: 0 4px 10px rgba(0,0,0,0.1);"></div>
+    <div style="margin-top: 2.5rem;">
+      <button class="btn-primary" id="opponent-speech-btn" style="font-size: 1.3rem;">勝負開始！</button>
+    </div>
+  </div>
+</div>
+
+<!-- Challenge Tutorial Modal -->
+<div class="modal-overlay" id="challenge-tutorial-modal" onclick="closeChallengeTutorialModal()">
+  <div class="modal-content" onclick="event.stopPropagation()">
+    <div class="modal-header">
+      <div class="modal-title">👑 <ruby>遊<rt>あそ</rt></ruby>び<ruby>方<rt>かた</rt></ruby>（チャレンジモード）</div>
+      <button class="close-btn" onclick="closeChallengeTutorialModal()">✕</button>
+    </div>
+    <div style="color: var(--text-main); line-height: 1.8;">
+      <p style="font-size: 1.2rem; font-weight: bold; color: var(--gold); margin-bottom: 0.5rem;">① 5<ruby>人<rt>にん</rt></ruby>のライバルに<ruby>勝<rt>か</rt></ruby>ち<ruby>抜<rt>ぬ</rt></ruby>こう！</p>
+      <p>チャレンジモードでは、<ruby>喜怒哀驚<rt>きどあいきょう</rt></ruby>の<ruby>感情<rt>かんじょう</rt></ruby>を持ったライバルたちが<ruby>次々<rt>つぎつぎ</rt></ruby>と<ruby>現<rt>あらわ</rt></ruby>れます。<ruby>相手<rt>あいて</rt></ruby>はそれぞれのテーマカラー（緑・赤・青・黄）のカードを<ruby>強烈<rt>きょうれつ</rt></ruby>に<ruby>狙<rt>ねら</rt></ruby>ってくるので<ruby>要注意<rt>ようちゅうい</rt></ruby>！</p>
+      
+      <p style="font-size: 1.2rem; font-weight: bold; color: var(--gold); margin-top: 2rem; margin-bottom: 0.5rem;">② ニコニコインを5<ruby>枚<rt>まい</rt></ruby><ruby>集<rt>あつ</rt></ruby>めよう！</p>
+      <div style="display:flex; justify-content:center; gap: 2rem; margin: 1rem 0;">
+        <div style="text-align: center;"><span style="font-size: 2rem;">😊</span><br><span style="color: var(--gold); font-weight:bold;">勝つと +1</span></div>
+        <div style="text-align: center;"><span style="font-size: 2rem;">❤️</span><br><span style="color: var(--red-500); font-weight:bold;">負けると -1</span></div>
+      </div>
+      <p>勝負に勝つと「ニコニコイン」を1枚ゲット！負けると「たいりょく」が減ります。たいりょくが0になる前に、コインを5枚集めるとクリアです！</p>
+      
+      <div style="text-align: center; margin-top: 2rem;">
+        <button class="btn-primary" onclick="closeChallengeTutorialModal()">わかった！</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Screen 3: Card List Modal -->
+<div class="modal-overlay" id="card-list-modal" onclick="closeCardListModal()">
+  <div class="modal-content" onclick="event.stopPropagation()" style="max-width: 800px; max-height: 90vh; overflow-y: auto;">
+    <div class="modal-header">
+      <div class="modal-title">🙂 <ruby>感情<rt>かんじょう</rt></ruby>カード<ruby>一覧<rt>いちらん</rt></ruby></div>
+      <button class="close-btn" onclick="closeCardListModal()">✕</button>
+    </div>
+    <div id="card-list-container" style="display:flex; flex-direction:column; gap:2rem;"></div>
+  </div>
+</div>
+
+<!-- Screen 4: Records Modal -->
+<div class="modal-overlay" id="records-modal" onclick="closeRecordsModal()">
+  <div class="modal-content" onclick="event.stopPropagation()" style="max-width: 600px; max-height: 90vh; overflow-y: auto;">
+    <div class="modal-header">
+      <div class="modal-title">📊 <ruby>成績<rt>せいせき</rt></ruby>・<ruby>記録<rt>きろく</rt></ruby></div>
+      <button class="close-btn" onclick="closeRecordsModal()">✕</button>
+    </div>
+    <div style="margin-bottom: 1rem; color: var(--text-muted); font-size: 0.9rem;">
+      <ruby>集<rt>あつ</rt></ruby>めた<ruby>役<rt>やく</rt></ruby>がここに<ruby>記録<rt>きろく</rt></ruby>されます。すべての<ruby>役<rt>やく</rt></ruby>をコンプリートしてトロフィーをゲットしよう！
+    </div>
+    <div id="records-list" style="display:flex; flex-direction:column; gap:1rem;"></div>
+  </div>
+</div>
+
+<!-- Settings Modal -->
+<div class="modal-overlay" id="settings-modal" onclick="closeSettingsModal()">
+  <div class="modal-content" onclick="event.stopPropagation()" style="max-width: 500px;">
+    <div class="modal-header">
+      <div class="modal-title">⚙️ プレイヤー<ruby>設定<rt>せってい</rt></ruby></div>
+      <button class="close-btn" onclick="closeSettingsModal()">✕</button>
+    </div>
+    
+    <div style="margin-bottom: 1.5rem;">
+      <label style="display: block; font-weight: bold; margin-bottom: 0.5rem; color: var(--text-main);">プレイヤー<ruby>名<rt>めい</rt></ruby></label>
+      <input type="text" id="player-name-input" placeholder="あなたのなまえ" style="width: 100%; padding: 0.8rem; border-radius: 8px; border: 2px solid rgba(0,0,0,0.1); font-size: 1.1rem;">
+    </div>
+    
+    <div style="margin-bottom: 1.5rem;">
+      <label style="display: block; font-weight: bold; margin-bottom: 0.5rem; color: var(--text-main);">アイコン</label>
+      <div id="avatar-grid" style="display: flex; flex-wrap: wrap; gap: 0.5rem; justify-content: center;">
+        <!-- Avatars will be injected here -->
+      </div>
+    </div>
+    
+    <button class="btn-primary" onclick="saveSettings()" style="width: 100%;">保存する</button>
+  </div>
+</div>
+
+<!-- Portrait Warning Overlay -->
+<div id="portrait-warning">
+  <div class="portrait-warning-content">
+    <div style="font-size: 4rem; margin-bottom: 1rem;">📱➡️💻</div>
+    <h2 style="color: var(--text-main); font-size: 1.8rem; margin-bottom: 1rem;"><ruby>画面<rt>がめん</rt></ruby>を「<ruby>横<rt>よこ</rt></ruby>」にして<br><ruby>遊<rt>あそ</rt></ruby>んでね！</h2>
+    <p style="color: var(--text-muted); font-size: 1.2rem; font-weight: bold;">iPadやスマホを横向きにすると<br>ゲームが始まります。</p>
+  </div>
+</div>
+
+<script>
+// --- Constants & Data ---
+const DECK = [];
+for (let i = 1; i <= 15; i++) DECK.push({ id: `Joy_${i}`, emotion: 'Joy', color: 'green', img: `cards_output_print/1_Joy_Midori_${i}_print.png` });
+for (let i = 1; i <= 15; i++) DECK.push({ id: `Anger_${i}`, emotion: 'Anger', color: 'red', img: `cards_output_print/2_Anger_Aka_${i}_print.png` });
+for (let i = 1; i <= 15; i++) DECK.push({ id: `Sadness_${i}`, emotion: 'Sadness', color: 'blue', img: `cards_output_print/3_Sadness_Ao_${i}_print.png` });
+for (let i = 1; i <= 15; i++) DECK.push({ id: `Anxiety_${i}`, emotion: 'Anxiety', color: 'yellow', img: `cards_output_print/4_Anxiety_Kiiro_${i}_print.png` });
+
+const complexColors = [
+  ['green', 'red'], ['green', 'blue'], ['green', 'yellow'], ['green', 'blue'],
+  ['green', 'yellow'], ['green', 'blue'], ['red', 'blue'], ['red', 'blue'],
+  ['red', 'blue'], ['red', 'yellow'], ['red', 'yellow'], ['blue', 'yellow']
+];
+for (let i = 1; i <= 12; i++) DECK.push({ id: `Complex_${i}`, emotion: 'Complex', color: 'complex', dualColors: complexColors[i-1], img: `cards_output_print/Wildcard_${i}_print.png` });
+
+const COLORS = ['green', 'red', 'blue', 'yellow'];
+
+const YAKU_LIST = [
+  { name: '最高の日', rubyName: '<ruby>最高<rt>さいこう</rt></ruby>の<ruby>日<rt>ひ</rt></ruby>', example: '🟩🟩🟩🟩🟩', description: '何もかもうまくいって幸せしかない', rubyDesc: '<ruby>何<rt>なに</rt></ruby>もかもうまくいって<ruby>幸<rt>しあわ</rt></ruby>せしかない', rank: '50' },
+  { name: '怒り爆発', rubyName: '<ruby>怒<rt>いか</rt></ruby>り<ruby>爆発<rt>ばくはつ</rt></ruby>', example: '🟥🟥🟥🟥🟥', description: '怒りしかない、頭が真っ白', rubyDesc: '<ruby>怒<rt>いか</rt></ruby>りしかない、<ruby>頭<rt>あたま</rt></ruby>が<ruby>真<rt>ま</rt></ruby>っ<ruby>白<rt>しろ</rt></ruby>', rank: '50' },
+  { name: '号泣', rubyName: '<ruby>号泣<rt>ごうきゅう</rt></ruby>', example: '🟦🟦🟦🟦🟦', description: '悲しみの底にいる、涙が止まらない', rubyDesc: '<ruby>悲<rt>かな</rt></ruby>しみの<ruby>底<rt>そこ</rt></ruby>にいる、<ruby>涙<rt>なみだ</rt></ruby>が<ruby>止<rt>と</rt></ruby>まらない', rank: '50' },
+  { name: 'パニック', rubyName: 'パニック', example: '🟨🟨🟨🟨🟨', description: '混乱しすぎて何も考えられない', rubyDesc: '<ruby>混乱<rt>こんらん</rt></ruby>しすぎて<ruby>何<rt>なに</rt></ruby>も<ruby>考<rt>かんが</rt></ruby>えられない', rank: '50' },
+  { name: '泣けてくるほど嬉しい', rubyName: '<ruby>泣<rt>な</rt></ruby>けてくるほど<ruby>嬉<rt>うれ</rt></ruby>しい', example: '🟩🟩🟩🟩🟦', description: 'うれしすぎて涙が出る', rubyDesc: 'うれしすぎて<ruby>涙<rt>なみだ</rt></ruby>が<ruby>出<rt>で</rt></ruby>る', rank: '40' },
+  { name: '夢みたい', rubyName: '<ruby>夢<rt>ゆめ</rt></ruby>みたい', example: '🟩🟩🟩🟩🟨', description: '幸せすぎて信じられない', rubyDesc: '<ruby>幸<rt>しあわ</rt></ruby>せすぎて<ruby>信<rt>しん</rt></ruby>じられない', rank: '40' },
+  { name: '勝利の雄叫び', rubyName: '<ruby>勝利<rt>しょうり</rt></ruby>の<ruby>雄叫<rt>おたけ</rt></ruby>び', example: '🟩🟩🟩🟩🟥', description: 'うれしいけど興奮して叫んでる', rubyDesc: 'うれしいけど<ruby>興奮<rt>こうふん</rt></ruby>して<ruby>叫<rt>さけ</rt></ruby>んでる', rank: '40' },
+  { name: '悔し涙', rubyName: '<ruby>悔<rt>くや</rt></ruby>し<ruby>涙<rt>なみだ</rt></ruby>', example: '🟥🟥🟥🟥🟦', description: '怒りながら泣いている', rubyDesc: '<ruby>怒<rt>いか</rt></ruby>りながら<ruby>泣<rt>な</rt></ruby>いている', rank: '40' },
+  { name: '修羅場', rubyName: '<ruby>修羅場<rt>しゅらば</rt></ruby>', example: '🟥🟥🟥🟥🟨', description: '怒りが爆発して混乱してる', rubyDesc: '<ruby>怒<rt>いか</rt></ruby>りが<ruby>爆発<rt>ばくはつ</rt></ruby>して<ruby>混乱<rt>こんらん</rt></ruby>してる', rank: '40' },
+  { name: 'ざまあみろ', rubyName: 'ざまあみろ', example: '🟩🟥🟥🟥🟥', description: '怒りが勝ったときの快感', rubyDesc: '<ruby>怒<rt>いか</rt></ruby>りが<ruby>勝<rt>か</rt></ruby>ったときの<ruby>快感<rt>かいかん</rt></ruby>', rank: '40' },
+  { name: '雨上がり', rubyName: '<ruby>雨上<rt>あめあ</rt></ruby>がり', example: '🟩🟦🟦🟦🟦', description: '悲しいけどちょっと希望がある', rubyDesc: '<ruby>悲<rt>かな</rt></ruby>しいけどちょっと<ruby>希望<rt>きぼう</rt></ruby>がある', rank: '40' },
+  { name: '恨み節', rubyName: '<ruby>恨<rt>うら</rt></ruby>み<ruby>節<rt>ぶし</rt></ruby>', example: '🟥🟦🟦🟦🟦', description: '悲しみの中に怒りが残っている', rubyDesc: '<ruby>悲<rt>かな</rt></ruby>しみの<ruby>中<rt>なか</rt></ruby>に<ruby>怒<rt>いか</rt></ruby>りが<ruby>残<rt>のこ</rt></ruby>っている', rank: '40' },
+  { name: '迷子', rubyName: '<ruby>迷子<rt>まいご</rt></ruby>', example: '🟦🟦🟦🟦🟨', description: '悲しくて不安でどうしたらいい', rubyDesc: '<ruby>悲<rt>かな</rt></ruby>しくて<ruby>不安<rt>ふあん</rt></ruby>でどうしたらいい', rank: '40' },
+  { name: '祭りの前', rubyName: '<ruby>祭<rt>まつ</rt></ruby>りの<ruby>前<rt>まえ</rt></ruby>', example: '🟩🟨🟨🟨🟨', description: '緊張してるけどワクワクしてる', rubyDesc: '<ruby>緊張<rt>きんちょう</rt></ruby>してるけどワクワクしてる', rank: '40' },
+  { name: '空回り', rubyName: '<ruby>空回<rt>からまわ</rt></ruby>り', example: '🟥🟨🟨🟨🟨', description: '焦って怒りになっている', rubyDesc: '<ruby>焦<rt>あせ</rt></ruby>って<ruby>怒<rt>いか</rt></ruby>りになっている', rank: '40' },
+  { name: '悪夢', rubyName: '<ruby>悪夢<rt>あくむ</rt></ruby>', example: '🟦🟨🟨🟨🟨', description: '混乱して怖くて仕方ない', rubyDesc: '<ruby>混乱<rt>こんらん</rt></ruby>して<ruby>怖<rt>こわ</rt></ruby>くて<ruby>仕方<rt>しかた</rt></ruby>ない', rank: '40' },
+  { name: '遠足前夜', rubyName: '<ruby>遠足<rt>えんそく</rt></ruby><ruby>前夜<rt>ぜんや</rt></ruby>', example: '🟩🟩🟩🟨🟨', description: '楽しみでドキドキが止まらない', rubyDesc: '<ruby>楽<rt>たの</rt></ruby>しみでドキドキが<ruby>止<rt>と</rt></ruby>まらない', rank: '30' },
+  { name: '泣き笑い', rubyName: '<ruby>泣<rt>な</rt></ruby>き<ruby>笑<rt>わら</rt></ruby>い', example: '🟩🟩🟩🟦🟦', description: 'うれしいのにじんわり悲しい', rubyDesc: 'うれしいのにじんわり<ruby>悲<rt>かな</rt></ruby>しい', rank: '30' },
+  { name: '燃える闘志', rubyName: '<ruby>燃<rt>も</rt></ruby>える<ruby>闘志<rt>とうし</rt></ruby>', example: '🟩🟩🟩🟥🟥', description: '楽しくて負けたくない', rubyDesc: '<ruby>楽<rt>たの</rt></ruby>しくて<ruby>負<rt>ま</rt></ruby>けたくない', rank: '30' },
+  { name: '一触即発', rubyName: '<ruby>一触即発<rt>いっしょくそくはつ</rt></ruby>', example: '🟥🟥🟥🟨🟨', description: '怒りが爆発しそうで焦っている', rubyDesc: '<ruby>怒<rt>いか</rt></ruby>りが<ruby>爆発<rt>ばくはつ</rt></ruby>しそうで<ruby>焦<rt>あせ</rt></ruby>っている', rank: '30' },
+  { name: '怒りの涙', rubyName: '<ruby>怒<rt>いか</rt></ruby>りの<ruby>涙<rt>なみだ</rt></ruby>', example: '🟥🟥🟥🟦🟦', description: '怒りが強いけど悲しくて泣いてる', rubyDesc: '<ruby>怒<rt>いか</rt></ruby>りが<ruby>強<rt>つよ</rt></ruby>いけど<ruby>悲<rt>かな</rt></ruby>しくて<ruby>泣<rt>な</rt></ruby>いてる', rank: '30' },
+  { name: '悔しいけど認める', rubyName: '<ruby>悔<rt>くや</rt></ruby>しいけど<ruby>認<rt>みと</rt></ruby>める', example: '🟩🟩🟥🟥🟥', description: '負けたけど相手を認めている', rubyDesc: '<ruby>負<rt>ま</rt></ruby>けたけど<ruby>相手<rt>あいて</rt></ruby>を<ruby>認<rt>みと</rt></ruby>めている', rank: '30' },
+  { name: '心細い夜', rubyName: '<ruby>心細<rt>こころぼそ</rt></ruby>い<ruby>夜<rt>よる</rt></ruby>', example: '🟦🟦🟦🟨🟨', description: '悲しくて不安で眠れない', rubyDesc: '<ruby>悲<rt>かな</rt></ruby>しくて<ruby>不安<rt>ふあん</rt></ruby>で<ruby>眠<rt>ねむ</rt></ruby>れない', rank: '30' },
+  { name: '悔し泣き', rubyName: '<ruby>悔<rt>くや</rt></ruby>し<ruby>泣<rt>な</rt></ruby>き', example: '🟥🟥🟦🟦🟦', description: '悲しみの中に怒りがある', rubyDesc: '<ruby>悲<rt>かな</rt></ruby>しみの<ruby>中<rt>なか</rt></ruby>に<ruby>怒<rt>いか</rt></ruby>りがある', rank: '30' },
+  { name: '立ち直りかけ', rubyName: '<ruby>立<rt>た</rt></ruby>ち<ruby>直<rt>なお</rt></ruby>りかけ', example: '🟩🟩🟦🟦🟦', description: '悲しいけど少しずつ前を向いてる', rubyDesc: '<ruby>悲<rt>かな</rt></ruby>しいけど<ruby>少<rt>すこ</rt></ruby>しずつ<ruby>前<rt>まえ</rt></ruby>を<ruby>向<rt>む</rt></ruby>いてる', rank: '30' },
+  { name: '初舞台', rubyName: '<ruby>初舞台<rt>はつぶたい</rt></ruby>', example: '🟩🟩🟨🟨🟨', description: '緊張してるけどうれしくてたまらない', rubyDesc: '<ruby>緊張<rt>きんちょう</rt></ruby>してるけどうれしくてたまらない', rank: '30' },
+  { name: '空回り（焦→怒）', rubyName: '<ruby>空回<rt>からまわ</rt></ruby>り（<ruby>焦<rt>あせ</rt></ruby>→<ruby>怒<rt>いか</rt></ruby>）', example: '🟥🟥🟨🟨🟨', description: '焦りが怒りになっていく', rubyDesc: '<ruby>焦<rt>あせ</rt></ruby>りが<ruby>怒<rt>いか</rt></ruby>になっていく', rank: '30' },
+  { name: '嵐の前', rubyName: '<ruby>嵐<rt>あらし</rt></ruby>の<ruby>前<rt>まえ</rt></ruby>', example: '🟦🟦🟨🟨🟨', description: '不安と悲しみで胸がいっぱい', rubyDesc: '<ruby>不安<rt>ふあん</rt></ruby>と<ruby>悲<rt>かな</rt></ruby>しみで<ruby>胸<rt>むね</rt></ruby>がいっぱい', rank: '30' },
+  { name: '感動', rubyName: '<ruby>感動<rt>かんどう</rt></ruby>', example: '🟩🟩🟩🟥🟦', description: 'うれしくて泣きそうで胸が熱い', rubyDesc: 'うれしくて<ruby>泣<rt>な</rt></ruby>きそうで<ruby>胸<rt>むね</rt></ruby>が<ruby>熱<rt>あつ</rt></ruby>い', rank: '20' },
+  { name: '大興奮', rubyName: '<ruby>大興奮<rt>だいこうふん</rt></ruby>', example: '🟩🟩🟩🟥🟨', description: '楽しくて叫びたくてドキドキ', rubyDesc: '<ruby>楽<rt>たの</rt></ruby>しくて<ruby>叫<rt>さけ</rt></ruby>びたくてドキドキ', rank: '20' },
+  { name: '卒業式', rubyName: '<ruby>卒業式<rt>そつぎょうしき</rt></ruby>', example: '🟩🟩🟩🟦🟨', description: 'うれしいけど悲しくて緊張してる', rubyDesc: 'うれしいけど<ruby>悲<rt>かな</rt></ruby>しくて<ruby>緊張<rt>きんちょう</rt></ruby>してる', rank: '20' },
+  { name: '反省', rubyName: '<ruby>反省<rt>はんせい</rt></ruby>', example: '🟩🟥🟥🟥🟦', description: '怒ったけど悪かったと気づいてる', rubyDesc: '<ruby>怒<rt>いか</rt></ruby>ったけど<ruby>悪<rt>わる</rt></ruby>かったと<ruby>気<rt>き</rt></ruby>づいてる', rank: '20' },
+  { name: 'ライバル', rubyName: 'ライバル', example: '🟩🟥🟥🟥🟨', description: '悔しいけど燃えててドキドキ', rubyDesc: '<ruby>悔<rt>くや</rt></ruby>しいけど<ruby>燃<rt>も</rt></ruby>えててドキドキ', rank: '20' },
+  { name: '八つ当たり', rubyName: '<ruby>八<rt>や</rt></ruby>つ<ruby>当<rt>あ</rt></ruby>たり', example: '🟥🟥🟥🟦🟨', description: '怒りをぶつけてるけど実は悲しい', rubyDesc: '<ruby>怒<rt>いか</rt></ruby>りをぶつけてるけど<ruby>実<rt>じつ</rt></ruby>は<ruby>悲<rt>かな</rt></ruby>しい', rank: '20' },
+  { name: '複雑', rubyName: '<ruby>複雑<rt>ふくざつ</rt></ruby>', example: '🟩🟥🟦🟦🟦', description: '悲しいのにうれしくて悔しい', rubyDesc: '<ruby>悲<rt>かな</rt></ruby>しいのにうれしくて<ruby>悔<rt>くや</rt></ruby>しい', rank: '20' },
+  { name: '引っ越し', rubyName: '<ruby>引<rt>ひ</rt></ruby>っ<ruby>越<rt>こ</rt></ruby>し', example: '🟩🟦🟦🟦🟨', description: '悲しいけど新しい場所にワクワク', rubyDesc: '<ruby>悲<rt>かな</rt></ruby>しいけど<ruby>新<rt>あたら</rt></ruby>しい<ruby>場所<rt>ばしょ</rt></ruby>にワクワク', rank: '20' },
+  { name: '嵐の中', rubyName: '<ruby>嵐<rt>あらし</rt></ruby>の<ruby>中<rt>なか</rt></ruby>', example: '🟥🟦🟦🟦🟨', description: '悲しくて怒ってて不安でいっぱい', rubyDesc: '<ruby>悲<rt>かな</rt></ruby>しくて<ruby>怒<rt>いか</rt></ruby>ってて<ruby>不安<rt>ふあん</rt></ruby>でいっぱい', rank: '20' },
+  { name: '文化祭前日', rubyName: '<ruby>文化祭<rt>ぶんかさい</rt></ruby><ruby>前日<rt>ぜんじつ</rt></ruby>', example: '🟩🟥🟨🟨🟨', description: '緊張してるけど楽しみで燃えてる', rubyDesc: '<ruby>緊張<rt>きんちょう</rt></ruby>してるけど<ruby>楽<rt>たの</rt></ruby>しみで<ruby>燃<rt>も</rt></ruby>えてる', rank: '20' },
+  { name: '旅立ち', rubyName: '<ruby>旅立<rt>たびだ</rt></ruby>ち', example: '🟩🟦🟨🟨🟨', description: 'ドキドキしてうれしくて少し寂しい', rubyDesc: 'ドキドキしてうれしくて<ruby>少<rt>すこ</rt></ruby>し<ruby>寂<rt>さび</rt></ruby>しい', rank: '20' },
+  { name: '修羅場寸前', rubyName: '<ruby>修羅場<rt>しゅらば</rt></ruby><ruby>寸前<rt>すんぜん</rt></ruby>', example: '🟥🟦🟨🟨🟨', description: '焦りと怒りと悲しみがぐるぐる', rubyDesc: '<ruby>焦<rt>あせ</rt></ruby>りと<ruby>怒<rt>いか</rt></ruby>りと<ruby>悲<rt>かな</rt></ruby>しみがぐるぐる', rank: '20' },
+  { name: '熱くなりすぎた', rubyName: '<ruby>熱<rt>あつ</rt></ruby>くなりすぎた', example: '🟩🟩🟥🟥🟦', description: '楽しくて興奮してたけど後悔', rubyDesc: '<ruby>楽<rt>たの</rt></ruby>しくて<ruby>興奮<rt>こうふん</rt></ruby>してたけど<ruby>後悔<rt>こうかい</rt></ruby>', rank: '10' },
+  { name: '真剣勝負', rubyName: '<ruby>真剣<rt>しんけん</rt></ruby><ruby>勝負<rt>しょうぶ</rt></ruby>', example: '🟩🟩🟥🟥🟨', description: '楽しくて悔しくてドキドキ', rubyDesc: '<ruby>楽<rt>たの</rt></ruby>しくて<ruby>悔<rt>くや</rt></ruby>しくてドキドキ', rank: '10' },
+  { name: '悔しい感動', rubyName: '<ruby>悔<rt>くや</rt></ruby>しい<ruby>感動<rt>かんどう</rt></ruby>', example: '🟩🟩🟥🟦🟦', description: 'うれしくて悲しくて負けたくない', rubyDesc: 'うれしくて<ruby>悲<rt>かな</rt></ruby>しくて<ruby>負<rt>ま</rt></ruby>けたくない', rank: '10' },
+  { name: '虹', rubyName: '<ruby>虹<rt>にじ</rt></ruby>', example: '🟩🟩🟦🟦🟨', description: 'うれしくて悲しくて不思議な気持ち', rubyDesc: 'うれしくて<ruby>悲<rt>かな</rt></ruby>しくて<ruby>不思議<rt>ふしぎ</rt></ruby>な<ruby>気持<rt>きも</rt></ruby>ち', rank: '10' },
+  { name: '文化祭', rubyName: '<ruby>文化祭<rt>ぶんかさい</rt></ruby>', example: '🟩🟩🟥🟨🟨', description: '楽しくてドキドキして燃えてる', rubyDesc: '<ruby>楽<rt>たの</rt></ruby>しくてドキドキして<ruby>燃<rt>も</rt></ruby>えてる', rank: '10' },
+  { name: '初恋', rubyName: '<ruby>初恋<rt>はつこい</rt></ruby>', example: '🟩🟩🟦🟨🟨', description: 'うれしくてドキドキして切ない', rubyDesc: 'うれしくてドキドキして<ruby>切<rt>せつ</rt></ruby>ない', rank: '10' },
+  { name: '仲直り', rubyName: '<ruby>仲直<rt>なかなお</rt></ruby>り', example: '🟩🟥🟥🟦🟦', description: '怒って泣いてでも少し前向き', rubyDesc: '<ruby>怒<rt>いか</rt></ruby>って<ruby>泣<rt>な</rt></ruby>いてでも<ruby>少<rt>すこ</rt></ruby>し<ruby>前向<rt>まえむ</rt></ruby>き', rank: '10' },
+  { name: '板挟み', rubyName: '<ruby>板挟<rt>いたばさ</rt></ruby>み', example: '🟥🟥🟦🟦🟨', description: '怒りと悲しみで混乱してる', rubyDesc: '<ruby>怒<rt>いか</rt></ruby>りと<ruby>悲<rt>かな</rt></ruby>しみで<ruby>混乱<rt>こんらん</rt></ruby>してる', rank: '10' },
+  { name: '意地', rubyName: '<ruby>意地<rt>いじ</rt></ruby>', example: '🟩🟥🟥🟨🟨', description: '怒って焦ってるけど諦めない', rubyDesc: '<ruby>怒<rt>いか</rt></ruby>って<ruby>焦<rt>あせ</rt></ruby>ってるけど<ruby>諦<rt>あきら</rt></ruby>めない', rank: '10' },
+  { name: '空回りの涙', rubyName: '<ruby>空回<rt>からまわ</rt></ruby>りの<ruby>涙<rt>なみだ</rt></ruby>', example: '🟥🟥🟦🟨🟨', description: '焦って怒って悲しくなってきた', rubyDesc: '<ruby>焦<rt>あせ</rt></ruby>って<ruby>怒<rt>いか</rt></ruby>って<ruby>悲<rt>かな</rt></ruby>しくなってきた', rank: '10' },
+  { name: '夜明け前', rubyName: '<ruby>夜明<rt>よあ</rt></ruby>け<ruby>前<rt>まえ</rt></ruby>', example: '🟩🟦🟦🟨🟨', description: '不安で悲しいけど少し希望がある', rubyDesc: '<ruby>不安<rt>ふあん</rt></ruby>で<ruby>悲<rt>かな</rt></ruby>しいけど<ruby>少<rt>すこ</rt></ruby>し<ruby>希望<rt>きぼう</rt></ruby>がある', rank: '10' },
+  { name: '追い詰められた', rubyName: '<ruby>追<rt>お</rt></ruby>い<ruby>詰<rt>つ</rt></ruby>められた', example: '🟥🟦🟦🟨🟨', description: '悲しくて不安で怒りがこみあげる', rubyDesc: '<ruby>悲<rt>かな</rt></ruby>しくて<ruby>不安<rt>ふあん</rt></ruby>で<ruby>怒<rt>いか</rt></ruby>りがこみあげる', rank: '10' },
+  { name: 'ちょっとうれしい', rubyName: 'ちょっとうれしい', example: '🟩🟩🟥🟦🟨', description: '幸せがちらっとある', rubyDesc: '<ruby>幸<rt>しあわ</rt></ruby>せがちらっとある', rank: '5' },
+  { name: 'ちょっとイライラ', rubyName: 'ちょっとイライラ', example: '🟩🟥🟥🟦🟨', description: '怒りがくすぶってる', rubyDesc: '<ruby>怒<rt>いか</rt></ruby>りがくすぶってる', rank: '5' },
+  { name: 'ちょっと悲しい', rubyName: 'ちょっと悲しい', example: '🟩🟥🟦🟦🟨', description: '悲しさが心の片隅に', rubyDesc: '<ruby>悲<rt>かな</rt></ruby>しさが<ruby>心<rt>こころ</rt></ruby>の<ruby>片隅<rt>かたすみ</rt></ruby>に', rank: '5' },
+  { name: 'ちょっとドキドキ', rubyName: 'ちょっとドキドキ', example: '🟩🟥🟦🟨🟨', description: '緊張がじわっとある', rubyDesc: '<ruby>緊張<rt>きんちょう</rt></ruby>がじわっとある', rank: '5' },
+  { name: 'ジェットコースター', rubyName: 'ジェットコースター', example: '🟩🟥🟦🟨⬜', description: '感情がぐちゃぐちゃ。役なしだが学習的には一番リアル', rubyDesc: '<ruby>感情<rt>かんじょう</rt></ruby>がぐちゃぐちゃ。<ruby>役<rt>やく</rt></ruby>なしだが<ruby>学習的<rt>がくしゅうてき</rt></ruby>には<ruby>一番<rt>いちばん</rt></ruby>リアル', rank: '0' },
+];
+
+const LIGHT_YAKU_LIST = [
+  { name: '最高の日 (緑3)', rubyName: '<ruby>最高<rt>さいこう</rt></ruby>の<ruby>日<rt>ひ</rt></ruby>', example: '🟩🟩🟩', description: '何もかもうまくいって幸せ', rubyDesc: '<ruby>何<rt>なに</rt></ruby>もかもうまくいって<ruby>幸<rt>しあわ</rt></ruby>せ', rank: '50' },
+  { name: '怒り爆発 (赤3)', rubyName: '<ruby>怒<rt>いか</rt></ruby>り<ruby>爆発<rt>ばくはつ</rt></ruby>', example: '🟥🟥🟥', description: '怒りしかない', rubyDesc: '<ruby>怒<rt>いか</rt></ruby>りしかない', rank: '50' },
+  { name: '号泣 (青3)', rubyName: '<ruby>号泣<rt>ごうきゅう</rt></ruby>', example: '🟦🟦🟦', description: '悲しみの底にいる', rubyDesc: '<ruby>悲<rt>かな</rt></ruby>しみの<ruby>底<rt>そこ</rt></ruby>にいる', rank: '50' },
+  { name: 'パニック (黄3)', rubyName: 'パニック', example: '🟨🟨🟨', description: '混乱しすぎて何も考えられない', rubyDesc: '<ruby>混乱<rt>こんらん</rt></ruby>しすぎて<ruby>何<rt>なに</rt></ruby>も<ruby>考<rt>かんが</rt></ruby>えられない', rank: '50' },
+  { name: 'ちょっとうれしい (緑2)', rubyName: 'ちょっとうれしい', example: '🟩🟩🟦', description: '幸せがちらっとある', rubyDesc: '<ruby>幸<rt>しあわ</rt></ruby>せがちらっとある', rank: '40' },
+  { name: 'ちょっとイライラ (赤2)', rubyName: 'ちょっとイライラ', example: '🟥🟥🟨', description: '怒りがくすぶってる', rubyDesc: '<ruby>怒<rt>いか</rt></ruby>りがくすぶってる', rank: '40' },
+  { name: 'ちょっと悲しい (青2)', rubyName: 'ちょっと悲しい', example: '🟦🟦🟩', description: '悲しさが心の片隅に', rubyDesc: '<ruby>悲<rt>かな</rt></ruby>しさが<ruby>心<rt>こころ</rt></ruby>の<ruby>片隅<rt>かたすみ</rt></ruby>に', rank: '40' },
+  { name: 'ちょっとドキドキ (黄2)', rubyName: 'ちょっとドキドキ', example: '🟨🟨🟥', description: '緊張がじわっとある', rubyDesc: '<ruby>緊張<rt>きんちょう</rt></ruby>がじわっとある', rank: '40' },
+  { name: 'カラフル', rubyName: 'カラフル', example: '🟩🟥🟦', description: 'いろんな感情が混ざっている', rubyDesc: 'いろんな<ruby>感情<rt>かんじょう</rt></ruby>が<ruby>混<rt>ま</rt></ruby>ざっている', rank: '0' },
+];
+
+// --- State ---
+let currentMode = null;
+let currentDeck = [];
+let currentHand = [];
+let dealerHand = [];
+let toExchange = [];
+let gameState = 'draw1'; // 'draw1' or 'result'
+let playerProfile = { name: 'あなた', avatar: null };
+
+let challengeHP = 3;
+let challengeCoins = 0;
+const CHALLENGE_GOAL = 5;
+let lastEncounteredOpponent = -1;
+
+const CHALLENGE_OPPONENTS = [
+  { 
+    name: 'よろこびの ハル', avatar: 'avatars/player3_girlA.png', preferColor: 'green',
+    introMsg: '「うれしいカードをたくさん集めて、もっとハッピーになりたいな！」',
+    winMsg: '「やったー！すっごくうれしい！最高の日だね！」',
+    loseMsg: '「負けちゃったけど、一緒に遊べてうれしかったよ！」',
+    drawMsg: '「引き分けだね！どっちもがんばったね！」'
+  },
+  { 
+    name: 'いかりの ケン', avatar: 'avatars/player1_boyA.png', preferColor: 'red',
+    introMsg: '「なんだよ！俺は今すごくイライラしてるんだ！勝負しろ！」',
+    winMsg: '「へっ！俺の怒りパワーの勝ちだな！ざまあみろ！」',
+    loseMsg: '「くそーっ！負けるなんて腹が立つ！もう一回だ！」',
+    drawMsg: '「決着がつかないなんて…イライラするぜ！」'
+  },
+  { 
+    name: 'かなしみの ユキ', avatar: 'avatars/player4_girlB.png', preferColor: 'blue',
+    introMsg: '「なんだか悲しい気分なの…。お手柔らかにね…」',
+    winMsg: '「勝てた…。でも、相手を負かしてしまって少し悲しいかも…」',
+    loseMsg: '「やっぱり負けちゃった…。ぐすっ…」',
+    drawMsg: '「引き分け…。なんだか切ないね…」'
+  },
+  { 
+    name: 'おどろきの トモ', avatar: 'avatars/player2_boyB.png', preferColor: 'yellow',
+    introMsg: '「うわっ、びっくりした！君が次の相手！？ドキドキするよー！」',
+    winMsg: '「えっ、僕の勝ち！？信じられない！すごい！」',
+    loseMsg: '「うわぁっ、負けちゃった！君って強くてびっくりだよ！」',
+    drawMsg: '「おっと！引き分けだなんて驚きだね！」'
+  },
+  { 
+    name: 'たのしみの オコジョ', avatar: 'avatars/okojo.png', preferColor: 'smart',
+    introMsg: '「キュッキュー！ここまで来るなんてやるね！全力で楽しもう！」',
+    winMsg: '「キュー！ぼくの勝ち！すっごく楽しい勝負だったよ！」',
+    loseMsg: '「きゅ〜ん…負けちゃった。でも君のプレイング、お見事！」',
+    drawMsg: '「キュー！いい勝負！ワクワクしっぱなしだよ！」'
+  }
+];
+
+function updateChallengeUI() {
+  document.getElementById('challenge-hp').innerText = challengeHP;
+  document.getElementById('challenge-coins').innerText = challengeCoins;
+}
+
+function handleReplayClick() {
+  if (currentMode === 'challenge') {
+    if (challengeHP <= 0 || challengeCoins >= CHALLENGE_GOAL) {
+      showMenu();
+      return;
+    }
+  }
+  startRound(currentMode, true);
+}
+
+function loadPlayerProfile() {
+  const saved = localStorage.getItem('kokoroPokerPlayer');
+  if (saved) {
+    try {
+      playerProfile = JSON.parse(saved);
+    } catch(e) {}
+  }
+}
+loadPlayerProfile();
+
+
+function openCardListModal() {
+  const container = document.getElementById('card-list-container');
+  if (container.innerHTML.trim() === '') {
+    const categories = [
+      { id: 'basic', name: '🌱 ベーシックセット（1〜9）', min: 1, max: 9, descKey: 'descBasic' },
+      { id: 'standard', name: '☀️ スタンダードセット追加分（10〜15）', min: 10, max: 15, descKey: 'descStandard' },
+      { id: 'complex', name: '🧩 複合感情カード（ツートンカラー枠）', min: 1, max: 12, descKey: 'descComplex' }
+    ];
+    const colors = [
+      { id: 'green', name: '🟢 うれしい・たのしい（<ruby>緑<rt>みどり</rt></ruby>）', 
+        descBasic: 'うれしい、楽しい、安心した、期待、自信、誇らしい、感謝、達成感、幸せ', 
+        descStandard: '感動、信頼、愛情、希望、満足、開放感、充実感' },
+      { id: 'red', name: '🔴 いかり・イライラ（<ruby>赤<rt>あか</rt></ruby>）', 
+        descBasic: 'イライラ、不満、怒り、悔しい、理不尽、反発、嫉妬、激怒、憎しみ', 
+        descStandard: '嫌悪、軽蔑、恨み、敵意、焦り、憤り' },
+      { id: 'blue', name: '🔵 かなしい・さびしい（<ruby>青<rt>あお</rt></ruby>）', 
+        descBasic: '悲しい、傷ついた、寂しい、落ち込んだ、後悔、失望、孤独、無力感、絶望', 
+        descStandard: '喪失感、虚しさ、自責、罪悪感、諦め、切なさ' },
+      { id: 'yellow', name: '🟡 ふあん・きんちょう（<ruby>黄<rt>きいろ</rt></ruby>）', 
+        descBasic: 'びっくり、戸惑い、不安、緊張、ドキドキ、心配、警戒、混乱、恐怖', 
+        descStandard: '動揺、困惑、疑念、緊迫、驚愕、パニック' },
+      { id: 'complex', name: '🧩 複数の感情がまざったカード', 
+        descComplex: 'ドキドキ、緊張、期待、照れくさい、すっきり、悔しい、がっかり、プライドが傷ついた、やるせない、自己嫌悪、焦り、モヤモヤ、信じられない、迷った、心細い、なつかしい、疲れた' }
+    ];
+    
+    let htmlStr = '';
+    categories.forEach(cat => {
+      htmlStr += `<div style="margin-bottom: 2rem;">`;
+      htmlStr += `<h2 style="margin-bottom:0.5rem; color:var(--text-main); border-bottom: 3px solid var(--gold); padding-bottom: 0.5rem; font-size: 1.4rem; font-weight: bold;">${cat.name}</h2>`;
+      
+      colors.forEach(col => {
+        // Only show complex colors in complex category, and regular colors in regular categories
+        if (cat.id === 'complex' && col.id !== 'complex') return;
+        if (cat.id !== 'complex' && col.id === 'complex') return;
+        
+        const cards = DECK.filter(c => {
+          if (c.color !== col.id) return false;
+          const match = c.id.match(/_(\d+)$/);
+          if (match) {
+            const num = parseInt(match[1]);
+            return num >= cat.min && num <= cat.max;
+          }
+          return false;
+        });
+        
+        if (cards.length > 0) {
+          htmlStr += `<div style="margin-bottom: 1.5rem; background: rgba(255,255,255,0.5); padding: 1rem; border-radius: 12px; border: 1px solid rgba(0,0,0,0.05);">`;
+          htmlStr += `<h4 style="margin-bottom:0.3rem; color:var(--text-main); font-size: 1.1rem; font-weight: bold;">${col.name}</h4>`;
+          if (col[cat.descKey]) {
+            htmlStr += `<div style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 1rem; line-height: 1.5;">${col[cat.descKey]}</div>`;
+          }
+          htmlStr += `<div style="display:flex; flex-wrap:wrap; gap:0.5rem; justify-content:flex-start;">`;
+          cards.forEach(c => {
+            htmlStr += `<img src="${c.img}" style="width: 70px; height: 115px; border-radius: 6px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);" alt="${c.emotion}">`;
+          });
+          htmlStr += `</div></div>`;
+        }
+      });
+      htmlStr += `</div>`;
+    });
+    
+    container.innerHTML = htmlStr;
+  }
+  document.getElementById('card-list-modal').classList.add('open');
+}
+
+function closeCardListModal() {
+  document.getElementById('card-list-modal').classList.remove('open');
+}
+
+function openChallengeTutorialModal() {
+  document.getElementById('challenge-tutorial-modal').classList.add('open');
+}
+function closeChallengeTutorialModal() {
+  document.getElementById('challenge-tutorial-modal').classList.remove('open');
+}
+
+function openOpponentSpeechModal(title, opp, msg, btnText, btnAction) {
+  document.getElementById('opponent-speech-title').innerText = title;
+  document.getElementById('opponent-speech-img').src = opp.avatar;
+  document.getElementById('opponent-speech-name').innerText = opp.name;
+  document.getElementById('opponent-speech-msg').innerText = msg;
+  
+  const btn = document.getElementById('opponent-speech-btn');
+  btn.innerHTML = btnText;
+  btn.onclick = () => {
+    document.getElementById('opponent-speech-modal').classList.remove('open');
+    if (btnAction) btnAction();
+  };
+  
+  document.getElementById('opponent-speech-modal').classList.add('open');
+}
+
+// Ensure it exists in global scope
+window.openCardListModal = openCardListModal;
+window.closeCardListModal = closeCardListModal;
+
+// --- Game Logic ---
+function shuffleDeck() {
+  const deck = [...DECK];
+  for (let i = deck.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [deck[i], deck[j]] = [deck[j], deck[i]];
+  }
+  return deck;
+}
+
+function evaluate5CardsNoWild(colors) {
+  const c = {green:0, red:0, blue:0, yellow:0};
+  colors.forEach(col => c[col]++);
+  const G=c.green, R=c.red, B=c.blue, Y=c.yellow;
+
+  if(G===5) return {name:'最高の日', description:'何もかもうまくいって幸せしかない', rank:50};
+  if(R===5) return {name:'怒り爆発', description:'怒りしかない、頭が真っ白', rank:50};
+  if(B===5) return {name:'号泣', description:'悲しみの底にいる、涙が止まらない', rank:50};
+  if(Y===5) return {name:'パニック', description:'混乱しすぎて何も考えられない', rank:50};
+
+  if(G===4 && B===1) return {name:'泣けてくるほど嬉しい', description:'うれしすぎて涙が出る', rank:40};
+  if(G===4 && Y===1) return {name:'夢みたい', description:'幸せすぎて信じられない', rank:40};
+  if(G===4 && R===1) return {name:'勝利の雄叫び', description:'うれしいけど興奮して叫んでる', rank:40};
+  if(R===4 && B===1) return {name:'悔し涙', description:'怒りながら泣いている', rank:40};
+  if(R===4 && Y===1) return {name:'修羅場', description:'怒りが爆発して混乱してる', rank:40};
+  if(R===4 && G===1) return {name:'ざまあみろ', description:'怒りが勝ったときの快感', rank:40};
+  if(B===4 && G===1) return {name:'雨上がり', description:'悲しいけどちょっと希望がある', rank:40};
+  if(B===4 && R===1) return {name:'恨み節', description:'悲しみの中に怒りが残っている', rank:40};
+  if(B===4 && Y===1) return {name:'迷子', description:'悲しくて不安でどうしたらいい', rank:40};
+  if(Y===4 && G===1) return {name:'祭りの前', description:'緊張してるけどワクワクしてる', rank:40};
+  if(Y===4 && R===1) return {name:'空回り', description:'焦って怒りになっている', rank:40};
+  if(Y===4 && B===1) return {name:'悪夢', description:'混乱して怖くて仕方ない', rank:40};
+
+  if(G===3 && Y===2) return {name:'遠足前夜', description:'楽しみでドキドキが止まらない', rank:30};
+  if(G===3 && B===2) return {name:'泣き笑い', description:'うれしいのにじんわり悲しい', rank:30};
+  if(G===3 && R===2) return {name:'燃える闘志', description:'楽しくて負けたくない', rank:30};
+  if(R===3 && Y===2) return {name:'一触即発', description:'怒りが爆発しそうで焦っている', rank:30};
+  if(R===3 && B===2) return {name:'怒りの涙', description:'怒りが強いけど悲しくて泣いてる', rank:30};
+  if(R===3 && G===2) return {name:'悔しいけど認める', description:'負けたけど相手を認めている', rank:30};
+  if(B===3 && Y===2) return {name:'心細い夜', description:'悲しくて不安で眠れない', rank:30};
+  if(B===3 && R===2) return {name:'悔し泣き', description:'悲しみの中に怒りがある', rank:30};
+  if(B===3 && G===2) return {name:'立ち直りかけ', description:'悲しいけど少しずつ前を向いてる', rank:30};
+  if(Y===3 && G===2) return {name:'初舞台', description:'緊張してるけどうれしくてたまらない', rank:30};
+  if(Y===3 && R===2) return {name:'空回り（焦→怒）', description:'焦りが怒りになっていく', rank:30};
+  if(Y===3 && B===2) return {name:'嵐の前', description:'不安と悲しみで胸がいっぱい', rank:30};
+
+  if(G===3 && R===1 && B===1) return {name:'感動', description:'うれしくて泣きそうで胸が熱い', rank:20};
+  if(G===3 && R===1 && Y===1) return {name:'大興奮', description:'楽しくて叫びたくてドキドキ', rank:20};
+  if(G===3 && B===1 && Y===1) return {name:'卒業式', description:'うれしいけど悲しくて緊張してる', rank:20};
+  if(R===3 && G===1 && B===1) return {name:'反省', description:'怒ったけど悪かったと気づいてる', rank:20};
+  if(R===3 && G===1 && Y===1) return {name:'ライバル', description:'悔しいけど燃えててドキドキ', rank:20};
+  if(R===3 && B===1 && Y===1) return {name:'八つ当たり', description:'怒りをぶつけてるけど実は悲しい', rank:20};
+  if(B===3 && G===1 && R===1) return {name:'複雑', description:'悲しいのにうれしくて悔しい', rank:20};
+  if(B===3 && G===1 && Y===1) return {name:'引っ越し', description:'悲しいけど新しい場所にワクワク', rank:20};
+  if(B===3 && R===1 && Y===1) return {name:'嵐の中', description:'悲しくて怒ってて不安でいっぱい', rank:20};
+  if(Y===3 && G===1 && R===1) return {name:'文化祭前日', description:'緊張してるけど楽しみで燃えてる', rank:20};
+  if(Y===3 && G===1 && B===1) return {name:'旅立ち', description:'ドキドキしてうれしくて少し寂しい', rank:20};
+  if(Y===3 && R===1 && B===1) return {name:'修羅場寸前', description:'焦りと怒りと悲しみがぐるぐる', rank:20};
+
+  if(G===2 && R===2 && B===1) return {name:'熱くなりすぎた', description:'楽しくて興奮してたけど後悔', rank:10};
+  if(G===2 && R===2 && Y===1) return {name:'真剣勝負', description:'楽しくて悔しくてドキドキ', rank:10};
+  if(G===2 && B===2 && R===1) return {name:'悔しい感動', description:'うれしくて悲しくて負けたくない', rank:10};
+  if(G===2 && B===2 && Y===1) return {name:'虹', description:'うれしくて悲しくて不思議な気持ち', rank:10};
+  if(G===2 && Y===2 && R===1) return {name:'文化祭', description:'楽しくてドキドキして燃えてる', rank:10};
+  if(G===2 && Y===2 && B===1) return {name:'初恋', description:'うれしくてドキドキして切ない', rank:10};
+  if(R===2 && B===2 && G===1) return {name:'仲直り', description:'怒って泣いてでも少し前向き', rank:10};
+  if(R===2 && B===2 && Y===1) return {name:'板挟み', description:'怒りと悲しみで混乱してる', rank:10};
+  if(R===2 && Y===2 && G===1) return {name:'意地', description:'怒って焦ってるけど諦めない', rank:10};
+  if(R===2 && Y===2 && B===1) return {name:'空回りの涙', description:'焦って怒って悲しくなってきた', rank:10};
+  if(B===2 && Y===2 && G===1) return {name:'夜明け前', description:'不安で悲しいけど少し希望がある', rank:10};
+  if(B===2 && Y===2 && R===1) return {name:'追い詰められた', description:'悲しくて不安で怒りがこみあげる', rank:10};
+
+  if(G===2 && R===1 && B===1 && Y===1) return {name:'ちょっとうれしい', description:'幸せがちらっとある', rank:5};
+  if(R===2 && G===1 && B===1 && Y===1) return {name:'ちょっとイライラ', description:'怒りがくすぶってる', rank:5};
+  if(B===2 && G===1 && R===1 && Y===1) return {name:'ちょっと悲しい', description:'悲しさが心の片隅に', rank:5};
+  if(Y===2 && G===1 && R===1 && B===1) return {name:'ちょっとドキドキ', description:'緊張がじわっとある', rank:5};
+
+  if(G>=1 && R>=1 && B>=1 && Y>=1) return {name:'ジェットコースター', description:'感情がぐちゃぐちゃ', rank:0};
+
+  return {name:'役なし', description:'役なし', rank:-1};
+}
+
+function evaluate3CardsNoWild(colors) {
+  const c = {green:0, red:0, blue:0, yellow:0};
+  colors.forEach(col => c[col]++);
+  
+  if (c.green === 3) return {name: '最高の日', description:'何もかもうまくいって幸せ', rank:50};
+  if (c.red === 3) return {name: '怒り爆発', description:'怒りしかない', rank:50};
+  if (c.blue === 3) return {name: '号泣', description:'悲しみの底にいる', rank:50};
+  if (c.yellow === 3) return {name: 'パニック', description:'混乱しすぎて何も考えられない', rank:50};
+  
+  if (c.green === 2) return {name: 'ちょっとうれしい', description:'幸せがちらっとある', rank:40};
+  if (c.red === 2) return {name: 'ちょっとイライラ', description:'怒りがくすぶってる', rank:40};
+  if (c.blue === 2) return {name: 'ちょっと悲しい', description:'悲しさが心の片隅に', rank:40};
+  if (c.yellow === 2) return {name: 'ちょっとドキドキ', description:'緊張がじわっとある', rank:40};
+  
+  return {name: 'カラフル', description: 'いろんな感情が混ざっている', rank:0};
+}
+
+function evaluateHand(cards, mode) {
+  const wildCards = cards.filter(c => c.color === 'complex');
+  const normalColors = cards.filter(c => c.color !== 'complex').map(c => c.color);
+  
+  let bestHand = {name:'役なし', description:'', rank:-1};
+  const evaluator = mode === 'light' ? evaluate3CardsNoWild : evaluate5CardsNoWild;
+
+  function tryCombinations(currentColors, wildIndex) {
+    if (wildIndex >= wildCards.length) {
+      const res = evaluator(currentColors);
+      if (res.rank > bestHand.rank) {
+        bestHand = res;
+      }
+      return;
+    }
+    const dualColors = wildCards[wildIndex].dualColors;
+    for (const color of dualColors) {
+      tryCombinations([...currentColors, color], wildIndex + 1);
+    }
+  }
+
+  tryCombinations(normalColors, 0);
+  return bestHand;
+}
+
+// --- UI Functions ---
+function showMenu() {
+  document.getElementById('screen-menu').classList.remove('hidden');
+  document.getElementById('screen-game').classList.add('hidden');
+  currentMode = null;
+}
+
+function startRound(mode, isReplay = false) {
+  currentMode = mode;
+  document.getElementById('screen-menu').classList.add('hidden');
+  document.getElementById('screen-game').classList.remove('hidden');
+  document.getElementById('result-area').classList.add('hidden');
+  
+  if (mode === 'challenge') {
+    document.getElementById('challenge-status-bar').classList.remove('hidden');
+    if (!isReplay) {
+      challengeHP = 3;
+      challengeCoins = 0;
+      lastEncounteredOpponent = -1;
+      openChallengeTutorialModal();
+    }
+    updateChallengeUI();
+  } else {
+    document.getElementById('challenge-status-bar').classList.add('hidden');
+  }
+  
+  document.getElementById('btn-change').classList.remove('hidden');
+  document.getElementById('btn-battle').classList.remove('hidden');
+  document.getElementById('btn-replay').classList.add('hidden');
+
+  if (mode === 'basic' || mode === 'light') {
+    // ベーシック・ライトは1〜9の単色カードのみ
+    currentDeck = shuffleDeck().filter(c => {
+      if (c.color === 'complex') return false; // 複合カードは含めない
+      const match = c.id.match(/_(\d+)$/);
+      if (!match) return false;
+      const num = parseInt(match[1], 10);
+      return num <= 9;
+    });
+  } else {
+    currentDeck = shuffleDeck();
+  }
+
+  const drawCount = mode === 'light' ? 3 : 5;
+  currentHand = currentDeck.splice(0, drawCount);
+  dealerHand = currentDeck.splice(0, drawCount);
+  toExchange = new Array(drawCount).fill(false);
+  gameState = 'draw1';
+
+  // Update Player Labels
+  const pLabel = document.getElementById('player-area-label');
+  if (playerProfile.avatar) {
+    pLabel.innerHTML = `<img src="${playerProfile.avatar}" style="width:40px; height:45px; border-radius:8px; object-fit:contain; object-position:top; background:rgba(0,0,0,0.05); border:2px solid var(--green-500);"> ${playerProfile.name}のカード`;
+  } else {
+    pLabel.innerHTML = `<span style="font-size:1.5rem">👤</span> ${playerProfile.name}のカード`;
+  }
+
+  // Update Dealer Labels (Opponent)
+  const dLabel = document.getElementById('dealer-area-label');
+  const speech = document.getElementById('opponent-speech');
+  if (mode === 'challenge') {
+    const oppIndex = Math.min(challengeCoins, 4);
+    const opp = CHALLENGE_OPPONENTS[oppIndex];
+    dLabel.innerHTML = `<img src="${opp.avatar}" style="width:40px; height:45px; border-radius:8px; object-fit:contain; object-position:top; background:rgba(0,0,0,0.05); border:2px solid var(--gold);"> ${opp.name}のカード`;
+    
+    // Show speech bubble during play so they know the personality
+    speech.innerHTML = opp.introMsg;
+    speech.classList.remove('hidden');
+    
+    // Show intro modal only for new opponents
+    if (lastEncounteredOpponent !== oppIndex) {
+      openOpponentSpeechModal(`ROUND ${oppIndex + 1}`, opp, opp.introMsg, '勝負開始！', null);
+      lastEncounteredOpponent = oppIndex;
+    }
+  } else {
+    dLabel.innerHTML = `<span style="font-size:1.5rem">👨‍💼</span> あいてのカード`;
+    speech.classList.add('hidden');
+  }
+
+  renderCards();
+  renderDealerCards(false);
+
+  if (mode === 'light' && !isReplay) {
+    openTutorialModal();
+  }
+}
+
+function toggleExchange(index) {
+  if (gameState !== 'draw1') return;
+  toExchange[index] = !toExchange[index];
+  
+  const cardWrappers = document.getElementById('cards-container').children;
+  const cardEl = cardWrappers[index].querySelector('.playing-card');
+  const indEl = cardWrappers[index].querySelector('.hold-indicator');
+  
+  if (toExchange[index]) {
+    cardEl.classList.add('exchange');
+    indEl.classList.add('visible');
+  } else {
+    cardEl.classList.remove('exchange');
+    indEl.classList.remove('visible');
+  }
+}
+
+function dealerAiMove() {
+  let bestColor = null;
+  let maxCount = 0;
+  
+  if (currentMode === 'challenge') {
+    const opp = CHALLENGE_OPPONENTS[Math.min(challengeCoins, 4)];
+    if (opp.preferColor !== 'smart') {
+      bestColor = opp.preferColor;
+      maxCount = 1; // force holding preferred color
+    }
+  }
+  
+  if (!bestColor || bestColor === 'smart') {
+    const counts = {};
+    dealerHand.forEach(c => {
+      if (c.color !== 'complex') {
+        counts[c.color] = (counts[c.color] || 0) + 1;
+      }
+    });
+    
+    for (const [color, count] of Object.entries(counts)) {
+      if (count > maxCount) {
+        maxCount = count;
+        bestColor = color;
+      }
+    }
+  }
+  
+  // Hold the most common/preferred color and all complex cards
+  for (let i = 0; i < dealerHand.length; i++) {
+    const c = dealerHand[i];
+    const shouldHold = c.color === bestColor || c.color === 'complex' || maxCount === 0;
+    if (!shouldHold) {
+      if (currentDeck.length > 0) {
+        dealerHand[i] = currentDeck.shift();
+      }
+    }
+  }
+}
+
+function battleWithoutChange() {
+  if (gameState !== 'draw1') return;
+  toExchange.fill(false);
+  
+  // Remove visual exchange state from cards immediately
+  const cardWrappers = document.getElementById('cards-container').children;
+  for (let i = 0; i < cardWrappers.length; i++) {
+    const cardEl = cardWrappers[i].querySelector('.playing-card');
+    const indEl = cardWrappers[i].querySelector('.hold-indicator');
+    if (cardEl) cardEl.classList.remove('exchange');
+    if (indEl) indEl.classList.remove('visible');
+  }
+  
+  drawAgain();
+}
+
+function drawAgain() {
+  if (gameState !== 'draw1') return;
+  
+  // Player changes cards
+  for (let i = 0; i < currentHand.length; i++) {
+    if (toExchange[i]) {
+      if (currentDeck.length > 0) {
+        currentHand[i] = currentDeck.shift();
+      }
+    }
+  }
+  
+  // Dealer changes cards
+  dealerAiMove();
+  
+  toExchange.fill(false);
+  
+  gameState = 'result';
+  renderCards();
+  renderDealerCards(true); // Reveal dealer cards
+  
+  const pResult = evaluateHand(currentHand, currentMode);
+  const dResult = evaluateHand(dealerHand, currentMode);
+  
+  document.getElementById('btn-change').classList.add('hidden');
+  document.getElementById('btn-battle').classList.add('hidden');
+  document.getElementById('btn-replay').classList.remove('hidden');
+  
+  document.getElementById('result-area').classList.remove('hidden');
+  document.getElementById('result-name').innerText = pResult.name;
+  document.getElementById('result-desc').innerText = pResult.description;
+  document.getElementById('dealer-result-name').innerText = dResult.name;
+  document.getElementById('dealer-result-desc').innerText = dResult.description;
+  
+  // Update Player Name in Result
+  document.getElementById('result-name').parentElement.querySelector('div:first-child').innerText = playerProfile.name;
+  
+  const winnerAnnounce = document.getElementById('winner-announcement');
+  if (pResult.rank > dResult.rank) {
+    winnerAnnounce.innerText = "🎉 あなたの勝ち！ 🎉";
+    winnerAnnounce.style.color = "var(--green-500)";
+  } else if (pResult.rank < dResult.rank) {
+    winnerAnnounce.innerText = "😢 あいての勝ち...";
+    winnerAnnounce.style.color = "var(--red-500)";
+  } else {
+    winnerAnnounce.innerText = "🤝 引き分け！";
+    winnerAnnounce.style.color = "var(--gold)";
+  }
+  
+  // Challenge Mode Logic
+  if (currentMode === 'challenge') {
+    const opp = CHALLENGE_OPPONENTS[Math.min(challengeCoins, 4)];
+    
+    let modalTitle = '';
+    let modalMsg = '';
+    
+    if (pResult.rank > dResult.rank) {
+      modalTitle = "🎉 あなたの勝ち！";
+      modalMsg = opp.loseMsg;
+      challengeCoins++;
+      showToast('😊 ニコニコインをゲット！');
+    } else if (pResult.rank < dResult.rank) {
+      modalTitle = "😢 あいての勝ち...";
+      modalMsg = opp.winMsg;
+      challengeHP--;
+      showToast('💔 たいりょくが減ってしまった…');
+    } else {
+      modalTitle = "🤝 引き分け！";
+      modalMsg = opp.drawMsg;
+      showToast('🤝 引き分け！');
+    }
+    updateChallengeUI();
+    
+    let btnText = '⏭️ <ruby>次<rt>つぎ</rt></ruby>の<ruby>勝負<rt>しょうぶ</rt></ruby>へ';
+    let nextAction = handleReplayClick;
+    
+    if (challengeCoins >= CHALLENGE_GOAL) {
+      btnText = '🎉 クリア！トップに戻る';
+      nextAction = () => {
+        showMenu();
+        setTimeout(() => alert('🎉 おめでとうございます！\n見事ニコニコインを5枚集めました！\nチャレンジクリアです！🏆'), 500);
+      };
+      document.getElementById('btn-replay').innerHTML = btnText;
+    } else if (challengeHP <= 0) {
+      btnText = '💀 ゲームオーバー... トップに戻る';
+      nextAction = showMenu;
+      document.getElementById('btn-replay').innerHTML = btnText;
+    } else {
+      document.getElementById('btn-replay').innerHTML = btnText;
+    }
+    
+    // Open Post-Match Modal after a slight delay
+    setTimeout(() => {
+      openOpponentSpeechModal(modalTitle, opp, modalMsg, btnText, nextAction);
+    }, 1500);
+  } else {
+    document.getElementById('btn-replay').innerHTML = '🃏 もう<ruby>一度<rt>いちど</rt></ruby><ruby>遊<rt>あそ</rt></ruby>ぶ';
+  }
+  
+  // Set Ruby Names for results
+  const listToSearch = currentMode === 'light' ? LIGHT_YAKU_LIST : YAKU_LIST;
+  const pYakuDef = listToSearch.find(y => y.name === pResult.name) || pResult;
+  const dYakuDef = listToSearch.find(y => y.name === dResult.name) || dResult;
+  
+  document.getElementById('result-name').innerHTML = pYakuDef.rubyName || pResult.name;
+  document.getElementById('result-desc').innerHTML = pYakuDef.rubyDesc || pResult.description;
+  document.getElementById('dealer-result-name').innerHTML = dYakuDef.rubyName || dResult.name;
+  document.getElementById('dealer-result-desc').innerHTML = dYakuDef.rubyDesc || dResult.description;
+  
+  // Update Player Name in Result
+  document.getElementById('result-name').parentElement.querySelector('div:first-child').innerText = playerProfile.name;
+  
+  if (pResult.rank !== -1 && pResult.name !== 'ジェットコースター' && pResult.name !== 'カラフル' && pResult.name !== '役なし') {
+    saveAchievement(pResult.name);
+  }
+}
+
+function renderDealerCards(reveal) {
+  const container = document.getElementById('dealer-cards-container');
+  container.innerHTML = '';
+  
+  dealerHand.forEach((card, index) => {
+    const wrap = document.createElement('div');
+    wrap.className = 'card-wrapper';
+    
+    const c = document.createElement('div');
+    c.className = `playing-card ${reveal ? 'is-flipped' : ''}`;
+    c.style.animationDelay = `${index * 0.1}s`;
+    
+    c.innerHTML = `
+      <div class="card-face card-back"></div>
+      <div class="card-face card-front">
+        <img src="${card.img}" alt="${card.emotion}">
+      </div>
+    `;
+    
+    wrap.appendChild(c);
+    container.appendChild(wrap);
+  });
+}
+
+function renderCards() {
+  const container = document.getElementById('cards-container');
+  container.innerHTML = '';
+  
+  currentHand.forEach((card, index) => {
+    const wrap = document.createElement('div');
+    wrap.className = 'card-wrapper';
+    
+    const c = document.createElement('div');
+    c.className = `playing-card is-flipped ${toExchange[index] ? 'exchange' : ''}`;
+    c.style.animationDelay = `${index * 0.1}s`;
+    c.onclick = () => toggleExchange(index);
+    
+    c.innerHTML = `
+      <div class="card-face card-back"></div>
+      <div class="card-face card-front">
+        <img src="${card.img}" alt="${card.emotion}">
+      </div>
+    `;
+    
+    const ind = document.createElement('div');
+    ind.className = `hold-indicator ${toExchange[index] ? 'visible' : ''}`;
+    ind.innerHTML = '<ruby>交換<rt>こうかん</rt></ruby>';
+    
+    wrap.appendChild(c);
+    wrap.appendChild(ind);
+    container.appendChild(wrap);
+  });
+}
+
+// Modal Functions
+function openYakuModal() {
+  document.getElementById('yaku-modal').classList.add('open');
+  const modeName = currentMode === 'light' ? 'ライト' : currentMode === 'basic' ? 'ベーシック' : 'スタンダード';
+  document.getElementById('yaku-title').innerText = `🏆 役一覧 (${modeName})`;
+  
+  const yakuList = currentMode === 'light' ? LIGHT_YAKU_LIST : YAKU_LIST;
+  const listContainer = document.getElementById('yaku-list');
+  listContainer.innerHTML = '';
+  
+  yakuList.forEach(yaku => {
+    const item = document.createElement('div');
+    item.className = 'yaku-item';
+    
+    let rankStr = '';
+    if(yaku.rank === '50') rankStr = 'S';
+    else if(yaku.rank === '40') rankStr = 'A';
+    else if(yaku.rank === '30') rankStr = 'B';
+    else if(yaku.rank === '20') rankStr = 'C';
+    else if(yaku.rank === '10') rankStr = 'D';
+    else if(yaku.rank === '5') rankStr = 'E';
+    else rankStr = '-';
+
+    item.innerHTML = `
+      <div style="flex-grow: 1;">
+        <div class="yaku-name">${yaku.rubyName || yaku.name}</div>
+        <div class="yaku-example" style="font-size: 1.5rem; letter-spacing: 2px; margin: 0.2rem 0;">${yaku.example || ''}</div>
+        <div class="yaku-desc">${yaku.rubyDesc || yaku.description}</div>
+      </div>
+      <div class="yaku-rank" style="color: var(--gold); min-width: 60px; text-align: right;">★ ${rankStr}</div>
+    `;
+    listContainer.appendChild(item);
+  });
+}
+
+function closeYakuModal() {
+  document.getElementById('yaku-modal').classList.remove('open');
+}
+
+function openTutorialModal() {
+  document.getElementById('tutorial-modal').classList.add('open');
+}
+
+function closeTutorialModal() {
+  document.getElementById('tutorial-modal').classList.remove('open');
+}
+
+// Records and Achievements
+function saveAchievement(yakuName) {
+  let records = JSON.parse(localStorage.getItem('kokoroPokerRecords') || '[]');
+  if (!records.includes(yakuName)) {
+    records.push(yakuName);
+    localStorage.setItem('kokoroPokerRecords', JSON.stringify(records));
+    checkTrophies(records);
+  }
+}
+
+function checkTrophies(records) {
+  const ranks = ['50', '40', '30', '20', '10', '5'];
+  const rankNames = {'50':'S', '40':'A', '30':'B', '20':'C', '10':'D', '5':'E'};
+  
+  let trophies = JSON.parse(localStorage.getItem('kokoroPokerTrophies') || '[]');
+  let newTrophy = null;
+  
+  ranks.forEach(rank => {
+    const yakuInRank = YAKU_LIST.filter(y => y.rank == rank);
+    if(yakuInRank.length === 0) return;
+    const achievedCount = yakuInRank.filter(y => records.includes(y.name)).length;
+    
+    if (achievedCount === yakuInRank.length && !trophies.includes(rank)) {
+      trophies.push(rank);
+      newTrophy = rankNames[rank];
+    }
+  });
+  
+  if (newTrophy) {
+    localStorage.setItem('kokoroPokerTrophies', JSON.stringify(trophies));
+    setTimeout(() => {
+      showToast(`実績解除：ランク ${newTrophy} コンプリート`);
+    }, 1500);
+  }
+}
+
+function showToast(message) {
+  const container = document.getElementById('toast-container');
+  if (!container) return;
+  
+  const toast = document.createElement('div');
+  toast.className = 'toast';
+  toast.innerHTML = `<span style="font-size: 1.5rem;">🏆</span> <span style="font-size: 1.1rem; color: var(--gold);">${message}</span>`;
+  container.appendChild(toast);
+  
+  setTimeout(() => {
+    if (toast.parentNode === container) {
+      container.removeChild(toast);
+    }
+  }, 4500);
+}
+
+function openRecordsModal() {
+  document.getElementById('records-modal').classList.add('open');
+  const listContainer = document.getElementById('records-list');
+  const records = JSON.parse(localStorage.getItem('kokoroPokerRecords') || '[]');
+  
+  let html = '';
+  const ranks = ['50', '40', '30', '20', '10', '5'];
+  const rankNames = {'50':'S', '40':'A', '30':'B', '20':'C', '10':'D', '5':'E'};
+  
+  ranks.forEach(rank => {
+    const yakuInRank = YAKU_LIST.filter(y => y.rank == rank);
+    if(yakuInRank.length === 0) return;
+    
+    const achievedCount = yakuInRank.filter(y => records.includes(y.name)).length;
+    const isComplete = achievedCount === yakuInRank.length;
+    
+    html += `<div style="background: rgba(255,255,255,0.8); padding: 1rem; border-radius: 12px; border: 1px solid rgba(0,0,0,0.1);">
+      <h3 style="margin-bottom: 0.8rem; color: var(--gold); display: flex; justify-content: space-between; font-size: 1.1rem;">
+        <span>★ ランク ${rankNames[rank]} ${isComplete ? '👑 コンプリート！' : ''}</span>
+        <span style="color: var(--text-muted); font-size: 0.9rem;">${achievedCount} / ${yakuInRank.length}</span>
+      </h3>
+      <div style="display: flex; flex-wrap: wrap; gap: 0.5rem;">`;
+      
+    yakuInRank.forEach(yaku => {
+      const achieved = records.includes(yaku.name);
+      html += `<span style="padding: 0.4rem 0.8rem; border-radius: 999px; font-size: 0.85rem; font-weight: bold; 
+        background: ${achieved ? 'var(--gold)' : 'rgba(0,0,0,0.05)'}; 
+        color: ${achieved ? 'white' : 'var(--text-muted)'};
+        box-shadow: ${achieved ? '0 2px 4px rgba(245, 158, 11, 0.3)' : 'none'};">
+        ${yaku.rubyName || yaku.name}
+      </span>`;
+    });
+    
+    html += `</div></div>`;
+  });
+  
+  listContainer.innerHTML = html;
+}
+
+function closeRecordsModal() {
+  document.getElementById('records-modal').classList.remove('open');
+}
+
+// Settings and Profile
+let tempAvatar = null;
+function openSettingsModal() {
+  document.getElementById('settings-modal').classList.add('open');
+  document.getElementById('player-name-input').value = playerProfile.name === 'あなた' ? '' : playerProfile.name;
+  tempAvatar = playerProfile.avatar;
+  
+  renderAvatarGrid();
+}
+
+function renderAvatarGrid() {
+  const grid = document.getElementById('avatar-grid');
+  let html = '';
+  const avatarFiles = [
+    'player1_boyA.png', 'player2_boyB.png', 'player3_girlA.png', 'player4_girlB.png',
+    'teacher_f.png', 'teacher_m.png', 'okojo.png'
+  ];
+  
+  avatarFiles.forEach(filename => {
+    const src = `avatars/${filename}`;
+    const isSelected = tempAvatar === src;
+    html += `<img src="${src}" onclick="selectAvatar('${src}')" style="width: 70px; height: 70px; object-fit: contain; background: rgba(0,0,0,0.05); border-radius: 12px; cursor: pointer; transition: transform 0.2s; border: ${isSelected ? '4px solid var(--gold)' : '2px solid transparent'}; box-shadow: ${isSelected ? '0 4px 10px rgba(0,0,0,0.2)' : 'none'}; transform: ${isSelected ? 'scale(1.1)' : 'scale(1)'};">`;
+  });
+  grid.innerHTML = html;
+}
+
+function selectAvatar(src) {
+  tempAvatar = src;
+  renderAvatarGrid();
+}
+
+function saveSettings() {
+  const nameInput = document.getElementById('player-name-input').value.trim();
+  playerProfile.name = nameInput || 'あなた';
+  playerProfile.avatar = tempAvatar;
+  
+  localStorage.setItem('kokoroPokerPlayer', JSON.stringify(playerProfile));
+  closeSettingsModal();
+  showToast('設定を保存しました！');
+  
+  // Refresh labels if we are in game
+  if (gameState === 'draw1') {
+    const pLabel = document.getElementById('player-area-label');
+    if (playerProfile.avatar) {
+      pLabel.innerHTML = `<img src="${playerProfile.avatar}" style="width:40px; height:45px; border-radius:8px; object-fit:contain; object-position:top; background:rgba(0,0,0,0.05); border:2px solid var(--green-500);"> ${playerProfile.name}のカード`;
+    } else {
+      pLabel.innerHTML = `<span style="font-size:1.5rem">👤</span> ${playerProfile.name}のカード`;
+    }
+  }
+}
+
+function closeSettingsModal() {
+  document.getElementById('settings-modal').classList.remove('open');
+}
+</script>
+
+<div id="toast-container" class="toast-container"></div>
+</body>
+</html>
