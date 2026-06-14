@@ -540,7 +540,9 @@
     </h1>
     <p class="subtitle"><ruby>自分<rt>じぶん</rt></ruby>の<ruby>感情<rt>かんじょう</rt></ruby>カードを<ruby>使<rt>つか</rt></ruby>ってポーカーで<ruby>遊<rt>あそ</rt></ruby>ぼう！</p>
     
-    <div class="mode-selection">
+    <h2 style="text-align: center; color: var(--text-main); margin-bottom: 0.5rem; font-size: 2rem;">💪 トレーニング</h2>
+    <p style="text-align: center; color: var(--text-muted); margin-bottom: 2rem; font-weight: bold;">もうひとりの自分と対戦して、カードを集めて感情を覚えよう！</p>
+    <div class="mode-selection" style="margin-bottom: 4rem;">
       <div class="mode-card">
         <div class="mode-icon">☁️</div>
         <div class="mode-title">ライト (3枚)</div>
@@ -558,6 +560,11 @@
         <p class="mode-desc">スタンダードセット(70<ruby>枚以上<rt>まいいじょう</rt></ruby>)<br>を<ruby>使<rt>つか</rt></ruby>う<ruby>本格的<rt>ほんかくてき</rt></ruby>なモード。<ruby>様々<rt>さまざま</rt></ruby>な<br><ruby>複雑<rt>ふくざつ</rt></ruby>な<ruby>感情<rt>かんじょう</rt></ruby>を<ruby>狙<rt>ねら</rt></ruby>おう！</p>
         <button class="btn-primary btn-standard-mode" onclick="startRound('standard')">スタンダードで<ruby>遊<rt>あそ</rt></ruby>ぶ</button>
       </div>
+    </div>
+    
+    <h2 style="text-align: center; color: var(--text-main); margin-bottom: 0.5rem; font-size: 2rem;">👑 チャレンジ</h2>
+    <p style="text-align: center; color: var(--text-muted); margin-bottom: 2rem; font-weight: bold;">ライバルたちと連戦して実力を試そう！</p>
+    <div class="mode-selection">
       <div class="mode-card">
         <div class="mode-title" style="margin-top:-2rem"><span style="font-size:3rem">👑</span><br>チャレンジ</div>
         <p class="mode-desc">CPUと<ruby>連戦<rt>れんせん</rt></ruby>！<ruby>負<rt>ま</rt></ruby>けずに<br>ニコニコインを5<ruby>枚<rt>まい</rt></ruby><ruby>集<rt>あつ</rt></ruby>めて<br>クリアを<ruby>目指<rt>めざ</rt></ruby>そう！</p>
@@ -744,6 +751,25 @@
     <img id="opponent-speech-img" src="" style="width: 150px; height: 150px; border-radius: 16px; object-fit: contain; object-position: top; background: rgba(0,0,0,0.05); border: 3px solid var(--gold); margin-bottom: 1rem;">
     <h3 id="opponent-speech-name" style="font-size: 1.5rem; font-weight: bold; margin-bottom: 1.5rem; color: var(--text-main);"></h3>
     <div id="opponent-speech-msg" style="background: white; padding: 1.5rem; border-radius: 20px; border: 3px solid var(--gold); display: inline-block; font-size: 1.2rem; font-weight: bold; line-height: 1.6; color: var(--text-main); position: relative; box-shadow: 0 4px 10px rgba(0,0,0,0.1);"></div>
+    
+    <div id="opponent-speech-result-info" class="hidden" style="margin-top: 1.5rem; padding: 1rem; background: #f8fafc; border-radius: 16px; border: 2px solid #cbd5e1; text-align: left; max-width: 500px; margin-left: auto; margin-right: auto; box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);">
+      <div style="display: flex; justify-content: space-between; gap: 1rem;">
+        <div style="flex: 1;">
+          <div style="font-size: 0.9rem; color: var(--text-muted);">あなた</div>
+          <div style="margin-bottom: 0.5rem;"><img id="speech-result-p-img" src="" style="width: 100px; height: auto; border-radius: 8px; display: none;"></div>
+          <div style="font-size: 1.4rem; font-weight: bold; color: var(--gold);" id="speech-result-p-name"></div>
+          <div style="font-size: 0.9rem;" id="speech-result-p-desc"></div>
+        </div>
+        <div style="width: 2px; background: #cbd5e1;"></div>
+        <div style="flex: 1;">
+          <div style="font-size: 0.9rem; color: var(--text-muted);">あいて</div>
+          <div style="margin-bottom: 0.5rem;"><img id="speech-result-d-img" src="" style="width: 100px; height: auto; border-radius: 8px; display: none;"></div>
+          <div style="font-size: 1.4rem; font-weight: bold; color: var(--red-500);" id="speech-result-d-name"></div>
+          <div style="font-size: 0.9rem;" id="speech-result-d-desc"></div>
+        </div>
+      </div>
+    </div>
+
     <div style="margin-top: 2.5rem;">
       <button class="btn-primary" id="opponent-speech-btn" style="font-size: 1.3rem;">勝負開始！</button>
     </div>
@@ -800,7 +826,26 @@
   </div>
 </div>
 
-<!-- Settings Modal -->
+  <!-- Card Detail Modal (for Zukan) -->
+  <div class="modal-overlay" id="card-detail-modal" style="z-index: 2000;">
+    <div class="modal-content" style="max-width: 450px; text-align: center; padding: 2rem;">
+      
+      
+      <div style="margin: 1.5rem 0;">
+        <img id="detail-card-img" src="" style="width: 140px; height: 230px; border-radius: 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.2);">
+      </div>
+      
+      <h3 id="detail-card-name" style="font-size: 1.8rem; color: var(--text-main); margin-bottom: 0.5rem;">名前</h3>
+      
+      <div style="background: rgba(255,255,255,0.7); padding: 1.5rem; border-radius: 12px; margin-bottom: 1.5rem; border: 1px solid rgba(0,0,0,0.05);">
+        <p id="detail-card-desc" style="font-size: 1.2rem; color: var(--text-main); line-height: 1.6; font-weight: bold;"></p>
+      </div>
+      
+      <button class="btn-primary" onclick="closeCardDetailModal()" style="font-size: 1.3rem; padding: 1rem 3rem;">とじる</button>
+    </div>
+  </div>
+
+  <!-- Settings Modal -->
 <div class="modal-overlay" id="settings-modal" onclick="closeSettingsModal()">
   <div class="modal-content" onclick="event.stopPropagation()" style="max-width: 500px;">
     <div class="modal-header">
@@ -842,83 +887,113 @@ for (let i = 1; i <= 15; i++) DECK.push({ id: `Sadness_${i}`, emotion: 'Sadness'
 for (let i = 1; i <= 15; i++) DECK.push({ id: `Anxiety_${i}`, emotion: 'Anxiety', color: 'yellow', img: `cards_output_print/4_Anxiety_Kiiro_${i}_print.png` });
 
 const complexColors = [
-  ['green', 'red'], ['green', 'blue'], ['green', 'yellow'], ['green', 'blue'],
-  ['green', 'yellow'], ['green', 'blue'], ['red', 'blue'], ['red', 'blue'],
-  ['red', 'blue'], ['red', 'yellow'], ['red', 'yellow'], ['blue', 'yellow']
+  ['green', 'red'], ['blue', 'yellow'], ['green', 'yellow'], ['green', 'blue'],
+  ['green', 'yellow'], ['blue', 'yellow'], ['red', 'blue'], ['red', 'blue'],
+  ['red', 'blue'], ['red', 'yellow'], ['red', 'yellow'], ['green', 'yellow']
 ];
 for (let i = 1; i <= 12; i++) DECK.push({ id: `Complex_${i}`, emotion: 'Complex', color: 'complex', dualColors: complexColors[i-1], img: `cards_output_print/Wildcard_${i}_print.png` });
 
 const COLORS = ['green', 'red', 'blue', 'yellow'];
 
+// --- Assign Japanese Names ---
+const greenNames = [
+  "幸せ", "うれしい", "楽しい", "安心した", "期待", "自信", "誇らしい", "感謝", "達成感",
+  "感動", "信頼", "愛情", "希望", "満足", "充実感"
+];
+const redNames = [
+  "イライラ", "不満", "怒り", "悔しい", "理不尽", "反発", "嫉妬", "激怒", "憎しみ",
+  "不満", "苛立ち", "怒り", "妬み", "反発", "意気投合"
+];
+const blueNames = [
+  "悲しい", "傷ついた", "寂しい", "落ち込んだ", "後悔", "失望", "孤独", "無力感", "絶望",
+  "残念", "落ち込み", "寂しさ", "悲しみ", "がっかり", "悔しい"
+];
+const yellowNames = [
+  "びっくり", "戸惑い", "不安", "緊張", "ドキドキ", "心配", "警戒", "混乱", "恐怖",
+  "心配", "不安", "驚き", "緊張", "恐れ", "混乱"
+];
+const complexNames = [
+  "ドキドキ", "緊張", "期待", "なつかしい", "すっきり", "照れくさい", "悔しい", "がっかり", "やるせない", "焦り", "モヤモヤ", "迷った"
+];
+
+DECK.forEach(c => {
+  if (c.color === 'green') c.nameJa = greenNames[parseInt(c.id.split('_')[1]) - 1];
+  else if (c.color === 'red') c.nameJa = redNames[parseInt(c.id.split('_')[1]) - 1];
+  else if (c.color === 'blue') c.nameJa = blueNames[parseInt(c.id.split('_')[1]) - 1];
+  else if (c.color === 'yellow') c.nameJa = yellowNames[parseInt(c.id.split('_')[1]) - 1];
+  else if (c.color === 'complex') c.nameJa = complexNames[parseInt(c.id.split('_')[1]) - 1];
+});
+
+
 const YAKU_LIST = [
   { name: '最高の日', rubyName: '<ruby>最高<rt>さいこう</rt></ruby>の<ruby>日<rt>ひ</rt></ruby>', example: '🟩🟩🟩🟩🟩', description: '何もかもうまくいって幸せしかない', rubyDesc: '<ruby>何<rt>なに</rt></ruby>もかもうまくいって<ruby>幸<rt>しあわ</rt></ruby>せしかない', rank: '50' },
-  { name: '怒り爆発', rubyName: '<ruby>怒<rt>いか</rt></ruby>り<ruby>爆発<rt>ばくはつ</rt></ruby>', example: '🟥🟥🟥🟥🟥', description: '怒りしかない、頭が真っ白', rubyDesc: '<ruby>怒<rt>いか</rt></ruby>りしかない、<ruby>頭<rt>あたま</rt></ruby>が<ruby>真<rt>ま</rt></ruby>っ<ruby>白<rt>しろ</rt></ruby>', rank: '50' },
-  { name: '号泣', rubyName: '<ruby>号泣<rt>ごうきゅう</rt></ruby>', example: '🟦🟦🟦🟦🟦', description: '悲しみの底にいる、涙が止まらない', rubyDesc: '<ruby>悲<rt>かな</rt></ruby>しみの<ruby>底<rt>そこ</rt></ruby>にいる、<ruby>涙<rt>なみだ</rt></ruby>が<ruby>止<rt>と</rt></ruby>まらない', rank: '50' },
-  { name: 'パニック', rubyName: 'パニック', example: '🟨🟨🟨🟨🟨', description: '混乱しすぎて何も考えられない', rubyDesc: '<ruby>混乱<rt>こんらん</rt></ruby>しすぎて<ruby>何<rt>なに</rt></ruby>も<ruby>考<rt>かんが</rt></ruby>えられない', rank: '50' },
-  { name: '泣けてくるほど嬉しい', rubyName: '<ruby>泣<rt>な</rt></ruby>けてくるほど<ruby>嬉<rt>うれ</rt></ruby>しい', example: '🟩🟩🟩🟩🟦', description: 'うれしすぎて涙が出る', rubyDesc: 'うれしすぎて<ruby>涙<rt>なみだ</rt></ruby>が<ruby>出<rt>で</rt></ruby>る', rank: '40' },
-  { name: '夢みたい', rubyName: '<ruby>夢<rt>ゆめ</rt></ruby>みたい', example: '🟩🟩🟩🟩🟨', description: '幸せすぎて信じられない', rubyDesc: '<ruby>幸<rt>しあわ</rt></ruby>せすぎて<ruby>信<rt>しん</rt></ruby>じられない', rank: '40' },
-  { name: '勝利の雄叫び', rubyName: '<ruby>勝利<rt>しょうり</rt></ruby>の<ruby>雄叫<rt>おたけ</rt></ruby>び', example: '🟩🟩🟩🟩🟥', description: 'うれしいけど興奮して叫んでる', rubyDesc: 'うれしいけど<ruby>興奮<rt>こうふん</rt></ruby>して<ruby>叫<rt>さけ</rt></ruby>んでる', rank: '40' },
-  { name: '悔し涙', rubyName: '<ruby>悔<rt>くや</rt></ruby>し<ruby>涙<rt>なみだ</rt></ruby>', example: '🟥🟥🟥🟥🟦', description: '怒りながら泣いている', rubyDesc: '<ruby>怒<rt>いか</rt></ruby>りながら<ruby>泣<rt>な</rt></ruby>いている', rank: '40' },
-  { name: '修羅場', rubyName: '<ruby>修羅場<rt>しゅらば</rt></ruby>', example: '🟥🟥🟥🟥🟨', description: '怒りが爆発して混乱してる', rubyDesc: '<ruby>怒<rt>いか</rt></ruby>りが<ruby>爆発<rt>ばくはつ</rt></ruby>して<ruby>混乱<rt>こんらん</rt></ruby>してる', rank: '40' },
-  { name: 'ざまあみろ', rubyName: 'ざまあみろ', example: '🟩🟥🟥🟥🟥', description: '怒りが勝ったときの快感', rubyDesc: '<ruby>怒<rt>いか</rt></ruby>りが<ruby>勝<rt>か</rt></ruby>ったときの<ruby>快感<rt>かいかん</rt></ruby>', rank: '40' },
-  { name: '雨上がり', rubyName: '<ruby>雨上<rt>あめあ</rt></ruby>がり', example: '🟩🟦🟦🟦🟦', description: '悲しいけどちょっと希望がある', rubyDesc: '<ruby>悲<rt>かな</rt></ruby>しいけどちょっと<ruby>希望<rt>きぼう</rt></ruby>がある', rank: '40' },
-  { name: '恨み節', rubyName: '<ruby>恨<rt>うら</rt></ruby>み<ruby>節<rt>ぶし</rt></ruby>', example: '🟥🟦🟦🟦🟦', description: '悲しみの中に怒りが残っている', rubyDesc: '<ruby>悲<rt>かな</rt></ruby>しみの<ruby>中<rt>なか</rt></ruby>に<ruby>怒<rt>いか</rt></ruby>りが<ruby>残<rt>のこ</rt></ruby>っている', rank: '40' },
-  { name: '迷子', rubyName: '<ruby>迷子<rt>まいご</rt></ruby>', example: '🟦🟦🟦🟦🟨', description: '悲しくて不安でどうしたらいい', rubyDesc: '<ruby>悲<rt>かな</rt></ruby>しくて<ruby>不安<rt>ふあん</rt></ruby>でどうしたらいい', rank: '40' },
-  { name: '祭りの前', rubyName: '<ruby>祭<rt>まつ</rt></ruby>りの<ruby>前<rt>まえ</rt></ruby>', example: '🟩🟨🟨🟨🟨', description: '緊張してるけどワクワクしてる', rubyDesc: '<ruby>緊張<rt>きんちょう</rt></ruby>してるけどワクワクしてる', rank: '40' },
-  { name: '空回り', rubyName: '<ruby>空回<rt>からまわ</rt></ruby>り', example: '🟥🟨🟨🟨🟨', description: '焦って怒りになっている', rubyDesc: '<ruby>焦<rt>あせ</rt></ruby>って<ruby>怒<rt>いか</rt></ruby>りになっている', rank: '40' },
-  { name: '悪夢', rubyName: '<ruby>悪夢<rt>あくむ</rt></ruby>', example: '🟦🟨🟨🟨🟨', description: '混乱して怖くて仕方ない', rubyDesc: '<ruby>混乱<rt>こんらん</rt></ruby>して<ruby>怖<rt>こわ</rt></ruby>くて<ruby>仕方<rt>しかた</rt></ruby>ない', rank: '40' },
-  { name: '遠足前夜', rubyName: '<ruby>遠足<rt>えんそく</rt></ruby><ruby>前夜<rt>ぜんや</rt></ruby>', example: '🟩🟩🟩🟨🟨', description: '楽しみでドキドキが止まらない', rubyDesc: '<ruby>楽<rt>たの</rt></ruby>しみでドキドキが<ruby>止<rt>と</rt></ruby>まらない', rank: '30' },
-  { name: '泣き笑い', rubyName: '<ruby>泣<rt>な</rt></ruby>き<ruby>笑<rt>わら</rt></ruby>い', example: '🟩🟩🟩🟦🟦', description: 'うれしいのにじんわり悲しい', rubyDesc: 'うれしいのにじんわり<ruby>悲<rt>かな</rt></ruby>しい', rank: '30' },
-  { name: '燃える闘志', rubyName: '<ruby>燃<rt>も</rt></ruby>える<ruby>闘志<rt>とうし</rt></ruby>', example: '🟩🟩🟩🟥🟥', description: '楽しくて負けたくない', rubyDesc: '<ruby>楽<rt>たの</rt></ruby>しくて<ruby>負<rt>ま</rt></ruby>けたくない', rank: '30' },
-  { name: '一触即発', rubyName: '<ruby>一触即発<rt>いっしょくそくはつ</rt></ruby>', example: '🟥🟥🟥🟨🟨', description: '怒りが爆発しそうで焦っている', rubyDesc: '<ruby>怒<rt>いか</rt></ruby>りが<ruby>爆発<rt>ばくはつ</rt></ruby>しそうで<ruby>焦<rt>あせ</rt></ruby>っている', rank: '30' },
-  { name: '怒りの涙', rubyName: '<ruby>怒<rt>いか</rt></ruby>りの<ruby>涙<rt>なみだ</rt></ruby>', example: '🟥🟥🟥🟦🟦', description: '怒りが強いけど悲しくて泣いてる', rubyDesc: '<ruby>怒<rt>いか</rt></ruby>りが<ruby>強<rt>つよ</rt></ruby>いけど<ruby>悲<rt>かな</rt></ruby>しくて<ruby>泣<rt>な</rt></ruby>いてる', rank: '30' },
-  { name: '悔しいけど認める', rubyName: '<ruby>悔<rt>くや</rt></ruby>しいけど<ruby>認<rt>みと</rt></ruby>める', example: '🟩🟩🟥🟥🟥', description: '負けたけど相手を認めている', rubyDesc: '<ruby>負<rt>ま</rt></ruby>けたけど<ruby>相手<rt>あいて</rt></ruby>を<ruby>認<rt>みと</rt></ruby>めている', rank: '30' },
-  { name: '心細い夜', rubyName: '<ruby>心細<rt>こころぼそ</rt></ruby>い<ruby>夜<rt>よる</rt></ruby>', example: '🟦🟦🟦🟨🟨', description: '悲しくて不安で眠れない', rubyDesc: '<ruby>悲<rt>かな</rt></ruby>しくて<ruby>不安<rt>ふあん</rt></ruby>で<ruby>眠<rt>ねむ</rt></ruby>れない', rank: '30' },
-  { name: '悔し泣き', rubyName: '<ruby>悔<rt>くや</rt></ruby>し<ruby>泣<rt>な</rt></ruby>き', example: '🟥🟥🟦🟦🟦', description: '悲しみの中に怒りがある', rubyDesc: '<ruby>悲<rt>かな</rt></ruby>しみの<ruby>中<rt>なか</rt></ruby>に<ruby>怒<rt>いか</rt></ruby>りがある', rank: '30' },
-  { name: '立ち直りかけ', rubyName: '<ruby>立<rt>た</rt></ruby>ち<ruby>直<rt>なお</rt></ruby>りかけ', example: '🟩🟩🟦🟦🟦', description: '悲しいけど少しずつ前を向いてる', rubyDesc: '<ruby>悲<rt>かな</rt></ruby>しいけど<ruby>少<rt>すこ</rt></ruby>しずつ<ruby>前<rt>まえ</rt></ruby>を<ruby>向<rt>む</rt></ruby>いてる', rank: '30' },
-  { name: '初舞台', rubyName: '<ruby>初舞台<rt>はつぶたい</rt></ruby>', example: '🟩🟩🟨🟨🟨', description: '緊張してるけどうれしくてたまらない', rubyDesc: '<ruby>緊張<rt>きんちょう</rt></ruby>してるけどうれしくてたまらない', rank: '30' },
-  { name: '空回り（焦→怒）', rubyName: '<ruby>空回<rt>からまわ</rt></ruby>り（<ruby>焦<rt>あせ</rt></ruby>→<ruby>怒<rt>いか</rt></ruby>）', example: '🟥🟥🟨🟨🟨', description: '焦りが怒りになっていく', rubyDesc: '<ruby>焦<rt>あせ</rt></ruby>りが<ruby>怒<rt>いか</rt></ruby>になっていく', rank: '30' },
-  { name: '嵐の前', rubyName: '<ruby>嵐<rt>あらし</rt></ruby>の<ruby>前<rt>まえ</rt></ruby>', example: '🟦🟦🟨🟨🟨', description: '不安と悲しみで胸がいっぱい', rubyDesc: '<ruby>不安<rt>ふあん</rt></ruby>と<ruby>悲<rt>かな</rt></ruby>しみで<ruby>胸<rt>むね</rt></ruby>がいっぱい', rank: '30' },
-  { name: '感動', rubyName: '<ruby>感動<rt>かんどう</rt></ruby>', example: '🟩🟩🟩🟥🟦', description: 'うれしくて泣きそうで胸が熱い', rubyDesc: 'うれしくて<ruby>泣<rt>な</rt></ruby>きそうで<ruby>胸<rt>むね</rt></ruby>が<ruby>熱<rt>あつ</rt></ruby>い', rank: '20' },
-  { name: '大興奮', rubyName: '<ruby>大興奮<rt>だいこうふん</rt></ruby>', example: '🟩🟩🟩🟥🟨', description: '楽しくて叫びたくてドキドキ', rubyDesc: '<ruby>楽<rt>たの</rt></ruby>しくて<ruby>叫<rt>さけ</rt></ruby>びたくてドキドキ', rank: '20' },
-  { name: '卒業式', rubyName: '<ruby>卒業式<rt>そつぎょうしき</rt></ruby>', example: '🟩🟩🟩🟦🟨', description: 'うれしいけど悲しくて緊張してる', rubyDesc: 'うれしいけど<ruby>悲<rt>かな</rt></ruby>しくて<ruby>緊張<rt>きんちょう</rt></ruby>してる', rank: '20' },
-  { name: '反省', rubyName: '<ruby>反省<rt>はんせい</rt></ruby>', example: '🟩🟥🟥🟥🟦', description: '怒ったけど悪かったと気づいてる', rubyDesc: '<ruby>怒<rt>いか</rt></ruby>ったけど<ruby>悪<rt>わる</rt></ruby>かったと<ruby>気<rt>き</rt></ruby>づいてる', rank: '20' },
-  { name: 'ライバル', rubyName: 'ライバル', example: '🟩🟥🟥🟥🟨', description: '悔しいけど燃えててドキドキ', rubyDesc: '<ruby>悔<rt>くや</rt></ruby>しいけど<ruby>燃<rt>も</rt></ruby>えててドキドキ', rank: '20' },
-  { name: '八つ当たり', rubyName: '<ruby>八<rt>や</rt></ruby>つ<ruby>当<rt>あ</rt></ruby>たり', example: '🟥🟥🟥🟦🟨', description: '怒りをぶつけてるけど実は悲しい', rubyDesc: '<ruby>怒<rt>いか</rt></ruby>りをぶつけてるけど<ruby>実<rt>じつ</rt></ruby>は<ruby>悲<rt>かな</rt></ruby>しい', rank: '20' },
-  { name: '複雑', rubyName: '<ruby>複雑<rt>ふくざつ</rt></ruby>', example: '🟩🟥🟦🟦🟦', description: '悲しいのにうれしくて悔しい', rubyDesc: '<ruby>悲<rt>かな</rt></ruby>しいのにうれしくて<ruby>悔<rt>くや</rt></ruby>しい', rank: '20' },
-  { name: '引っ越し', rubyName: '<ruby>引<rt>ひ</rt></ruby>っ<ruby>越<rt>こ</rt></ruby>し', example: '🟩🟦🟦🟦🟨', description: '悲しいけど新しい場所にワクワク', rubyDesc: '<ruby>悲<rt>かな</rt></ruby>しいけど<ruby>新<rt>あたら</rt></ruby>しい<ruby>場所<rt>ばしょ</rt></ruby>にワクワク', rank: '20' },
-  { name: '嵐の中', rubyName: '<ruby>嵐<rt>あらし</rt></ruby>の<ruby>中<rt>なか</rt></ruby>', example: '🟥🟦🟦🟦🟨', description: '悲しくて怒ってて不安でいっぱい', rubyDesc: '<ruby>悲<rt>かな</rt></ruby>しくて<ruby>怒<rt>いか</rt></ruby>ってて<ruby>不安<rt>ふあん</rt></ruby>でいっぱい', rank: '20' },
-  { name: '文化祭前日', rubyName: '<ruby>文化祭<rt>ぶんかさい</rt></ruby><ruby>前日<rt>ぜんじつ</rt></ruby>', example: '🟩🟥🟨🟨🟨', description: '緊張してるけど楽しみで燃えてる', rubyDesc: '<ruby>緊張<rt>きんちょう</rt></ruby>してるけど<ruby>楽<rt>たの</rt></ruby>しみで<ruby>燃<rt>も</rt></ruby>えてる', rank: '20' },
-  { name: '旅立ち', rubyName: '<ruby>旅立<rt>たびだ</rt></ruby>ち', example: '🟩🟦🟨🟨🟨', description: 'ドキドキしてうれしくて少し寂しい', rubyDesc: 'ドキドキしてうれしくて<ruby>少<rt>すこ</rt></ruby>し<ruby>寂<rt>さび</rt></ruby>しい', rank: '20' },
-  { name: '修羅場寸前', rubyName: '<ruby>修羅場<rt>しゅらば</rt></ruby><ruby>寸前<rt>すんぜん</rt></ruby>', example: '🟥🟦🟨🟨🟨', description: '焦りと怒りと悲しみがぐるぐる', rubyDesc: '<ruby>焦<rt>あせ</rt></ruby>りと<ruby>怒<rt>いか</rt></ruby>りと<ruby>悲<rt>かな</rt></ruby>しみがぐるぐる', rank: '20' },
-  { name: '熱くなりすぎた', rubyName: '<ruby>熱<rt>あつ</rt></ruby>くなりすぎた', example: '🟩🟩🟥🟥🟦', description: '楽しくて興奮してたけど後悔', rubyDesc: '<ruby>楽<rt>たの</rt></ruby>しくて<ruby>興奮<rt>こうふん</rt></ruby>してたけど<ruby>後悔<rt>こうかい</rt></ruby>', rank: '10' },
-  { name: '真剣勝負', rubyName: '<ruby>真剣<rt>しんけん</rt></ruby><ruby>勝負<rt>しょうぶ</rt></ruby>', example: '🟩🟩🟥🟥🟨', description: '楽しくて悔しくてドキドキ', rubyDesc: '<ruby>楽<rt>たの</rt></ruby>しくて<ruby>悔<rt>くや</rt></ruby>しくてドキドキ', rank: '10' },
-  { name: '悔しい感動', rubyName: '<ruby>悔<rt>くや</rt></ruby>しい<ruby>感動<rt>かんどう</rt></ruby>', example: '🟩🟩🟥🟦🟦', description: 'うれしくて悲しくて負けたくない', rubyDesc: 'うれしくて<ruby>悲<rt>かな</rt></ruby>しくて<ruby>負<rt>ま</rt></ruby>けたくない', rank: '10' },
-  { name: '虹', rubyName: '<ruby>虹<rt>にじ</rt></ruby>', example: '🟩🟩🟦🟦🟨', description: 'うれしくて悲しくて不思議な気持ち', rubyDesc: 'うれしくて<ruby>悲<rt>かな</rt></ruby>しくて<ruby>不思議<rt>ふしぎ</rt></ruby>な<ruby>気持<rt>きも</rt></ruby>ち', rank: '10' },
-  { name: '文化祭', rubyName: '<ruby>文化祭<rt>ぶんかさい</rt></ruby>', example: '🟩🟩🟥🟨🟨', description: '楽しくてドキドキして燃えてる', rubyDesc: '<ruby>楽<rt>たの</rt></ruby>しくてドキドキして<ruby>燃<rt>も</rt></ruby>えてる', rank: '10' },
-  { name: '初恋', rubyName: '<ruby>初恋<rt>はつこい</rt></ruby>', example: '🟩🟩🟦🟨🟨', description: 'うれしくてドキドキして切ない', rubyDesc: 'うれしくてドキドキして<ruby>切<rt>せつ</rt></ruby>ない', rank: '10' },
-  { name: '仲直り', rubyName: '<ruby>仲直<rt>なかなお</rt></ruby>り', example: '🟩🟥🟥🟦🟦', description: '怒って泣いてでも少し前向き', rubyDesc: '<ruby>怒<rt>いか</rt></ruby>って<ruby>泣<rt>な</rt></ruby>いてでも<ruby>少<rt>すこ</rt></ruby>し<ruby>前向<rt>まえむ</rt></ruby>き', rank: '10' },
-  { name: '板挟み', rubyName: '<ruby>板挟<rt>いたばさ</rt></ruby>み', example: '🟥🟥🟦🟦🟨', description: '怒りと悲しみで混乱してる', rubyDesc: '<ruby>怒<rt>いか</rt></ruby>りと<ruby>悲<rt>かな</rt></ruby>しみで<ruby>混乱<rt>こんらん</rt></ruby>してる', rank: '10' },
-  { name: '意地', rubyName: '<ruby>意地<rt>いじ</rt></ruby>', example: '🟩🟥🟥🟨🟨', description: '怒って焦ってるけど諦めない', rubyDesc: '<ruby>怒<rt>いか</rt></ruby>って<ruby>焦<rt>あせ</rt></ruby>ってるけど<ruby>諦<rt>あきら</rt></ruby>めない', rank: '10' },
-  { name: '空回りの涙', rubyName: '<ruby>空回<rt>からまわ</rt></ruby>りの<ruby>涙<rt>なみだ</rt></ruby>', example: '🟥🟥🟦🟨🟨', description: '焦って怒って悲しくなってきた', rubyDesc: '<ruby>焦<rt>あせ</rt></ruby>って<ruby>怒<rt>いか</rt></ruby>って<ruby>悲<rt>かな</rt></ruby>しくなってきた', rank: '10' },
-  { name: '夜明け前', rubyName: '<ruby>夜明<rt>よあ</rt></ruby>け<ruby>前<rt>まえ</rt></ruby>', example: '🟩🟦🟦🟨🟨', description: '不安で悲しいけど少し希望がある', rubyDesc: '<ruby>不安<rt>ふあん</rt></ruby>で<ruby>悲<rt>かな</rt></ruby>しいけど<ruby>少<rt>すこ</rt></ruby>し<ruby>希望<rt>きぼう</rt></ruby>がある', rank: '10' },
-  { name: '追い詰められた', rubyName: '<ruby>追<rt>お</rt></ruby>い<ruby>詰<rt>つ</rt></ruby>められた', example: '🟥🟦🟦🟨🟨', description: '悲しくて不安で怒りがこみあげる', rubyDesc: '<ruby>悲<rt>かな</rt></ruby>しくて<ruby>不安<rt>ふあん</rt></ruby>で<ruby>怒<rt>いか</rt></ruby>りがこみあげる', rank: '10' },
-  { name: 'ちょっとうれしい', rubyName: 'ちょっとうれしい', example: '🟩🟩🟥🟦🟨', description: '幸せがちらっとある', rubyDesc: '<ruby>幸<rt>しあわ</rt></ruby>せがちらっとある', rank: '5' },
-  { name: 'ちょっとイライラ', rubyName: 'ちょっとイライラ', example: '🟩🟥🟥🟦🟨', description: '怒りがくすぶってる', rubyDesc: '<ruby>怒<rt>いか</rt></ruby>りがくすぶってる', rank: '5' },
-  { name: 'ちょっと悲しい', rubyName: 'ちょっと悲しい', example: '🟩🟥🟦🟦🟨', description: '悲しさが心の片隅に', rubyDesc: '<ruby>悲<rt>かな</rt></ruby>しさが<ruby>心<rt>こころ</rt></ruby>の<ruby>片隅<rt>かたすみ</rt></ruby>に', rank: '5' },
-  { name: 'ちょっとドキドキ', rubyName: 'ちょっとドキドキ', example: '🟩🟥🟦🟨🟨', description: '緊張がじわっとある', rubyDesc: '<ruby>緊張<rt>きんちょう</rt></ruby>がじわっとある', rank: '5' },
-  { name: 'ジェットコースター', rubyName: 'ジェットコースター', example: '🟩🟥🟦🟨⬜', description: '感情がぐちゃぐちゃ。役なしだが学習的には一番リアル', rubyDesc: '<ruby>感情<rt>かんじょう</rt></ruby>がぐちゃぐちゃ。<ruby>役<rt>やく</rt></ruby>なしだが<ruby>学習的<rt>がくしゅうてき</rt></ruby>には<ruby>一番<rt>いちばん</rt></ruby>リアル', rank: '0' },
+  { name: '怒り爆発', rubyName: '<ruby>怒<rt>いか</rt></ruby>り<ruby>爆発<rt>ばくはつ</rt></ruby>', example: '🟥🟥🟥🟥🟥', description: 'おこりでいっぱい！', rubyDesc: '<ruby>怒<rt>いか</rt></ruby>りしかない、<ruby>頭<rt>あたま</rt></ruby>が<ruby>真<rt>ま</rt></ruby>っ<ruby>白<rt>しろ</rt></ruby>', rank: '50' },
+  { name: '号泣', rubyName: '<ruby>号泣<rt>ごうきゅう</rt></ruby>', example: '🟦🟦🟦🟦🟦', description: 'なみだがとまらない！', rubyDesc: '<ruby>悲<rt>かな</rt></ruby>しみの<ruby>底<rt>そこ</rt></ruby>にいる、<ruby>涙<rt>なみだ</rt></ruby>が<ruby>止<rt>と</rt></ruby>まらない', rank: '50' },
+  { name: 'パニック', rubyName: 'パニック', example: '🟨🟨🟨🟨🟨', description: 'あたまがぐるぐる！', rubyDesc: '<ruby>混乱<rt>こんらん</rt></ruby>しすぎて<ruby>何<rt>なに</rt></ruby>も<ruby>考<rt>かんが</rt></ruby>えられない', rank: '50' },
+  { name: '泣けてくるほど嬉しい', rubyName: '<ruby>泣<rt>な</rt></ruby>けてくるほど<ruby>嬉<rt>うれ</rt></ruby>しい', example: '🟩🟩🟩🟩🟦', description: 'うれしくてなみだがでる', rubyDesc: 'うれしすぎて<ruby>涙<rt>なみだ</rt></ruby>が<ruby>出<rt>で</rt></ruby>る', rank: '40' },
+  { name: '夢みたい', rubyName: '<ruby>夢<rt>ゆめ</rt></ruby>みたい', example: '🟩🟩🟩🟩🟨', description: 'しあわせすぎてしんじられない', rubyDesc: '<ruby>幸<rt>しあわ</rt></ruby>せすぎて<ruby>信<rt>しん</rt></ruby>じられない', rank: '40' },
+  { name: '勝利の雄叫び', rubyName: '<ruby>勝利<rt>しょうり</rt></ruby>の<ruby>雄叫<rt>おたけ</rt></ruby>び', example: '🟩🟩🟩🟩🟥', description: 'うれしくてさけびたい', rubyDesc: 'うれしいけど<ruby>興奮<rt>こうふん</rt></ruby>して<ruby>叫<rt>さけ</rt></ruby>んでる', rank: '40' },
+  { name: '悔し涙', rubyName: '<ruby>悔<rt>くや</rt></ruby>し<ruby>涙<rt>なみだ</rt></ruby>', example: '🟥🟥🟥🟥🟦', description: 'くやしくてなみだがでる', rubyDesc: '<ruby>怒<rt>いか</rt></ruby>りながら<ruby>泣<rt>な</rt></ruby>いている', rank: '40' },
+  { name: '修羅場', rubyName: '<ruby>修羅場<rt>しゅらば</rt></ruby>', example: '🟥🟥🟥🟥🟨', description: 'おこりとこんらん', rubyDesc: '<ruby>怒<rt>いか</rt></ruby>りが<ruby>爆発<rt>ばくはつ</rt></ruby>して<ruby>混乱<rt>こんらん</rt></ruby>してる', rank: '40' },
+  { name: 'ざまあみろ', rubyName: 'ざまあみろ', example: '🟩🟥🟥🟥🟥', description: 'かった！というきもち', rubyDesc: '<ruby>怒<rt>いか</rt></ruby>りが<ruby>勝<rt>か</rt></ruby>ったときの<ruby>快感<rt>かいかん</rt></ruby>', rank: '40' },
+  { name: '雨上がり', rubyName: '<ruby>雨上<rt>あめあ</rt></ruby>がり', example: '🟩🟦🟦🟦🟦', description: 'かなしいけどほっとする', rubyDesc: '<ruby>悲<rt>かな</rt></ruby>しいけどちょっと<ruby>希望<rt>きぼう</rt></ruby>がある', rank: '40' },
+  { name: '恨み節', rubyName: '<ruby>恨<rt>うら</rt></ruby>み<ruby>節<rt>ぶし</rt></ruby>', example: '🟥🟦🟦🟦🟦', description: 'かなしくておこっている', rubyDesc: '<ruby>悲<rt>かな</rt></ruby>しみの<ruby>中<rt>なか</rt></ruby>に<ruby>怒<rt>いか</rt></ruby>りが<ruby>残<rt>のこ</rt></ruby>っている', rank: '40' },
+  { name: '迷子', rubyName: '<ruby>迷子<rt>まいご</rt></ruby>', example: '🟦🟦🟦🟦🟨', description: 'かなしくてふあん', rubyDesc: '<ruby>悲<rt>かな</rt></ruby>しくて<ruby>不安<rt>ふあん</rt></ruby>でどうしたらいい', rank: '40' },
+  { name: '祭りの前', rubyName: '<ruby>祭<rt>まつ</rt></ruby>りの<ruby>前<rt>まえ</rt></ruby>', example: '🟩🟨🟨🟨🟨', description: 'ドキドキワクワク', rubyDesc: '<ruby>緊張<rt>きんちょう</rt></ruby>してるけどワクワクしてる', rank: '40' },
+  { name: '空回り', rubyName: '<ruby>空回<rt>からまわ</rt></ruby>り', example: '🟥🟨🟨🟨🟨', description: 'あせってイライラ', rubyDesc: '<ruby>焦<rt>あせ</rt></ruby>って<ruby>怒<rt>いか</rt></ruby>りになっている', rank: '40' },
+  { name: '悪夢', rubyName: '<ruby>悪夢<rt>あくむ</rt></ruby>', example: '🟦🟨🟨🟨🟨', description: 'こわくてこんらん', rubyDesc: '<ruby>混乱<rt>こんらん</rt></ruby>して<ruby>怖<rt>こわ</rt></ruby>くて<ruby>仕方<rt>しかた</rt></ruby>ない', rank: '40' },
+  { name: '遠足前夜', rubyName: '<ruby>遠足<rt>えんそく</rt></ruby><ruby>前夜<rt>ぜんや</rt></ruby>', example: '🟩🟩🟩🟨🟨', description: 'たのしみでドキドキ', rubyDesc: '<ruby>楽<rt>たの</rt></ruby>しみでドキドキが<ruby>止<rt>と</rt></ruby>まらない', rank: '30' },
+  { name: '泣き笑い', rubyName: '<ruby>泣<rt>な</rt></ruby>き<ruby>笑<rt>わら</rt></ruby>い', example: '🟩🟩🟩🟦🟦', description: 'うれしいのにちょっぴりかなしい', rubyDesc: 'うれしいのにじんわり<ruby>悲<rt>かな</rt></ruby>しい', rank: '30' },
+  { name: '燃える闘志', rubyName: '<ruby>燃<rt>も</rt></ruby>える<ruby>闘志<rt>とうし</rt></ruby>', example: '🟩🟩🟩🟥🟥', description: 'たのしい！でもまけたくない！', rubyDesc: '<ruby>楽<rt>たの</rt></ruby>しくて<ruby>負<rt>ま</rt></ruby>けたくない', rank: '30' },
+  { name: '一触即発', rubyName: '<ruby>一触即発<rt>いっしょくそくはつ</rt></ruby>', example: '🟥🟥🟥🟨🟨', description: 'おこりがばくはつしそう', rubyDesc: '<ruby>怒<rt>いか</rt></ruby>りが<ruby>爆発<rt>ばくはつ</rt></ruby>しそうで<ruby>焦<rt>あせ</rt></ruby>っている', rank: '30' },
+  { name: '怒りの涙', rubyName: '<ruby>怒<rt>いか</rt></ruby>りの<ruby>涙<rt>なみだ</rt></ruby>', example: '🟥🟥🟥🟦🟦', description: 'おこりとかなしみ', rubyDesc: '<ruby>怒<rt>いか</rt></ruby>りが<ruby>強<rt>つよ</rt></ruby>いけど<ruby>悲<rt>かな</rt></ruby>しくて<ruby>泣<rt>な</rt></ruby>いてる', rank: '30' },
+  { name: '悔しいけど認める', rubyName: '<ruby>悔<rt>くや</rt></ruby>しいけど<ruby>認<rt>みと</rt></ruby>める', example: '🟩🟩🟥🟥🟥', description: 'くやしいけどすごい！', rubyDesc: '<ruby>負<rt>ま</rt></ruby>けたけど<ruby>相手<rt>あいて</rt></ruby>を<ruby>認<rt>みと</rt></ruby>めている', rank: '30' },
+  { name: '心細い夜', rubyName: '<ruby>心細<rt>こころぼそ</rt></ruby>い<ruby>夜<rt>よる</rt></ruby>', example: '🟦🟦🟦🟨🟨', description: 'かなしくてふあん', rubyDesc: '<ruby>悲<rt>かな</rt></ruby>しくて<ruby>不安<rt>ふあん</rt></ruby>で<ruby>眠<rt>ねむ</rt></ruby>れない', rank: '30' },
+  { name: '悔し泣き', rubyName: '<ruby>悔<rt>くや</rt></ruby>し<ruby>泣<rt>な</rt></ruby>き', example: '🟥🟥🟦🟦🟦', description: 'かなしいしくやしい', rubyDesc: '<ruby>悲<rt>かな</rt></ruby>しみの<ruby>中<rt>なか</rt></ruby>に<ruby>怒<rt>いか</rt></ruby>りがある', rank: '30' },
+  { name: '立ち直りかけ', rubyName: '<ruby>立<rt>た</rt></ruby>ち<ruby>直<rt>なお</rt></ruby>りかけ', example: '🟩🟩🟦🟦🟦', description: 'げんきがもどりそう', rubyDesc: '<ruby>悲<rt>かな</rt></ruby>しいけど<ruby>少<rt>すこ</rt></ruby>しずつ<ruby>前<rt>まえ</rt></ruby>を<ruby>向<rt>む</rt></ruby>いてる', rank: '30' },
+  { name: '初舞台', rubyName: '<ruby>初舞台<rt>はつぶたい</rt></ruby>', example: '🟩🟩🟨🟨🟨', description: 'きんちょう！でもうれしい！', rubyDesc: '<ruby>緊張<rt>きんちょう</rt></ruby>してるけどうれしくてたまらない', rank: '30' },
+  { name: '空回り（焦→怒）', rubyName: '<ruby>空回<rt>からまわ</rt></ruby>り（<ruby>焦<rt>あせ</rt></ruby>→<ruby>怒<rt>いか</rt></ruby>）', example: '🟥🟥🟨🟨🟨', description: 'あせりがイライラになる', rubyDesc: '<ruby>焦<rt>あせ</rt></ruby>りが<ruby>怒<rt>いか</rt></ruby>になっていく', rank: '30' },
+  { name: '嵐の前', rubyName: '<ruby>嵐<rt>あらし</rt></ruby>の<ruby>前<rt>まえ</rt></ruby>', example: '🟦🟦🟨🟨🟨', description: 'ふあんでいっぱい', rubyDesc: '<ruby>不安<rt>ふあん</rt></ruby>と<ruby>悲<rt>かな</rt></ruby>しみで<ruby>胸<rt>むね</rt></ruby>がいっぱい', rank: '30' },
+  { name: '感動', rubyName: '<ruby>感動<rt>かんどう</rt></ruby>', example: '🟩🟩🟩🟥🟦', description: 'むねがあつくなる', rubyDesc: 'うれしくて<ruby>泣<rt>な</rt></ruby>きそうで<ruby>胸<rt>むね</rt></ruby>が<ruby>熱<rt>あつ</rt></ruby>い', rank: '20' },
+  { name: '大興奮', rubyName: '<ruby>大興奮<rt>だいこうふん</rt></ruby>', example: '🟩🟩🟩🟥🟨', description: 'たのしくてさけびたい', rubyDesc: '<ruby>楽<rt>たの</rt></ruby>しくて<ruby>叫<rt>さけ</rt></ruby>びたくてドキドキ', rank: '20' },
+  { name: '卒業式', rubyName: '<ruby>卒業式<rt>そつぎょうしき</rt></ruby>', example: '🟩🟩🟩🟦🟨', description: 'うれしいかなしいドキドキ', rubyDesc: 'うれしいけど<ruby>悲<rt>かな</rt></ruby>しくて<ruby>緊張<rt>きんちょう</rt></ruby>してる', rank: '20' },
+  { name: '反省', rubyName: '<ruby>反省<rt>はんせい</rt></ruby>', example: '🟩🟥🟥🟥🟦', description: 'わるかったな…', rubyDesc: '<ruby>怒<rt>いか</rt></ruby>ったけど<ruby>悪<rt>わる</rt></ruby>かったと<ruby>気<rt>き</rt></ruby>づいてる', rank: '20' },
+  { name: 'ライバル', rubyName: 'ライバル', example: '🟩🟥🟥🟥🟨', description: 'まけたくない！', rubyDesc: '<ruby>悔<rt>くや</rt></ruby>しいけど<ruby>燃<rt>も</rt></ruby>えててドキドキ', rank: '20' },
+  { name: '八つ当たり', rubyName: '<ruby>八<rt>や</rt></ruby>つ<ruby>当<rt>あ</rt></ruby>たり', example: '🟥🟥🟥🟦🟨', description: 'ほんとはかなしい', rubyDesc: '<ruby>怒<rt>いか</rt></ruby>りをぶつけてるけど<ruby>実<rt>じつ</rt></ruby>は<ruby>悲<rt>かな</rt></ruby>しい', rank: '20' },
+  { name: '複雑', rubyName: '<ruby>複雑<rt>ふくざつ</rt></ruby>', example: '🟩🟥🟦🟦🟦', description: 'いろんなきもちがまざる', rubyDesc: '<ruby>悲<rt>かな</rt></ruby>しいのにうれしくて<ruby>悔<rt>くや</rt></ruby>しい', rank: '20' },
+  { name: '引っ越し', rubyName: '<ruby>引<rt>ひ</rt></ruby>っ<ruby>越<rt>こ</rt></ruby>し', example: '🟩🟦🟦🟦🟨', description: 'かなしいけどワクワク', rubyDesc: '<ruby>悲<rt>かな</rt></ruby>しいけど<ruby>新<rt>あたら</rt></ruby>しい<ruby>場所<rt>ばしょ</rt></ruby>にワクワク', rank: '20' },
+  { name: '嵐の中', rubyName: '<ruby>嵐<rt>あらし</rt></ruby>の<ruby>中<rt>なか</rt></ruby>', example: '🟥🟦🟦🟦🟨', description: 'かなしいおこりふあん', rubyDesc: '<ruby>悲<rt>かな</rt></ruby>しくて<ruby>怒<rt>いか</rt></ruby>ってて<ruby>不安<rt>ふあん</rt></ruby>でいっぱい', rank: '20' },
+  { name: '文化祭前日', rubyName: '<ruby>文化祭<rt>ぶんかさい</rt></ruby><ruby>前日<rt>ぜんじつ</rt></ruby>', example: '🟩🟥🟨🟨🟨', description: 'ドキドキワクワクメラメラ', rubyDesc: '<ruby>緊張<rt>きんちょう</rt></ruby>してるけど<ruby>楽<rt>たの</rt></ruby>しみで<ruby>燃<rt>も</rt></ruby>えてる', rank: '20' },
+  { name: '旅立ち', rubyName: '<ruby>旅立<rt>たびだ</rt></ruby>ち', example: '🟩🟦🟨🟨🟨', description: 'うれしいけどさみしい', rubyDesc: 'ドキドキしてうれしくて<ruby>少<rt>すこ</rt></ruby>し<ruby>寂<rt>さび</rt></ruby>しい', rank: '20' },
+  { name: '修羅場寸前', rubyName: '<ruby>修羅場<rt>しゅらば</rt></ruby><ruby>寸前<rt>すんぜん</rt></ruby>', example: '🟥🟦🟨🟨🟨', description: 'ぐるぐるこんらん', rubyDesc: '<ruby>焦<rt>あせ</rt></ruby>りと<ruby>怒<rt>いか</rt></ruby>りと<ruby>悲<rt>かな</rt></ruby>しみがぐるぐる', rank: '20' },
+  { name: '熱くなりすぎた', rubyName: '<ruby>熱<rt>あつ</rt></ruby>くなりすぎた', example: '🟩🟩🟥🟥🟦', description: 'やりすぎちゃった', rubyDesc: '<ruby>楽<rt>たの</rt></ruby>しくて<ruby>興奮<rt>こうふん</rt></ruby>してたけど<ruby>後悔<rt>こうかい</rt></ruby>', rank: '10' },
+  { name: '真剣勝負', rubyName: '<ruby>真剣<rt>しんけん</rt></ruby><ruby>勝負<rt>しょうぶ</rt></ruby>', example: '🟩🟩🟥🟥🟨', description: 'ぜったいかちたい', rubyDesc: '<ruby>楽<rt>たの</rt></ruby>しくて<ruby>悔<rt>くや</rt></ruby>しくてドキドキ', rank: '10' },
+  { name: '悔しい感動', rubyName: '<ruby>悔<rt>くや</rt></ruby>しい<ruby>感動<rt>かんどう</rt></ruby>', example: '🟩🟩🟥🟦🟦', description: 'くやしいけどうれしい', rubyDesc: 'うれしくて<ruby>悲<rt>かな</rt></ruby>しくて<ruby>負<rt>ま</rt></ruby>けたくない', rank: '10' },
+  { name: '虹', rubyName: '<ruby>虹<rt>にじ</rt></ruby>', example: '🟩🟩🟦🟦🟨', description: 'ふしぎなきもち', rubyDesc: 'うれしくて<ruby>悲<rt>かな</rt></ruby>しくて<ruby>不思議<rt>ふしぎ</rt></ruby>な<ruby>気持<rt>きも</rt></ruby>ち', rank: '10' },
+  { name: '文化祭', rubyName: '<ruby>文化祭<rt>ぶんかさい</rt></ruby>', example: '🟩🟩🟥🟨🟨', description: 'たのしい！ドキドキ！', rubyDesc: '<ruby>楽<rt>たの</rt></ruby>しくてドキドキして<ruby>燃<rt>も</rt></ruby>えてる', rank: '10' },
+  { name: '初恋', rubyName: '<ruby>初恋<rt>はつこい</rt></ruby>', example: '🟩🟩🟦🟨🟨', description: 'うれしいけどせつない', rubyDesc: 'うれしくてドキドキして<ruby>切<rt>せつ</rt></ruby>ない', rank: '10' },
+  { name: '仲直り', rubyName: '<ruby>仲直<rt>なかなお</rt></ruby>り', example: '🟩🟥🟥🟦🟦', description: 'また なかよし', rubyDesc: '<ruby>怒<rt>いか</rt></ruby>って<ruby>泣<rt>な</rt></ruby>いてでも<ruby>少<rt>すこ</rt></ruby>し<ruby>前向<rt>まえむ</rt></ruby>き', rank: '10' },
+  { name: '板挟み', rubyName: '<ruby>板挟<rt>いたばさ</rt></ruby>み', example: '🟥🟥🟦🟦🟨', description: 'どうしたらいいの？', rubyDesc: '<ruby>怒<rt>いか</rt></ruby>りと<ruby>悲<rt>かな</rt></ruby>しみで<ruby>混乱<rt>こんらん</rt></ruby>してる', rank: '10' },
+  { name: '意地', rubyName: '<ruby>意地<rt>いじ</rt></ruby>', example: '🟩🟥🟥🟨🟨', description: 'まだ あきらめない', rubyDesc: '<ruby>怒<rt>いか</rt></ruby>って<ruby>焦<rt>あせ</rt></ruby>ってるけど<ruby>諦<rt>あきら</rt></ruby>めない', rank: '10' },
+  { name: '空回りの涙', rubyName: '<ruby>空回<rt>からまわ</rt></ruby>りの<ruby>涙<rt>なみだ</rt></ruby>', example: '🟥🟥🟦🟨🟨', description: 'あせってなみだ', rubyDesc: '<ruby>焦<rt>あせ</rt></ruby>って<ruby>怒<rt>いか</rt></ruby>って<ruby>悲<rt>かな</rt></ruby>しくなってきた', rank: '10' },
+  { name: '夜明け前', rubyName: '<ruby>夜明<rt>よあ</rt></ruby>け<ruby>前<rt>まえ</rt></ruby>', example: '🟩🟦🟦🟨🟨', description: 'もうすこしでがんばれそう', rubyDesc: '<ruby>不安<rt>ふあん</rt></ruby>で<ruby>悲<rt>かな</rt></ruby>しいけど<ruby>少<rt>すこ</rt></ruby>し<ruby>希望<rt>きぼう</rt></ruby>がある', rank: '10' },
+  { name: '追い詰められた', rubyName: '<ruby>追<rt>お</rt></ruby>い<ruby>詰<rt>つ</rt></ruby>められた', example: '🟥🟦🟦🟨🟨', description: 'もう いっぱいいっぱい', rubyDesc: '<ruby>悲<rt>かな</rt></ruby>しくて<ruby>不安<rt>ふあん</rt></ruby>で<ruby>怒<rt>いか</rt></ruby>りがこみあげる', rank: '10' },
+  { name: 'ちょっとうれしい', rubyName: 'ちょっとうれしい', example: '🟩🟩🟥🟦🟨', description: 'しあわせがちらっとある', rubyDesc: '<ruby>幸<rt>しあわ</rt></ruby>せがちらっとある', rank: '5' },
+  { name: 'ちょっとイライラ', rubyName: 'ちょっとイライラ', example: '🟩🟥🟥🟦🟨', description: 'おこりがくすぶってる', rubyDesc: '<ruby>怒<rt>いか</rt></ruby>りがくすぶってる', rank: '5' },
+  { name: 'ちょっと悲しい', rubyName: 'ちょっと悲しい', example: '🟩🟥🟦🟦🟨', description: 'かなしさがこころのかたすみに', rubyDesc: '<ruby>悲<rt>かな</rt></ruby>しさが<ruby>心<rt>こころ</rt></ruby>の<ruby>片隅<rt>かたすみ</rt></ruby>に', rank: '5' },
+  { name: 'ちょっとドキドキ', rubyName: 'ちょっとドキドキ', example: '🟩🟥🟦🟨🟨', description: 'きんちょうがじわっとある', rubyDesc: '<ruby>緊張<rt>きんちょう</rt></ruby>がじわっとある', rank: '5' },
+  { name: 'ジェットコースター', rubyName: 'ジェットコースター', example: '🟩🟥🟦🟨⬜', description: 'いろんなきもちがぐるぐるまざっているよ！これも、とても大事なきもちだよ。', rubyDesc: '<ruby>感情<rt>かんじょう</rt></ruby>がぐちゃぐちゃ。<ruby>役<rt>やく</rt></ruby>なしだが<ruby>学習的<rt>がくしゅうてき</rt></ruby>には<ruby>一番<rt>いちばん</rt></ruby>リアル', rank: '0' },
 ];
 
 const LIGHT_YAKU_LIST = [
   { name: '最高の日 (緑3)', rubyName: '<ruby>最高<rt>さいこう</rt></ruby>の<ruby>日<rt>ひ</rt></ruby>', example: '🟩🟩🟩', description: '何もかもうまくいって幸せ', rubyDesc: '<ruby>何<rt>なに</rt></ruby>もかもうまくいって<ruby>幸<rt>しあわ</rt></ruby>せ', rank: '50' },
   { name: '怒り爆発 (赤3)', rubyName: '<ruby>怒<rt>いか</rt></ruby>り<ruby>爆発<rt>ばくはつ</rt></ruby>', example: '🟥🟥🟥', description: '怒りしかない', rubyDesc: '<ruby>怒<rt>いか</rt></ruby>りしかない', rank: '50' },
   { name: '号泣 (青3)', rubyName: '<ruby>号泣<rt>ごうきゅう</rt></ruby>', example: '🟦🟦🟦', description: '悲しみの底にいる', rubyDesc: '<ruby>悲<rt>かな</rt></ruby>しみの<ruby>底<rt>そこ</rt></ruby>にいる', rank: '50' },
-  { name: 'パニック (黄3)', rubyName: 'パニック', example: '🟨🟨🟨', description: '混乱しすぎて何も考えられない', rubyDesc: '<ruby>混乱<rt>こんらん</rt></ruby>しすぎて<ruby>何<rt>なに</rt></ruby>も<ruby>考<rt>かんが</rt></ruby>えられない', rank: '50' },
-  { name: 'ちょっとうれしい (緑2)', rubyName: 'ちょっとうれしい', example: '🟩🟩🟦', description: '幸せがちらっとある', rubyDesc: '<ruby>幸<rt>しあわ</rt></ruby>せがちらっとある', rank: '40' },
-  { name: 'ちょっとイライラ (赤2)', rubyName: 'ちょっとイライラ', example: '🟥🟥🟨', description: '怒りがくすぶってる', rubyDesc: '<ruby>怒<rt>いか</rt></ruby>りがくすぶってる', rank: '40' },
-  { name: 'ちょっと悲しい (青2)', rubyName: 'ちょっと悲しい', example: '🟦🟦🟩', description: '悲しさが心の片隅に', rubyDesc: '<ruby>悲<rt>かな</rt></ruby>しさが<ruby>心<rt>こころ</rt></ruby>の<ruby>片隅<rt>かたすみ</rt></ruby>に', rank: '40' },
-  { name: 'ちょっとドキドキ (黄2)', rubyName: 'ちょっとドキドキ', example: '🟨🟨🟥', description: '緊張がじわっとある', rubyDesc: '<ruby>緊張<rt>きんちょう</rt></ruby>がじわっとある', rank: '40' },
+  { name: 'パニック (黄3)', rubyName: 'パニック', example: '🟨🟨🟨', description: 'あたまがぐるぐる！', rubyDesc: '<ruby>混乱<rt>こんらん</rt></ruby>しすぎて<ruby>何<rt>なに</rt></ruby>も<ruby>考<rt>かんが</rt></ruby>えられない', rank: '50' },
+  { name: 'ちょっとうれしい (緑2)', rubyName: 'ちょっとうれしい', example: '🟩🟩🟦', description: 'しあわせがちらっとある', rubyDesc: '<ruby>幸<rt>しあわ</rt></ruby>せがちらっとある', rank: '40' },
+  { name: 'ちょっとイライラ (赤2)', rubyName: 'ちょっとイライラ', example: '🟥🟥🟨', description: 'おこりがくすぶってる', rubyDesc: '<ruby>怒<rt>いか</rt></ruby>りがくすぶってる', rank: '40' },
+  { name: 'ちょっと悲しい (青2)', rubyName: 'ちょっと悲しい', example: '🟦🟦🟩', description: 'かなしさがこころのかたすみに', rubyDesc: '<ruby>悲<rt>かな</rt></ruby>しさが<ruby>心<rt>こころ</rt></ruby>の<ruby>片隅<rt>かたすみ</rt></ruby>に', rank: '40' },
+  { name: 'ちょっとドキドキ (黄2)', rubyName: 'ちょっとドキドキ', example: '🟨🟨🟥', description: 'きんちょうがじわっとある', rubyDesc: '<ruby>緊張<rt>きんちょう</rt></ruby>がじわっとある', rank: '40' },
   { name: 'カラフル', rubyName: 'カラフル', example: '🟩🟥🟦', description: 'いろんな感情が混ざっている', rubyDesc: 'いろんな<ruby>感情<rt>かんじょう</rt></ruby>が<ruby>混<rt>ま</rt></ruby>ざっている', rank: '0' },
 ];
 
@@ -1008,21 +1083,21 @@ function openCardListModal() {
       { id: 'standard', name: '☀️ スタンダードセット追加分（10〜15）', min: 10, max: 15, descKey: 'descStandard' },
       { id: 'complex', name: '🧩 複合感情カード（ツートンカラー枠）', min: 1, max: 12, descKey: 'descComplex' }
     ];
-    const colors = [
-      { id: 'green', name: '🟢 うれしい・たのしい（<ruby>緑<rt>みどり</rt></ruby>）', 
-        descBasic: 'うれしい、楽しい、安心した、期待、自信、誇らしい、感謝、達成感、幸せ', 
-        descStandard: '感動、信頼、愛情、希望、満足、開放感、充実感' },
-      { id: 'red', name: '🔴 いかり・イライラ（<ruby>赤<rt>あか</rt></ruby>）', 
+        const colors = [
+      { id: 'green', name: '🟢 喜び（緑）', 
+        descBasic: '幸せ、うれしい、楽しい、安心した、期待、自信、誇らしい、感謝、達成感', 
+        descStandard: '感動、信頼、愛情、希望、満足、充実感' },
+      { id: 'red', name: '🔴 怒り（赤）', 
         descBasic: 'イライラ、不満、怒り、悔しい、理不尽、反発、嫉妬、激怒、憎しみ', 
-        descStandard: '嫌悪、軽蔑、恨み、敵意、焦り、憤り' },
-      { id: 'blue', name: '🔵 かなしい・さびしい（<ruby>青<rt>あお</rt></ruby>）', 
+        descStandard: '不満、苛立ち、怒り、妬み、反発、意気投合' },
+      { id: 'blue', name: '🔵 悲しみ（青）', 
         descBasic: '悲しい、傷ついた、寂しい、落ち込んだ、後悔、失望、孤独、無力感、絶望', 
-        descStandard: '喪失感、虚しさ、自責、罪悪感、諦め、切なさ' },
-      { id: 'yellow', name: '🟡 ふあん・きんちょう（<ruby>黄<rt>きいろ</rt></ruby>）', 
+        descStandard: '残念、落ち込み、寂しさ、悲しみ、がっかり、悔しい' },
+      { id: 'yellow', name: '🟡 不安・驚き（黄）', 
         descBasic: 'びっくり、戸惑い、不安、緊張、ドキドキ、心配、警戒、混乱、恐怖', 
-        descStandard: '動揺、困惑、疑念、緊迫、驚愕、パニック' },
-      { id: 'complex', name: '🧩 複数の感情がまざったカード', 
-        descComplex: 'ドキドキ、緊張、期待、照れくさい、すっきり、悔しい、がっかり、プライドが傷ついた、やるせない、自己嫌悪、焦り、モヤモヤ、信じられない、迷った、心細い、なつかしい、疲れた' }
+        descStandard: '心配、不安、驚き、緊張、恐れ、混乱' },
+      { id: 'complex', name: '🧩 複合感情セット', 
+        descComplex: 'ドキドキ、緊張、期待、なつかしい、すっきり、照れくさい、悔しい、がっかり、やるせない、焦り、モヤモヤ、迷った' }
     ];
     
     let htmlStr = '';
@@ -1053,7 +1128,19 @@ function openCardListModal() {
           }
           htmlStr += `<div style="display:flex; flex-wrap:wrap; gap:0.5rem; justify-content:flex-start;">`;
           cards.forEach(c => {
-            htmlStr += `<img src="${c.img}" style="width: 70px; height: 115px; border-radius: 6px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);" alt="${c.emotion}">`;
+            const isCollected = collectedCards.includes(c.id);
+            if (isCollected) {
+              const safeName = (c.nameJa || '').replace(/'/g, "\\'");
+              htmlStr += `
+                <div style="cursor: pointer; text-align: center;" onclick="openCardDetailModal('${safeName}', '${c.img}')">
+                  <img src="${c.img}" style="width: 70px; height: 115px; border-radius: 6px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);" alt="${c.nameJa}">
+                </div>`;
+            } else {
+              htmlStr += `
+                <div style="text-align: center;">
+                  <div style="width: 70px; height: 115px; border-radius: 6px; background: #cbd5e1; display: flex; align-items: center; justify-content: center; color: white; font-size: 2rem; font-weight: bold;">?</div>
+                </div>`;
+            }
           });
           htmlStr += `</div></div>`;
         }
@@ -1077,12 +1164,34 @@ function closeChallengeTutorialModal() {
   document.getElementById('challenge-tutorial-modal').classList.remove('open');
 }
 
-function openOpponentSpeechModal(title, opp, msg, btnText, btnAction) {
+function openOpponentSpeechModal(title, opp, msg, btnText, btnAction, pYakuDef, dYakuDef) {
   document.getElementById('opponent-speech-title').innerText = title;
   document.getElementById('opponent-speech-img').src = opp.avatar;
   document.getElementById('opponent-speech-name').innerText = opp.name;
-  document.getElementById('opponent-speech-msg').innerText = msg;
+  document.getElementById('opponent-speech-msg').innerHTML = msg;
   
+  const resultInfo = document.getElementById('opponent-speech-result-info');
+  if (pYakuDef && dYakuDef) {
+    resultInfo.classList.remove('hidden');
+    document.getElementById('speech-result-p-name').innerHTML = pYakuDef.rubyName || pYakuDef.name;
+    document.getElementById('speech-result-p-desc').innerHTML = pYakuDef.rubyDesc || pYakuDef.description;
+    document.getElementById('speech-result-d-name').innerHTML = dYakuDef.rubyName || dYakuDef.name;
+    document.getElementById('speech-result-d-desc').innerHTML = dYakuDef.rubyDesc || dYakuDef.description;
+    
+    // Set Yaku Image if available
+    const pImg = document.getElementById('speech-result-p-img');
+    pImg.src = `avatars/yaku/${pYakuDef.name}.png`;
+    pImg.style.display = 'inline-block';
+    pImg.onerror = () => pImg.style.display = 'none';
+
+    const dImg = document.getElementById('speech-result-d-img');
+    dImg.src = `avatars/yaku/${dYakuDef.name}.png`;
+    dImg.style.display = 'inline-block';
+    dImg.onerror = () => dImg.style.display = 'none';
+  } else {
+    resultInfo.classList.add('hidden');
+  }
+
   const btn = document.getElementById('opponent-speech-btn');
   btn.innerHTML = btnText;
   btn.onclick = () => {
@@ -1113,66 +1222,66 @@ function evaluate5CardsNoWild(colors) {
   const G=c.green, R=c.red, B=c.blue, Y=c.yellow;
 
   if(G===5) return {name:'最高の日', description:'何もかもうまくいって幸せしかない', rank:50};
-  if(R===5) return {name:'怒り爆発', description:'怒りしかない、頭が真っ白', rank:50};
-  if(B===5) return {name:'号泣', description:'悲しみの底にいる、涙が止まらない', rank:50};
-  if(Y===5) return {name:'パニック', description:'混乱しすぎて何も考えられない', rank:50};
+  if(R===5) return {name:'怒り爆発', description:'おこりでいっぱい！', rank:50};
+  if(B===5) return {name:'号泣', description:'なみだがとまらない！', rank:50};
+  if(Y===5) return {name:'パニック', description:'あたまがぐるぐる！', rank:50};
 
-  if(G===4 && B===1) return {name:'泣けてくるほど嬉しい', description:'うれしすぎて涙が出る', rank:40};
-  if(G===4 && Y===1) return {name:'夢みたい', description:'幸せすぎて信じられない', rank:40};
-  if(G===4 && R===1) return {name:'勝利の雄叫び', description:'うれしいけど興奮して叫んでる', rank:40};
-  if(R===4 && B===1) return {name:'悔し涙', description:'怒りながら泣いている', rank:40};
-  if(R===4 && Y===1) return {name:'修羅場', description:'怒りが爆発して混乱してる', rank:40};
-  if(R===4 && G===1) return {name:'ざまあみろ', description:'怒りが勝ったときの快感', rank:40};
-  if(B===4 && G===1) return {name:'雨上がり', description:'悲しいけどちょっと希望がある', rank:40};
-  if(B===4 && R===1) return {name:'恨み節', description:'悲しみの中に怒りが残っている', rank:40};
-  if(B===4 && Y===1) return {name:'迷子', description:'悲しくて不安でどうしたらいい', rank:40};
-  if(Y===4 && G===1) return {name:'祭りの前', description:'緊張してるけどワクワクしてる', rank:40};
-  if(Y===4 && R===1) return {name:'空回り', description:'焦って怒りになっている', rank:40};
-  if(Y===4 && B===1) return {name:'悪夢', description:'混乱して怖くて仕方ない', rank:40};
+  if(G===4 && B===1) return {name:'泣けてくるほど嬉しい', description:'うれしくてなみだがでる', rank:40};
+  if(G===4 && Y===1) return {name:'夢みたい', description:'しあわせすぎてしんじられない', rank:40};
+  if(G===4 && R===1) return {name:'勝利の雄叫び', description:'うれしくてさけびたい', rank:40};
+  if(R===4 && B===1) return {name:'悔し涙', description:'くやしくてなみだがでる', rank:40};
+  if(R===4 && Y===1) return {name:'修羅場', description:'おこりとこんらん', rank:40};
+  if(R===4 && G===1) return {name:'ざまあみろ', description:'かった！というきもち', rank:40};
+  if(B===4 && G===1) return {name:'雨上がり', description:'かなしいけどほっとする', rank:40};
+  if(B===4 && R===1) return {name:'恨み節', description:'かなしくておこっている', rank:40};
+  if(B===4 && Y===1) return {name:'迷子', description:'かなしくてふあん', rank:40};
+  if(Y===4 && G===1) return {name:'祭りの前', description:'ドキドキワクワク', rank:40};
+  if(Y===4 && R===1) return {name:'空回り', description:'あせってイライラ', rank:40};
+  if(Y===4 && B===1) return {name:'悪夢', description:'こわくてこんらん', rank:40};
 
-  if(G===3 && Y===2) return {name:'遠足前夜', description:'楽しみでドキドキが止まらない', rank:30};
-  if(G===3 && B===2) return {name:'泣き笑い', description:'うれしいのにじんわり悲しい', rank:30};
-  if(G===3 && R===2) return {name:'燃える闘志', description:'楽しくて負けたくない', rank:30};
-  if(R===3 && Y===2) return {name:'一触即発', description:'怒りが爆発しそうで焦っている', rank:30};
-  if(R===3 && B===2) return {name:'怒りの涙', description:'怒りが強いけど悲しくて泣いてる', rank:30};
-  if(R===3 && G===2) return {name:'悔しいけど認める', description:'負けたけど相手を認めている', rank:30};
-  if(B===3 && Y===2) return {name:'心細い夜', description:'悲しくて不安で眠れない', rank:30};
-  if(B===3 && R===2) return {name:'悔し泣き', description:'悲しみの中に怒りがある', rank:30};
-  if(B===3 && G===2) return {name:'立ち直りかけ', description:'悲しいけど少しずつ前を向いてる', rank:30};
-  if(Y===3 && G===2) return {name:'初舞台', description:'緊張してるけどうれしくてたまらない', rank:30};
-  if(Y===3 && R===2) return {name:'空回り（焦→怒）', description:'焦りが怒りになっていく', rank:30};
-  if(Y===3 && B===2) return {name:'嵐の前', description:'不安と悲しみで胸がいっぱい', rank:30};
+  if(G===3 && Y===2) return {name:'遠足前夜', description:'たのしみでドキドキ', rank:30};
+  if(G===3 && B===2) return {name:'泣き笑い', description:'うれしいのにちょっぴりかなしい', rank:30};
+  if(G===3 && R===2) return {name:'燃える闘志', description:'たのしい！でもまけたくない！', rank:30};
+  if(R===3 && Y===2) return {name:'一触即発', description:'おこりがばくはつしそう', rank:30};
+  if(R===3 && B===2) return {name:'怒りの涙', description:'おこりとかなしみ', rank:30};
+  if(R===3 && G===2) return {name:'悔しいけど認める', description:'くやしいけどすごい！', rank:30};
+  if(B===3 && Y===2) return {name:'心細い夜', description:'かなしくてふあん', rank:30};
+  if(B===3 && R===2) return {name:'悔し泣き', description:'かなしいしくやしい', rank:30};
+  if(B===3 && G===2) return {name:'立ち直りかけ', description:'げんきがもどりそう', rank:30};
+  if(Y===3 && G===2) return {name:'初舞台', description:'きんちょう！でもうれしい！', rank:30};
+  if(Y===3 && R===2) return {name:'空回り（焦→怒）', description:'あせりがイライラになる', rank:30};
+  if(Y===3 && B===2) return {name:'嵐の前', description:'ふあんでいっぱい', rank:30};
 
-  if(G===3 && R===1 && B===1) return {name:'感動', description:'うれしくて泣きそうで胸が熱い', rank:20};
-  if(G===3 && R===1 && Y===1) return {name:'大興奮', description:'楽しくて叫びたくてドキドキ', rank:20};
-  if(G===3 && B===1 && Y===1) return {name:'卒業式', description:'うれしいけど悲しくて緊張してる', rank:20};
-  if(R===3 && G===1 && B===1) return {name:'反省', description:'怒ったけど悪かったと気づいてる', rank:20};
-  if(R===3 && G===1 && Y===1) return {name:'ライバル', description:'悔しいけど燃えててドキドキ', rank:20};
-  if(R===3 && B===1 && Y===1) return {name:'八つ当たり', description:'怒りをぶつけてるけど実は悲しい', rank:20};
-  if(B===3 && G===1 && R===1) return {name:'複雑', description:'悲しいのにうれしくて悔しい', rank:20};
-  if(B===3 && G===1 && Y===1) return {name:'引っ越し', description:'悲しいけど新しい場所にワクワク', rank:20};
-  if(B===3 && R===1 && Y===1) return {name:'嵐の中', description:'悲しくて怒ってて不安でいっぱい', rank:20};
-  if(Y===3 && G===1 && R===1) return {name:'文化祭前日', description:'緊張してるけど楽しみで燃えてる', rank:20};
-  if(Y===3 && G===1 && B===1) return {name:'旅立ち', description:'ドキドキしてうれしくて少し寂しい', rank:20};
-  if(Y===3 && R===1 && B===1) return {name:'修羅場寸前', description:'焦りと怒りと悲しみがぐるぐる', rank:20};
+  if(G===3 && R===1 && B===1) return {name:'感動', description:'むねがあつくなる', rank:20};
+  if(G===3 && R===1 && Y===1) return {name:'大興奮', description:'たのしくてさけびたい', rank:20};
+  if(G===3 && B===1 && Y===1) return {name:'卒業式', description:'うれしいかなしいドキドキ', rank:20};
+  if(R===3 && G===1 && B===1) return {name:'反省', description:'わるかったな…', rank:20};
+  if(R===3 && G===1 && Y===1) return {name:'ライバル', description:'まけたくない！', rank:20};
+  if(R===3 && B===1 && Y===1) return {name:'八つ当たり', description:'ほんとはかなしい', rank:20};
+  if(B===3 && G===1 && R===1) return {name:'複雑', description:'いろんなきもちがまざる', rank:20};
+  if(B===3 && G===1 && Y===1) return {name:'引っ越し', description:'かなしいけどワクワク', rank:20};
+  if(B===3 && R===1 && Y===1) return {name:'嵐の中', description:'かなしいおこりふあん', rank:20};
+  if(Y===3 && G===1 && R===1) return {name:'文化祭前日', description:'ドキドキワクワクメラメラ', rank:20};
+  if(Y===3 && G===1 && B===1) return {name:'旅立ち', description:'うれしいけどさみしい', rank:20};
+  if(Y===3 && R===1 && B===1) return {name:'修羅場寸前', description:'ぐるぐるこんらん', rank:20};
 
-  if(G===2 && R===2 && B===1) return {name:'熱くなりすぎた', description:'楽しくて興奮してたけど後悔', rank:10};
-  if(G===2 && R===2 && Y===1) return {name:'真剣勝負', description:'楽しくて悔しくてドキドキ', rank:10};
-  if(G===2 && B===2 && R===1) return {name:'悔しい感動', description:'うれしくて悲しくて負けたくない', rank:10};
-  if(G===2 && B===2 && Y===1) return {name:'虹', description:'うれしくて悲しくて不思議な気持ち', rank:10};
-  if(G===2 && Y===2 && R===1) return {name:'文化祭', description:'楽しくてドキドキして燃えてる', rank:10};
-  if(G===2 && Y===2 && B===1) return {name:'初恋', description:'うれしくてドキドキして切ない', rank:10};
-  if(R===2 && B===2 && G===1) return {name:'仲直り', description:'怒って泣いてでも少し前向き', rank:10};
-  if(R===2 && B===2 && Y===1) return {name:'板挟み', description:'怒りと悲しみで混乱してる', rank:10};
-  if(R===2 && Y===2 && G===1) return {name:'意地', description:'怒って焦ってるけど諦めない', rank:10};
-  if(R===2 && Y===2 && B===1) return {name:'空回りの涙', description:'焦って怒って悲しくなってきた', rank:10};
-  if(B===2 && Y===2 && G===1) return {name:'夜明け前', description:'不安で悲しいけど少し希望がある', rank:10};
-  if(B===2 && Y===2 && R===1) return {name:'追い詰められた', description:'悲しくて不安で怒りがこみあげる', rank:10};
+  if(G===2 && R===2 && B===1) return {name:'熱くなりすぎた', description:'やりすぎちゃった', rank:10};
+  if(G===2 && R===2 && Y===1) return {name:'真剣勝負', description:'ぜったいかちたい', rank:10};
+  if(G===2 && B===2 && R===1) return {name:'悔しい感動', description:'くやしいけどうれしい', rank:10};
+  if(G===2 && B===2 && Y===1) return {name:'虹', description:'ふしぎなきもち', rank:10};
+  if(G===2 && Y===2 && R===1) return {name:'文化祭', description:'たのしい！ドキドキ！', rank:10};
+  if(G===2 && Y===2 && B===1) return {name:'初恋', description:'うれしいけどせつない', rank:10};
+  if(R===2 && B===2 && G===1) return {name:'仲直り', description:'また なかよし', rank:10};
+  if(R===2 && B===2 && Y===1) return {name:'板挟み', description:'どうしたらいいの？', rank:10};
+  if(R===2 && Y===2 && G===1) return {name:'意地', description:'まだ あきらめない', rank:10};
+  if(R===2 && Y===2 && B===1) return {name:'空回りの涙', description:'あせってなみだ', rank:10};
+  if(B===2 && Y===2 && G===1) return {name:'夜明け前', description:'もうすこしでがんばれそう', rank:10};
+  if(B===2 && Y===2 && R===1) return {name:'追い詰められた', description:'もう いっぱいいっぱい', rank:10};
 
-  if(G===2 && R===1 && B===1 && Y===1) return {name:'ちょっとうれしい', description:'幸せがちらっとある', rank:5};
-  if(R===2 && G===1 && B===1 && Y===1) return {name:'ちょっとイライラ', description:'怒りがくすぶってる', rank:5};
-  if(B===2 && G===1 && R===1 && Y===1) return {name:'ちょっと悲しい', description:'悲しさが心の片隅に', rank:5};
-  if(Y===2 && G===1 && R===1 && B===1) return {name:'ちょっとドキドキ', description:'緊張がじわっとある', rank:5};
+  if(G===2 && R===1 && B===1 && Y===1) return {name:'ちょっとうれしい', description:'しあわせがちらっとある', rank:5};
+  if(R===2 && G===1 && B===1 && Y===1) return {name:'ちょっとイライラ', description:'おこりがくすぶってる', rank:5};
+  if(B===2 && G===1 && R===1 && Y===1) return {name:'ちょっと悲しい', description:'かなしさがこころのかたすみに', rank:5};
+  if(Y===2 && G===1 && R===1 && B===1) return {name:'ちょっとドキドキ', description:'きんちょうがじわっとある', rank:5};
 
   if(G>=1 && R>=1 && B>=1 && Y>=1) return {name:'ジェットコースター', description:'感情がぐちゃぐちゃ', rank:0};
 
@@ -1186,12 +1295,12 @@ function evaluate3CardsNoWild(colors) {
   if (c.green === 3) return {name: '最高の日', description:'何もかもうまくいって幸せ', rank:50};
   if (c.red === 3) return {name: '怒り爆発', description:'怒りしかない', rank:50};
   if (c.blue === 3) return {name: '号泣', description:'悲しみの底にいる', rank:50};
-  if (c.yellow === 3) return {name: 'パニック', description:'混乱しすぎて何も考えられない', rank:50};
+  if (c.yellow === 3) return {name: 'パニック', description:'あたまがぐるぐる！', rank:50};
   
-  if (c.green === 2) return {name: 'ちょっとうれしい', description:'幸せがちらっとある', rank:40};
-  if (c.red === 2) return {name: 'ちょっとイライラ', description:'怒りがくすぶってる', rank:40};
-  if (c.blue === 2) return {name: 'ちょっと悲しい', description:'悲しさが心の片隅に', rank:40};
-  if (c.yellow === 2) return {name: 'ちょっとドキドキ', description:'緊張がじわっとある', rank:40};
+  if (c.green === 2) return {name: 'ちょっとうれしい', description:'しあわせがちらっとある', rank:40};
+  if (c.red === 2) return {name: 'ちょっとイライラ', description:'おこりがくすぶってる', rank:40};
+  if (c.blue === 2) return {name: 'ちょっと悲しい', description:'かなしさがこころのかたすみに', rank:40};
+  if (c.yellow === 2) return {name: 'ちょっとドキドキ', description:'きんちょうがじわっとある', rank:40};
   
   return {name: 'カラフル', description: 'いろんな感情が混ざっている', rank:0};
 }
@@ -1279,6 +1388,8 @@ function startRound(mode, isReplay = false) {
   }
 
   // Update Dealer Labels (Opponent)
+  // pLabel is already declared and updated above.
+
   const dLabel = document.getElementById('dealer-area-label');
   const speech = document.getElementById('opponent-speech');
   if (mode === 'challenge') {
@@ -1296,7 +1407,8 @@ function startRound(mode, isReplay = false) {
       lastEncounteredOpponent = oppIndex;
     }
   } else {
-    dLabel.innerHTML = `<span style="font-size:1.5rem">👨‍💼</span> あいてのカード`;
+    const trainingOppName = `もうひとりの ${playerProfile.name}`;
+    dLabel.innerHTML = `<img src="${playerProfile.avatar}" style="width:40px; height:45px; border-radius:8px; object-fit:contain; object-position:top; background:rgba(0,0,0,0.05); border:2px solid var(--gold); transform: scaleX(-1);"> ${trainingOppName}のカード`;
     speech.classList.add('hidden');
   }
 
@@ -1314,14 +1426,13 @@ function toggleExchange(index) {
   
   const cardWrappers = document.getElementById('cards-container').children;
   const cardEl = cardWrappers[index].querySelector('.playing-card');
-  const indEl = cardWrappers[index].querySelector('.hold-indicator');
   
   if (toExchange[index]) {
     cardEl.classList.add('exchange');
-    indEl.classList.add('visible');
+    cardEl.classList.remove('is-flipped');
   } else {
     cardEl.classList.remove('exchange');
-    indEl.classList.remove('visible');
+    cardEl.classList.add('is-flipped');
   }
 }
 
@@ -1373,9 +1484,10 @@ function battleWithoutChange() {
   const cardWrappers = document.getElementById('cards-container').children;
   for (let i = 0; i < cardWrappers.length; i++) {
     const cardEl = cardWrappers[i].querySelector('.playing-card');
-    const indEl = cardWrappers[i].querySelector('.hold-indicator');
-    if (cardEl) cardEl.classList.remove('exchange');
-    if (indEl) indEl.classList.remove('visible');
+    if (cardEl) {
+      cardEl.classList.remove('exchange');
+      cardEl.classList.add('is-flipped');
+    }
   }
   
   drawAgain();
@@ -1404,6 +1516,11 @@ function drawAgain() {
   
   const pResult = evaluateHand(currentHand, currentMode);
   const dResult = evaluateHand(dealerHand, currentMode);
+
+  const listToSearch = currentMode === 'light' ? LIGHT_YAKU_LIST : YAKU_LIST;
+  const pYakuDef = listToSearch.find(y => y.name === pResult.name) || pResult;
+  const dYakuDef = listToSearch.find(y => y.name === dResult.name) || dResult;
+  let didPlayerWin = false;
   
   document.getElementById('btn-change').classList.add('hidden');
   document.getElementById('btn-battle').classList.add('hidden');
@@ -1440,7 +1557,7 @@ function drawAgain() {
     if (pResult.rank > dResult.rank) {
       modalTitle = "🎉 あなたの勝ち！";
       modalMsg = opp.loseMsg;
-      challengeCoins++;
+      challengeCoins++; didPlayerWin = true; didPlayerWin = true;
       showToast('😊 ニコニコインをゲット！');
     } else if (pResult.rank < dResult.rank) {
       modalTitle = "😢 あいての勝ち...";
@@ -1472,19 +1589,54 @@ function drawAgain() {
       document.getElementById('btn-replay').innerHTML = btnText;
     }
     
-    // Open Post-Match Modal after a slight delay
+    // Check gacha before nextAction
+    const originalNext = nextAction;
+    nextAction = () => {
+      if (didPlayerWin) {
+        window.gachaNextAction = originalNext;
+        checkUnlockCard();
+      } else {
+        originalNext();
+      }
+    };
+    
     setTimeout(() => {
-      openOpponentSpeechModal(modalTitle, opp, modalMsg, btnText, nextAction);
+      openOpponentSpeechModal(modalTitle, opp, modalMsg, btnText, nextAction, pYakuDef, dYakuDef);
     }, 1500);
   } else {
-    document.getElementById('btn-replay').innerHTML = '🃏 もう<ruby>一度<rt>いちど</rt></ruby><ruby>遊<rt>あそ</rt></ruby>ぶ';
+    // Light, Basic, Standard modes
+    let modalTitle = "";
+    let modalMsg = "";
+    if (pResult.rank > dResult.rank || (pResult.rank === dResult.rank && pResult.score > dResult.score)) {
+        modalTitle = "🎉 あなたの勝ち！";
+        modalMsg = "やったね！すごい！";
+        didPlayerWin = true;
+    } else if (pResult.rank < dResult.rank || (pResult.rank === dResult.rank && pResult.score < dResult.score)) {
+        modalTitle = "😢 あいての勝ち...";
+        modalMsg = "ざんねん... つぎはがんばろう！";
+    } else {
+        modalTitle = "🤝 引き分け！";
+        modalMsg = "おなじつよさだったね！";
+    }
+    
+    const opp = { avatar: playerProfile.avatar, name: `もうひとりの ${playerProfile.name}` };
+    const btnText = '🃏 もう<ruby>一度<rt>いちど</rt></ruby><ruby>遊<rt>あそ</rt></ruby>ぶ';
+    
+    const nextAction = () => {
+      if (didPlayerWin) {
+        window.gachaNextAction = handleReplayClick;
+        checkUnlockCard();
+      } else {
+        handleReplayClick();
+      }
+    };
+
+    setTimeout(() => {
+      openOpponentSpeechModal(modalTitle, opp, modalMsg, btnText, nextAction, pYakuDef, dYakuDef);
+    }, 1500);
   }
   
-  // Set Ruby Names for results
-  const listToSearch = currentMode === 'light' ? LIGHT_YAKU_LIST : YAKU_LIST;
-  const pYakuDef = listToSearch.find(y => y.name === pResult.name) || pResult;
-  const dYakuDef = listToSearch.find(y => y.name === dResult.name) || dResult;
-  
+  // Set Ruby Names for results (inline text is hidden now, but we keep it updated just in case)
   document.getElementById('result-name').innerHTML = pYakuDef.rubyName || pResult.name;
   document.getElementById('result-desc').innerHTML = pYakuDef.rubyDesc || pResult.description;
   document.getElementById('dealer-result-name').innerHTML = dYakuDef.rubyName || dResult.name;
@@ -1510,10 +1662,21 @@ function renderDealerCards(reveal) {
     c.className = `playing-card ${reveal ? 'is-flipped' : ''}`;
     c.style.animationDelay = `${index * 0.1}s`;
     
+    let borderStyle = '';
+    const colorMap = {green: '#22c55e', red: '#ef4444', blue: '#3b82f6', yellow: '#f59e0b'};
+    if (card.color === 'complex') {
+        const c1 = colorMap[card.dualColors[0]];
+        const c2 = colorMap[card.dualColors[1]];
+        borderStyle = `border: 4px solid transparent; background: linear-gradient(white, white) padding-box, linear-gradient(135deg, ${c1} 0%, ${c1} 50%, ${c2} 50%, ${c2} 100%) border-box; box-sizing: border-box;`;
+    } else {
+        const clr = colorMap[card.color] || '#ccc';
+        borderStyle = `border: 4px solid ${clr}; box-sizing: border-box;`;
+    }
+
     c.innerHTML = `
       <div class="card-face card-back"></div>
-      <div class="card-face card-front">
-        <img src="${card.img}" alt="${card.emotion}">
+      <div class="card-face card-front" style="${borderStyle}">
+        <img src="${card.img}" alt="${card.emotion}" style="border-radius: 12px;">
       </div>
     `;
     
@@ -1535,10 +1698,21 @@ function renderCards() {
     c.style.animationDelay = `${index * 0.1}s`;
     c.onclick = () => toggleExchange(index);
     
+    let borderStyle = '';
+    const colorMap = {green: '#22c55e', red: '#ef4444', blue: '#3b82f6', yellow: '#f59e0b'};
+    if (card.color === 'complex') {
+        const c1 = colorMap[card.dualColors[0]];
+        const c2 = colorMap[card.dualColors[1]];
+        borderStyle = `border: 4px solid transparent; background: linear-gradient(white, white) padding-box, linear-gradient(135deg, ${c1} 0%, ${c1} 50%, ${c2} 50%, ${c2} 100%) border-box; box-sizing: border-box;`;
+    } else {
+        const clr = colorMap[card.color] || '#ccc';
+        borderStyle = `border: 4px solid ${clr}; box-sizing: border-box;`;
+    }
+
     c.innerHTML = `
       <div class="card-face card-back"></div>
-      <div class="card-face card-front">
-        <img src="${card.img}" alt="${card.emotion}">
+      <div class="card-face card-front" style="${borderStyle}">
+        <img src="${card.img}" alt="${card.emotion}" style="border-radius: 12px;">
       </div>
     `;
     
@@ -1748,8 +1922,166 @@ function saveSettings() {
 function closeSettingsModal() {
   document.getElementById('settings-modal').classList.remove('open');
 }
+
+// --- Card Collection System ---
+let collectedCards = JSON.parse(localStorage.getItem('kokoro_collected_cards')) || [];
+const CARD_DESCRIPTIONS = {
+  // Green
+  "幸せ": "こころがあたたかくて、とってもいい気もちのとき",
+  "うれしい": "いいことがあって、心がぱっとするとき",
+  "楽しい": "すきなことをして、にこにこがとまらないとき",
+  "安心した": "しんぱいがなくなって、ほっとするとき",
+  "期待": "これからいいことがおきそうで、わくわくするとき",
+  "自信": "じぶんにはできる！とつよくおもえるとき",
+  "誇らしい": "うまくできて、じぶんをほめたくなるとき",
+  "感謝": "してもらって、ありがとうという気もちになるとき",
+  "達成感": "さいごまでやりきって、すっきりした気もちのとき",
+  "感動": "すばらしいものを見て、こころが震えるとき",
+  "信頼": "この人ならだいじょうぶ、としんじられるとき",
+  "愛情": "だれかのことを、とてもたいせつにおもうとき",
+  "希望": "これからきっとよくなる、とあかるくおもえるとき",
+  "満足": "これでじゅうぶん！と、きもちがみちたりたとき",
+  "充実感": "がんばって、とてもいいじかんをすごせたとおもうとき",
+
+  // Red
+  "イライラ": "うまくいかなくて、もやもやするとき",
+  "不満": "なっとくできなくて、もやもやするとき",
+  "怒り": "いやなことをされて、かっとなるとき",
+  "悔しい": "まけたり、しっぱいして、くやしいとき",
+  "理不尽": "どうしてこんなめにあうの、となっとくできないとき",
+  "反発": "あいてのいうことに、ぜったいしたがいたくないとき",
+  "嫉妬": "あの人がうらやましくて、じぶんもほしいとき",
+  "激怒": "おこりがばくはつして、とまらないくらいおこっているとき",
+  "憎しみ": "あいてのことが、どうしてもゆるせないきもちのとき",
+  "苛立ち": "おもいどおりにならなくて、イライラするとき",
+  "妬み": "人がもっているものが、うらやましくてくやしいとき",
+  "意気投合": "あいてと気もちがぴったりあって、わくわくするとき",
+
+  // Blue
+  "悲しい": "かなしいことがあって、なみだがでそうなとき",
+  "傷ついた": "ことばやたいどで、こころがいたいとき",
+  "寂しい": "ひとりぼっちで、だれかそばにいてほしいとき",
+  "落ち込んだ": "げんきがでなくて、なにもしたくないとき",
+  "後悔": "あのときこうすればよかったと思うとき",
+  "失望": "きたいしていたのに、がっかりしてかなしいとき",
+  "孤独": "だれもわかってくれないと、ひとりぼっちにかんじるとき",
+  "無力感": "じぶんにはなにもできないと、ちからがぬけるとき",
+  "絶望": "もうだめだ、と目のまえがまっくらになるようなとき",
+  "残念": "きたいはずれで、がっかりしたとき",
+  "落ち込み": "げんきがでなくて、なにもしたくないとき",
+  "寂しさ": "ひとりぼっちで、だれかそばにいてほしいとき",
+  "がっかり": "きたいはずれで、きもちがしずんでしまうとき",
+
+  // Yellow
+  "びっくり": "おもっていなかったことがおきて、どきっとするとき",
+  "戸惑い": "どうしていいかわからなくて、まよってしまうとき",
+  "不安": "これからどうなるかわからなくて、こわいとき",
+  "緊張": "たいせつな場面で、からだがかたくなるとき",
+  "ドキドキ": "なにかがはじまる前で、胸がどきどきするとき",
+  "心配": "いやなことがおきないか、きになるとき",
+  "警戒": "あぶないかもしれないと、きをつけているとき",
+  "混乱": "なにがおきているかわからなくて、あたまがぐるぐるするとき",
+  "恐怖": "とてもこわくて、にげだしたいとき",
+  "驚き": "おもっていなかったことがおきて、びっくりするとき",
+  "恐れ": "こわいことがおきそうで、ぶるぶるふるえるとき",
+
+  // Complex
+  "なつかしい": "むかしのことを思いだして、うれしいようなかなしいようなとき",
+  "すっきり": "もやもやがなくなって、きもちがはれたとき",
+  "照れくさい": "ほめられてうれしいのに、はずかしくなるとき",
+  "やるせない": "かなしいけど、おこるきにもなれないとき",
+  "焦り": "はやくしなきゃ！と、あたまがいっぱいになるとき",
+  "モヤモヤ": "きもちがはっきりしなくて、すっきりしないとき",
+  "迷った": "どれをえらべばいいか、わからなくなるとき",
+  
+  "default": "いろんなきもちが まざっているよ！"
+};
+
+function checkUnlockCard() {
+  const lightIds = ['Joy_1', 'Joy_2', 'Joy_3', 'Anger_1', 'Anger_2', 'Anger_3', 'Sadness_1', 'Sadness_2', 'Sadness_3', 'Anxiety_1', 'Anxiety_2', 'Anxiety_3'];
+  const basicIds = [];
+  for (let i = 1; i <= 9; i++) {
+    basicIds.push(`Joy_${i}`, `Anger_${i}`, `Sadness_${i}`, `Anxiety_${i}`);
+  }
+  
+  let pool = [];
+  if (currentMode === 'light') {
+    pool = DECK.filter(c => lightIds.includes(c.id));
+  } else if (currentMode === 'basic') {
+    pool = DECK.filter(c => basicIds.includes(c.id));
+  } else {
+    pool = DECK;
+  }
+  
+  const lockedCards = pool.filter(c => !collectedCards.includes(c.id));
+  
+  if (lockedCards.length > 0) {
+    const newCard = lockedCards[Math.floor(Math.random() * lockedCards.length)];
+    collectedCards.push(newCard.id);
+    localStorage.setItem('kokoro_collected_cards', JSON.stringify(collectedCards));
+    
+    setTimeout(() => { openGachaModal(newCard); }, 500);
+  } else {
+    setTimeout(() => {
+      const gachaModal = document.getElementById('gacha-modal');
+      let msg = "このモードのカードは全部あつめたよ！<br>つぎのモードであそんでみよう！";
+      if (currentMode === 'standard' || currentMode === 'challenge') {
+        msg = "🎉 すべての感情カードをコンプリート！ 🎉<br>ほんとうにすごい！！";
+      }
+      document.getElementById('gacha-card-img').style.display = 'none';
+      document.getElementById('gacha-card-name').innerText = "コンプリート！";
+      document.getElementById('gacha-card-desc').innerHTML = msg;
+      gachaModal.classList.add('open');
+    }, 500);
+  }
+}
+
+function openGachaModal(card) {
+  const modal = document.getElementById('gacha-modal');
+  document.getElementById('gacha-card-img').style.display = 'inline-block';
+  document.getElementById('gacha-card-img').src = card.img;
+  document.getElementById('gacha-card-name').innerText = card.nameJa || "新しいカード！";
+  document.getElementById('gacha-card-desc').innerText = CARD_DESCRIPTIONS[card.nameJa] || "いろんなきもちが まざっているよ！";
+  modal.classList.add('open');
+}
+
+function closeGachaModal() {
+  document.getElementById('gacha-modal').classList.remove('open');
+  if (window.gachaNextAction) {
+    window.gachaNextAction();
+    window.gachaNextAction = null;
+  }
+}
+
+
+function openCardDetailModal(nameJa, imgSrc) {
+  const modal = document.getElementById('card-detail-modal');
+  document.getElementById('detail-card-img').src = imgSrc;
+  document.getElementById('detail-card-name').innerText = nameJa;
+  document.getElementById('detail-card-desc').innerText = CARD_DESCRIPTIONS[nameJa] || "いろんなきもちが まざっているよ！";
+  modal.classList.add('open');
+}
+
+function closeCardDetailModal() {
+  document.getElementById('card-detail-modal').classList.remove('open');
+}
+
 </script>
 
 <div id="toast-container" class="toast-container"></div>
+
+<!-- Gacha Modal -->
+<div class="modal-overlay" id="gacha-modal">
+  <div class="modal-content" onclick="event.stopPropagation()" style="text-align: center; background: linear-gradient(135deg, #fffbea 0%, #fef9c3 100%); border: 4px solid var(--gold);">
+    <h2 style="color: var(--gold); margin-bottom: 1rem; font-size: 2.5rem; text-shadow: 0 2px 4px rgba(0,0,0,0.1);">🎊 新しいカードをゲット！ 🎊</h2>
+    <div style="perspective: 1000px; margin: 2rem auto;">
+      <img id="gacha-card-img" src="" style="width: 150px; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); animation: popIn 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);">
+    </div>
+    <h3 id="gacha-card-name" style="font-size: 2rem; font-weight: bold; margin-bottom: 1rem; color: var(--text-main);"></h3>
+    <div id="gacha-card-desc" style="background: white; padding: 1.5rem; border-radius: 20px; font-size: 1.3rem; font-weight: bold; line-height: 1.6; color: var(--text-main); margin-bottom: 2rem; box-shadow: 0 4px 10px rgba(0,0,0,0.05);"></div>
+    <button class="btn-primary" onclick="closeGachaModal()" style="font-size: 1.3rem; padding: 1rem 3rem;">やったね！</button>
+  </div>
+</div>
+
 </body>
 </html>
