@@ -1077,7 +1077,8 @@ loadPlayerProfile();
 
 function openCardListModal() {
   const container = document.getElementById('card-list-container');
-  if (container.innerHTML.trim() === '') {
+  // Always regenerate
+  // if (container.innerHTML.trim() === '') {
     const categories = [
       { id: 'basic', name: '🌱 ベーシックセット（1〜9）', min: 1, max: 9, descKey: 'descBasic' },
       { id: 'standard', name: '☀️ スタンダードセット追加分（10〜15）', min: 10, max: 15, descKey: 'descStandard' },
@@ -1149,7 +1150,7 @@ function openCardListModal() {
     });
     
     container.innerHTML = htmlStr;
-  }
+  // }
   document.getElementById('card-list-modal').classList.add('open');
 }
 
