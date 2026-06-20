@@ -842,11 +842,16 @@ for (let i = 1; i <= 15; i++) DECK.push({ id: `Sadness_${i}`, emotion: 'Sadness'
 for (let i = 1; i <= 15; i++) DECK.push({ id: `Anxiety_${i}`, emotion: 'Anxiety', color: 'yellow', img: `cards_output_print/4_Anxiety_Kiiro_${i}_print.png` });
 
 const complexColors = [
-  ['green', 'red'], ['green', 'blue'], ['green', 'yellow'], ['green', 'blue'],
-  ['green', 'yellow'], ['green', 'blue'], ['red', 'blue'], ['red', 'blue'],
-  ['red', 'blue'], ['red', 'yellow'], ['red', 'yellow'], ['blue', 'yellow']
+  ['green', 'yellow'], ['blue', 'yellow'], ['green', 'yellow'], ['green', 'blue'],
+  ['green', 'red'], ['green', 'red'], ['red', 'blue'], ['blue', 'yellow'],
+  ['red', 'blue'], ['red', 'yellow'], ['red', 'yellow'], ['green', 'blue']
 ];
-for (let i = 1; i <= 12; i++) DECK.push({ id: `Complex_${i}`, emotion: 'Complex', color: 'complex', dualColors: complexColors[i-1], img: `cards_output_print/Wildcard_${i}_print.png` });
+const complexNames = [
+  '胸が高鳴る', '気が気じゃない', 'わくわくする', 'なつかしい',
+  'すっきり', '照れくさい', '歯がゆい', '拍子抜け',
+  'やるせない', '焦り', 'モヤモヤ', '名残惜しい'
+];
+for (let i = 1; i <= 12; i++) DECK.push({ id: `Complex_${i}`, emotion: complexNames[i-1], color: 'complex', dualColors: complexColors[i-1], img: `cards_output_print/Wildcard_${i}_print.png` });
 
 const COLORS = ['green', 'red', 'blue', 'yellow'];
 
